@@ -1,0 +1,25 @@
+{
+  "id": 3459070,
+  "name": "Block Force Push",
+  "target": "branch",
+  "source_type": "Repository",
+  "source": "garobcsi/projlab-template",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "exclude": [],
+      "include": [
+        "~ALL"
+      ]
+    }
+  },
+  "rules": [
+    {
+      "type": "deletion"
+    },
+    {
+      "type": "non_fast_forward"
+    }
+  ],
+  "bypass_actors": []
+}

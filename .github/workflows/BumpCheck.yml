@@ -1,0 +1,35 @@
+name: Version Bump Check
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Checking Version Bump
+        if: github.event.review.state == 'approved'
+        run: |
+          echo "Review approved, running workflow..."
+
+          BRANCH_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)
+          git fetch origin main --depth=1
+          MAIN_VERSION=$(git show origin/main:pom.xml | grep -oPm1 "(?<=<version>)[^<]+")
+
+          if [[ "$BRANCH_VERSION" =~ \  ]]; then
+            echo "Error: Version contains spaces! ($BRANCH_VERSION)"
+            exit 1
+          fi
+
+          if [ "$BRANCH_VERSION" == "$MAIN_VERSION" ]; then
+            echo "Version bump is missing!"
+            exit 1
+          else
+            echo "Version bump detected!"
+          fi

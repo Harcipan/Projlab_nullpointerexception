@@ -1,30 +1,58 @@
 @startuml CD_InGameObjects
 
 package "Class diagram for In-Game Objects" #E1DFEB {
-    class Gomba {
-        + kisSzoras()
-        + nagySzoras()
+    class MushroomBody {
+        + smallSpread()
+        + largeSpread()
     }
 
-    class Rovar {
-        + mozog()
-        + eszik()
-        + vag()
+    class Insect {
+        + move()
+        + eat()
+        + cut()
     }
 
-    class Tekton {
-        + torik()
-        + szomszed()
-        + vag()
+    class Continent {
+        + break()
+        + getNeighbours()
+        + bisect()
     }
 
-    class Csempe {
-        + szomszed()
+    class Tile {
+        + getNeigbours()
     }
 
-    class Gombafonal {
-        + rohad()
+    class Mycelium {
+        + rot()
     }
+
+    class Spore {
+
+    }
+
+    abstract class Player {
+
+    }
+
+    class MushroomPlayer {
+    
+    }
+
+    class InsectPlayer {
+    
+    }
+
+    'connections'
+
+    MushroomBody --o "1" Continent
+    Tile "*" --* "1" Continent
+    Mycelium "1" --o "1" Tile
+    Insect -> Spore
+    Spore "1" --o "1" Tile
+    MushroomPlayer --|> Player
+    InsectPlayer --|> Player
+    Insect "1" --* "1" InsectPlayer
+    MushroomBody "*" --* "1" MushroomPlayer
 }
 
 @enduml

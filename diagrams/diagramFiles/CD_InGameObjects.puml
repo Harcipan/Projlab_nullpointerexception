@@ -1,0 +1,30 @@
+@startuml CD_InGameObjects
+
+package "Class diagram for In-Game Objects" #E1DFEB {
+    class Gomba {
+        + kisSzoras()
+        + nagySzoras()
+    }
+
+    class Rovar {
+        + mozog()
+        + eszik()
+        + vag()
+    }
+
+    class Tekton {
+        + torik()
+        + szomszed()
+        + vag()
+    }
+
+    class Csempe {
+        + szomszed()
+    }
+
+    class Gombafonal {
+        + rohad()
+    }
+}
+
+@enduml

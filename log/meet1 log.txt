@@ -1,0 +1,71 @@
+﻿Projlab Log
+    ==1. meeting:==
+        2025.02.15.
+        Wordben irjuk, no Latex
+        Jatekmenet felvetesek
+            Turn based, real time nehez kivitelezni
+            Rovarok mennyit tudnak mozogni? Turn/Action?
+            Unfair condition: Ket ember ugyan azt a tektont valasztja a testhez egy korben
+                Harc a tektonert? Triviador szeru
+            Spora tulajdonsagai szuletesuktol fogva meg vannak adva, taktikai resze a jateknak
+            Rohado fonal:
+                1 korig el
+                nem tudod toldani fonallal, de osszekapcsolhato az elo fonalaiddal
+                ? reka: rohado-fonal-lopas
+            Termotest:
+                Kis szoras:  3 spora szomszedokon
+                Nagy szoras: 7 spora akar szomszedok szomszedjain is
+                Elete: 3x szor sporat
+            Gombafonal-epites:
+                2 ATP hogyha nincsen spora rajta
+                ez nem fogyasztja a sporat
+                1 ATP ha van
+                10 ATP all rendelkezesre / kor
+        Technikai felvetesek
+            Tile 2D matrix, egy tile tartozik 1 tektonhoz
+            Szomszedsagi 2D matrix
+            Nearest neighbor particionalas a tektonoknal 
+            Jatekosok szama:
+                Min. 4 ember, 2 gombasz, 2 bogar
+                AI extra komplikacio
+            Egy tile tartalmasz szinte mindent
+                sporara referencia
+                melyik tektonhoz tartozik
+                stb...
+            Scoreboard
+                ??
+            Serialization (jatekmentes)
+            Pause GUI
+                instant game evaluation
+        Parhuzamositas
+            Dokumentacio, jelkepes UML
+                Hogyan nez ki az alkalmazas
+                    Fomenu:
+                        Perzisztens mukodes
+                        visszatoltheto jatekok
+                        torolheto jatekok
+                        hany jatekos, gomba vagy rovar
+                        ez utan a 2D-s jatekter 
+                    Jatek:
+                        RNG indikator torik-e vagy nem
+                        ha igen akkor egyenest huzunk
+                Use case Diagram elso
+                    Happy Path
+                        1) Megnyitjuk a jatekot
+                        2) letrehozunk egy uj jatekot
+                        3) Kivalasztjuk a jatekosok szamat
+                        4) Random gomba es rovar fajok (kizarolag kozmetikai ertelemben)
+                        5) Nevet adunk a jatekosoknak
+                        6) 2D-s jatekter:
+                        7) Egy gomba kezd a sok kozul, valaszt egy tektont, ahol az elso gombafejet lehelyezi.
+                        8) Kovetkeznek a maradek gombak, es kovetik oket a rovarok, akik kivalasztjak hogy melyik tektonon  kezdik a jatekot
+                        9) Vege van a turnusnak es mindenki kivalaszt 5 csempet ahova gombafonalat noveszt.
+                        10) Rovarok jonnek, mozognak x egyseget, harapnak
+                            ezeket a kepessegeket befolyasolja a bogaron levo effekt
+                        11) End condition:
+                            Az osszes gomba meghal
+                            a jatekmenet hosszanak tullepese utan kiertekelodnek a jatekosok pontszamai
+                                mennyi dagadt a rovar
+                                hany gombatest fejlodott ki
+                Kornel, Zsiga
+            Kovetelmenyek kitoltese

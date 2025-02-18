@@ -38,3 +38,27 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### PUML ###
+diagrams/diagramFiles/*.png
+
+### Word-os szemet (https://raw.githubusercontent.com/github/gitignore/refs/heads/main/Global/MicrosoftOffice.gitignore) ###
+*.tmp
+
+# Word temporary
+~$*.doc*
+
+# Word Auto Backup File
+Backup of *.doc*
+
+# Excel temporary
+~$*.xls*
+
+# Excel Backup File
+*.xlk
+
+# PowerPoint temporary
+~$*.ppt*
+
+# Visio autosave temporary files
+*.~vsd*

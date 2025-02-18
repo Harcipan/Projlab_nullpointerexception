@@ -1,0 +1,54 @@
+@startuml
+
+actor User 
+
+usecase "New Game" as UC_NewGame
+usecase "Load Game" as UC_LoadGame
+usecase "Exit Game" as UC_ExitGame
+
+User -- UC_NewGame
+User -- UC_LoadGame
+User -- UC_ExitGame
+
+'new game
+
+usecase UC_NewPlayer as "New Player"
+usecase UC_SelMapSize as "Select Map Size"
+usecase UC_NameSave as "Name the Save"
+
+UC_NewGame  ..> UC_NewPlayer : <<include>>
+UC_NewGame  ..> UC_SelMapSize : <<include>>
+UC_NewGame  ..> UC_NameSave : <<include>>
+
+'select map size
+usecase UC_SetMapSize128 as "128x128"
+usecase UC_SetMapSize256 as "256x256"
+
+UC_SelMapSize  ..> UC_SetMapSize128 : <<include>>
+UC_SelMapSize  ..> UC_SetMapSize256 : <<include>>
+
+'new player
+usecase UC_SetPlayerName as "Set Player Name"
+usecase UC_SetPlayerType as "Set Player Type"
+
+UC_NewPlayer  ..> UC_SetPlayerName : <<include>>
+UC_NewPlayer  ..> UC_SetPlayerType : <<include>>
+
+'player types
+usecase UC_SetMushroomPlayer as "Choose Mushroom Player"
+usecase UC_SetInsectPlayer as "Choose Insect Player"
+
+UC_SetPlayerType  ..> UC_SetMushroomPlayer : <<include>>
+UC_SetPlayerType  ..> UC_SetInsectPlayer : <<include>>
+
+'load game
+usecase UC_SelectSave as "Select Save X"
+usecase UC_RenameSave as "Rename Save X"
+usecase UC_DeleteSave as "Delete Save X"
+
+UC_SelectSave ..> UC_LoadGame : <<extend>>
+UC_RenameSave ..> UC_LoadGame : <<extend>>
+UC_DeleteSave ..> UC_LoadGame : <<extend>>
+
+
+@enduml

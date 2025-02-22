@@ -40,7 +40,7 @@ build/
 .DS_Store
 
 ### PUML ###
-diagrams/diagramFiles/*.png
+diagrams/renderedDiagrams/*
 
 ### Word-os szemet (https://raw.githubusercontent.com/github/gitignore/refs/heads/main/Global/MicrosoftOffice.gitignore) ###
 *.tmp

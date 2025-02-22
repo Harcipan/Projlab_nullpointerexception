@@ -1,54 +1,55 @@
-@startuml
+@startuml UC_MainMenu
 
-actor User 
+package "Use-Case Diagram for Main Menu" #d0e6ff {
 
-usecase "New Game" as UC_NewGame
-usecase "Load Game" as UC_LoadGame
-usecase "Exit Game" as UC_ExitGame
+    left to right direction
 
-User -- UC_NewGame
-User -- UC_LoadGame
-User -- UC_ExitGame
+    actor User 
 
-'new game
+    usecase "New Game" as UC_NewGame
+    usecase "Load Game" as UC_LoadGame
+    usecase "Exit Game" as UC_ExitGame
 
-usecase UC_NewPlayer as "New Player"
-usecase UC_SelMapSize as "Select Map Size"
-usecase UC_NameSave as "Name the Save"
+    User -- UC_NewGame
+    User -- UC_LoadGame
+    User -- UC_ExitGame
 
-UC_NewGame  ..> UC_NewPlayer : <<include>>
-UC_NewGame  ..> UC_SelMapSize : <<include>>
-UC_NewGame  ..> UC_NameSave : <<include>>
+    'new game
 
-'select map size
-usecase UC_SetMapSize128 as "128x128"
-usecase UC_SetMapSize256 as "256x256"
+    usecase UC_NewPlayer as "New Player"
+    usecase UC_SelMapSize as "Select Map Size"
+    usecase UC_NameSave as "Name the Save"
 
-UC_SelMapSize  ..> UC_SetMapSize128 : <<include>>
-UC_SelMapSize  ..> UC_SetMapSize256 : <<include>>
+    UC_NewGame  ..> UC_NewPlayer : <<include>>
+    UC_NewGame  ..> UC_SelMapSize : <<include>>
+    UC_NewGame  ..> UC_NameSave : <<include>>
 
-'new player
-usecase UC_SetPlayerName as "Set Player Name"
-usecase UC_SetPlayerType as "Set Player Type"
+    'select map size
+    usecase UC_SetMapSize128 as "128x128"
+    usecase UC_SetMapSize256 as "256x256"
 
-UC_NewPlayer  ..> UC_SetPlayerName : <<include>>
-UC_NewPlayer  ..> UC_SetPlayerType : <<include>>
+    UC_SelMapSize  ..> UC_SetMapSize128 : <<include>>
+    UC_SelMapSize  ..> UC_SetMapSize256 : <<include>>
 
-'player types
-usecase UC_SetMushroomPlayer as "Choose Mushroom Player"
-usecase UC_SetInsectPlayer as "Choose Insect Player"
+    'new player
+    usecase UC_SetPlayerName as "Set Player Name"
+    usecase UC_SetPlayerType as "Set Player Type"
 
-UC_SetPlayerType  ..> UC_SetMushroomPlayer : <<include>>
-UC_SetPlayerType  ..> UC_SetInsectPlayer : <<include>>
+    UC_NewPlayer  ..> UC_SetPlayerName : <<include>>
+    UC_NewPlayer  ..> UC_SetPlayerType : <<include>>
 
-'load game
-usecase UC_SelectSave as "Select Save X"
-usecase UC_RenameSave as "Rename Save X"
-usecase UC_DeleteSave as "Delete Save X"
+    'player types
+    usecase UC_SetMushroomPlayer as "Choose Mushroom Player"
+    usecase UC_SetInsectPlayer as "Choose Insect Player"
 
-UC_SelectSave ..> UC_LoadGame : <<extend>>
-UC_RenameSave ..> UC_LoadGame : <<extend>>
-UC_DeleteSave ..> UC_LoadGame : <<extend>>
+    UC_SetPlayerType  ..> UC_SetMushroomPlayer : <<include>>
+    UC_SetPlayerType  ..> UC_SetInsectPlayer : <<include>>
 
+    'load game
+    usecase UC_SelectSave as "Select Save X"
+    usecase UC_RenameSave as "Rename Save X"
+    usecase UC_DeleteSave as "Delete Save X"
+
+}
 
 @enduml

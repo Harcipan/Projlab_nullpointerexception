@@ -6,11 +6,11 @@ package "Use-Case Diagram for In-Game pause HUD state" #ffe3da {
 
     actor UserInput as "User-Input"
 
-    (JatekMentes) as "Játék Mentés"
-    (Fomenu) as "Főmenü"
+    (SaveGame) as "Save Game"
+    (Mainmenu) as "Main menu"
 
-    UserInput --> (JatekMentes)
-    UserInput --> (Fomenu)
+    UserInput --> (SaveGame)
+    UserInput --> (Mainmenu)
     
 }
 

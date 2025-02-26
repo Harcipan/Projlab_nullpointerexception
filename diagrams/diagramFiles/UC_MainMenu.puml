@@ -1,5 +1,5 @@
 @startuml
-
+package "Use-Case Diagram for Main menu" #E6FFEB {
 actor User 
 
 usecase "New Game" as UC_NewGame
@@ -50,5 +50,5 @@ UC_SelectSave ..> UC_LoadGame : <<extend>>
 UC_RenameSave ..> UC_LoadGame : <<extend>>
 UC_DeleteSave ..> UC_LoadGame : <<extend>>
 
-
+}
 @enduml

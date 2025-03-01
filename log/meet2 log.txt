@@ -1,0 +1,16 @@
+meeting kezdete 2025. 02. 22. 14:00
+
+
+
+elkészült dokumentáció pontosítása
+nem funkcionális követelmények kiegészítése
+
+analízis modell felosztás
+
+Zsiga osztálydiagram
+Réka állapot
+Misi osztályleírás
+Iván szekvencia
+
+
+

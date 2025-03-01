@@ -1,0 +1,18 @@
+@startuml
+
+package "Class diagram for Service Classes" #E1DFEB {
+
+    class GameManager {
+        + tick()
+        + configureGame()
+        + endGame()
+    }
+
+    class GameSaver {
+        + saveGame(f : File)
+        + loadGame(f : File)
+    }
+
+}
+
+@enduml

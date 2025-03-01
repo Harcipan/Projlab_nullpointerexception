@@ -1,0 +1,9 @@
+@startuml Mycelium
+hide empty description
+
+[*]-> Alive
+Alive->Rotting : rot
+Rotting ->Alive : revive
+Rotting->[*] : decreaseTimer
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml Mushroom
+hide empty description
+
+[*]-->PlaceMushroomHead
+PlaceMushroomHead-->PlaceMycelium : placeMycelium
+PlaceMycelium -> SmallSpreadSpore : smallSpread
+SmallSpreadSpore --> PlaceMycelium
+
+PlaceMycelium --> LargeSpreadSpore : largeSpread
+LargeSpreadSpore-> PlaceMycelium
+
+
+PlaceMycelium->GrowBody : placeBody
+GrowBody-> PlaceMycelium
+@enduml

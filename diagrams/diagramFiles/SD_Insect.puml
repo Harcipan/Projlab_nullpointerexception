@@ -1,0 +1,12 @@
+@startuml Insect
+hide empty description
+
+[*]-->PlaceInsect
+PlaceInsect-->MoveInsect
+MoveInsect --> EatSpore : eat
+EatSpore --> MoveInsect
+
+MoveInsect --> CutMycelium : cut
+CutMycelium -> MoveInsect
+
+MoveInsect --> MoveInsect : moveTo

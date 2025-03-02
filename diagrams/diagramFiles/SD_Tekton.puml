@@ -1,0 +1,9 @@
+@startuml Tekton
+hide empty description
+title Tekton State Machine
+
+[*] -> Whole 
+Whole -> Broken : break
+Broken -> [*]
+
+@enduml

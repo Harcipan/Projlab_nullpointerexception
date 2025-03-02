@@ -1,14 +1,17 @@
 @startuml Mushroom
 hide empty description
+title Mushroom state machine
 
-[*]-->PlaceMushroomHead
-PlaceMushroomHead-->PlaceMycelium : placeMycelium
-PlaceMycelium -> SmallSpreadSpore : smallSpread
-SmallSpreadSpore --> PlaceMycelium
+[*]-->OnlyMushroomHead
+OnlyMushroomHead-->MyceliumGrowing: placeMycelium
+MyceliumGrowing-> SmallSpreadSpore : smallSpread
+SmallSpreadSpore --> MyceliumGrowing: updateScore
 
-PlaceMycelium --> LargeSpreadSpore : largeSpread
-LargeSpreadSpore-> PlaceMycelium
+MyceliumGrowing--> LargeSpreadSpore : largeSpread
+LargeSpreadSpore-> MyceliumGrowing: updateScore
 
 
-PlaceMycelium->GrowBody : placeBody
-GrowBody-> PlaceMycelium
+MyceliumGrowing->BodyGrowing : placeBody
+BodyGrowing-> MyceliumGrowing: updateScore
+
+@enduml

@@ -1,7 +1,11 @@
 @startuml Mycelium
 hide empty description
+title Mycelium Gameplay State Machine
 
 [*]-> Alive
 Alive->Rotting : rot
 Rotting ->Alive : revive
-Rotting->[*] : decreaseTimer
+Rotting->[*] : tick
+Alive -> [*] : getEaten
+
+@enduml

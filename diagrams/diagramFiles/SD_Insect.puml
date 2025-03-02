@@ -1,12 +1,15 @@
-@startuml Insect
+@startuml InsectActions
 hide empty description
+title Insect Gameplay State Machine
 
 [*]-->PlaceInsect
-PlaceInsect-->MoveInsect
+PlaceInsect-->MoveInsect : moveTo
 MoveInsect --> EatSpore : eat
-EatSpore --> MoveInsect
+EatSpore --> MoveInsect : updateScore
 
 MoveInsect --> CutMycelium : cut
-CutMycelium -> MoveInsect
+CutMycelium -> MoveInsect : updateScore
 
 MoveInsect --> MoveInsect : moveTo
+
+@enduml

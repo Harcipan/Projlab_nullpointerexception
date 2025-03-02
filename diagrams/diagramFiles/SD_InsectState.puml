@@ -1,0 +1,10 @@
+@startuml InsectState
+hide empty description
+title Insect effect state machine
+
+[*]->Normal
+Normal-> EffectApplied : eatSpore / addEffect
+EffectApplied -> Normal : tick / removeEffect
+
+
+@enduml

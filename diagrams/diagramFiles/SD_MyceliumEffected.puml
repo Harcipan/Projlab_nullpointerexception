@@ -1,0 +1,9 @@
+@startuml MyceliumEffect
+hide empty description
+title Mycelium Effect State Machine
+
+[*] -> Normal
+Normal -> EffectApplied : newTektonEntered/addEffect
+EffectApplied -> Normal : tektonLeft/removeEffect
+
+@enduml

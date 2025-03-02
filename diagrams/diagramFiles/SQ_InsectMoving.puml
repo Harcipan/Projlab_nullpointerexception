@@ -1,0 +1,30 @@
+@startuml Insect moving
+
+title Insect player moving to a tile
+
+actor "Player controlling the insect" as P
+actor "InsectPlayer" as Ip
+actor "Insect" as I
+actor "Current tile" as Tx
+actor "Target tile" as Ty
+
+activate Ip
+activate P
+activate I
+activate Tx
+activate Ty
+
+P --> Ip : moveTo
+Ip -> I : moveTo
+
+'tell don't ask... 
+opt  have enough move points & path exists to desired tile
+I -> Tx : removeEntity
+I -> Ty : addEntity
+I --> Ip
+Ip -> Ip : updateScore
+end
+
+
+
+@enduml

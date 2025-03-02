@@ -1,0 +1,28 @@
+@startuml Fungus mushroom
+
+title Fungus growing a mushroom
+
+actor "Player controlling the fungus" as P
+actor "FungusPlayer" as Fp
+actor "Fungus" as F
+actor "Tile" as T
+actor "FungusBody" as Fb
+
+activate P
+activate Fp
+activate F
+activate T
+
+P --> Fp : GrowBody
+opt have enough points
+Fp -> F : growBody
+F -> Fb ** : construct
+F -> T : addEntity
+F --> Fp
+Fp -> Fp : updateScore
+
+
+end
+
+
+@enduml

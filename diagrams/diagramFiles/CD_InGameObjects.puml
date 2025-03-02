@@ -1,58 +1,146 @@
 @startuml CD_InGameObjects
 
 package "Class diagram for In-Game Objects" #E1DFEB {
-    class MushroomBody {
-        + smallSpread()
-        + largeSpread()
+    
+    'world elements'
+
+    class Map {
+        + List<Tekton> Tektons
+        + tick()
     }
 
-    class Insect {
-        + move()
-        + eat()
-        + cut()
-    }
-
-    class Continent {
+    class Tekton {
+        + breakChance : int
+        + sporeCount : int
+        + List<Tile> tiles
+        + List<Tekton> neighbours
         + break()
-        + getNeighbours()
-        + bisect()
+        + increaseChance(amount : int)
     }
 
     class Tile {
-        + getNeigbours()
+        + growthRate
+        + maxMycelium
+        + List<Tile> neighbours
+        + List<Entity> entities
+        + parentTekton : Tekton
+        + getParentTekton()
+        + addEntity(e : Entity)
+    }
+
+    class MonoTile {
+        + isTaken : boolean
+        + override addEntity(e : Entity)
+    }
+
+    class AcidTile {
+        damageRate : int
+        + override addEntity(e : Entity)
+        + damage()
+    }
+    'interactive elements'
+
+    abstract class GameEntity {
+        + id : int
+        + x, y : float
+        + update()
+        + draw()
+        + currentTile : Tile
+        + getCurrentTile()
     }
 
     class Mycelium {
-        + rot()
+        + isDying : boolean
+        + connect()
+        + detach()
     }
 
     class Spore {
-
+        + nutrientValue : int
+        + lifetime : int
+        + effectTime : int
+        + effectValue : int
+        void getEaten(i : Insect)
     }
+
+    class SlowSpore {
+        + override getEaten(i : Insect)
+    }
+
+    class FreezeSpore {
+        + override getEaten(i : Insect)
+    }
+
+    class CutSpore {
+        + override getEaten(i : Insect)
+    }
+
+    'playable elements'
 
     abstract class Player {
-
+        + score : int
+        + actionPoints : int
+        + currentTile : Tile
+        + List<Effect> effects
+        + pickStartingTile(t : Tile)
+        + endTurn()
+        + calculatePoints()
+        + updateScore(score : int)
     }
 
-    class MushroomPlayer {
+
+    class FungusPlayer {
+        + List<Mycelium> mycelia
+        + placeMycelium(t : Tile)
+        + growBody(t : Tile)
+        + sporeCloud(target : FungusBody, size : int)
+    }
+
+    abstract class Fungus {
+        health : int
+        + growMycelium(neighbour : Tile)
+        + growBody(neighbour : Tile)
+        + void die()
+    }
+
+    class FungusBody {
+        sporeCharge : int
+        + sporeCloud(size : int)
+    }
     
-    }
-
     class InsectPlayer {
-    
+        + moveTo(t : Tile)
+        + eat() : boolean
+        + cut() : boolean
+    }
+
+    class Insect {
+
     }
 
     'connections'
 
-    MushroomBody --o "1" Continent
-    Tile "*" --* "1" Continent
+    Player --|> GameEntity
+    Spore --|> GameEntity
+    SlowSpore --|> Spore
+    FreezeSpore --|> Spore
+    CutSpore --|> Spore
+    Tekton "1" --o "1" Map
+    FungusBody "1" --o "1" Tekton
+    Tile "*" --* "1" Tekton
+    MonoTile --|> Tile
+    AcidTile --|> Tile
     Mycelium "1" --o "1" Tile
-    Insect -> Spore
+    Mycelium --|> Fungus
+    FungusBody --|> Fungus
+    Fungus --|> GameEntity
+    Insect --|> GameEntity
     Spore "1" --o "1" Tile
-    MushroomPlayer --|> Player
+    FungusPlayer --|> Player
+    FungusPlayer "1" --* "*" Mycelium
     InsectPlayer --|> Player
     Insect "1" --* "1" InsectPlayer
-    MushroomBody "*" --* "1" MushroomPlayer
+    FungusBody "*" --* "1" FungusPlayer
 }
 
 @enduml

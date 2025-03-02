@@ -1,0 +1,27 @@
+@startuml Insect eating
+
+title Insect player eating a spore
+
+actor "Player controlling the insect" as P
+actor "InsectPlayer" as Ip
+actor "Insect" as I
+actor "Spore" as Sp
+
+activate Ip
+activate P
+activate I
+activate Sp
+
+P --> Ip : eat
+
+Ip -> I : eat
+I -> Sp : getEaten
+
+destroy Sp
+
+' kérdéses...
+I --> Ip
+Ip -> Ip : updateScore
+
+
+@enduml

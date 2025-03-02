@@ -1,2 +1,2 @@
 @echo off
-java -jar plantuml.jar -tsvg .\diagramFiles\ -o ..\renderedDiagrams\ 
+java -jar plantuml.jar -tpng .\diagramFiles\ -o ..\renderedDiagrams\ 

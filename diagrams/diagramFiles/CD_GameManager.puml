@@ -3,16 +3,21 @@
 package "Class diagram for Service Classes" #E1DFEB {
 
     class GameManager {
+        gameDuration : int
+        timeElapsed : int
+        + init()
         + tick()
-        + configureGame()
-        + endGame()
+        + evaluateGame()
     }
 
     class GameSaver {
-        + saveGame(f : File)
-        + loadGame(f : File)
+        + save(f : File)
+        + load(f : File)
     }
 
+    class ScoreBoard {
+        + update()
+    }
 }
 
 @enduml

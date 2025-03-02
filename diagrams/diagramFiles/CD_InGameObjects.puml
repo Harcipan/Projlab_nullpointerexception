@@ -125,7 +125,6 @@ package "Class diagram for In-Game Objects" #E1DFEB {
 
     'connections'
 
-    Player --|> GameEntity
     Spore --|> GameEntity
     SlowSpore --|> Spore
     FreezeSpore --|> Spore

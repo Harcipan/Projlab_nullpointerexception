@@ -50,6 +50,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     }
 
     class Mycelium {
+        + health : int
         + isDying : boolean
         + connect()
         + detach()
@@ -115,7 +116,11 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     }
 
     class Insect {
-
+        + speed : int
+        + canCut : bool
+        + eat(target : Spore)
+        + step(target : Tile)
+        + cut(target : Tile)
     }
 
     'connections'

@@ -84,7 +84,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     Player --|> Entity
     Spore --|> Entity
     Continent "1" --o "1" Map
-    MushroomBody --o "1" Continent
+    MushroomBody "1" --o "1" Continent
     Tile "*" --* "1" Continent
     Mycelium "1" --o "1" Tile
     Insect -> Spore

@@ -1,0 +1,24 @@
+@startuml Fungus mushroom
+
+title Fungus body dies after an amount of spore spreads
+
+participant "m : Map" as M
+participant "fb : FungusBody" as Fb
+participant "t : Tile" as T
+
+activate T
+activate M
+activate Fb
+
+M->Fb : update()
+opt Exhausted spore spreads
+
+Fb -> T : removeEntity(fb)
+T-->Fb
+Fb --> M
+destroy Fb
+
+end
+
+
+@enduml

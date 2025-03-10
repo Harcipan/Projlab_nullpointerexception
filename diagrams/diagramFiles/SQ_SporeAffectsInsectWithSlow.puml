@@ -1,0 +1,14 @@
+@startuml InsectSpeedUp
+
+title Slowing spore affecting insect
+
+participant "i: Insect" as I
+participant "s: SlowSpore" as Sp
+
+activate I
+activate Sp
+
+Sp -> I : setSlowEffect()
+I --> Sp
+
+@enduml

@@ -1,0 +1,25 @@
+@startuml Mycelium growth
+
+title Mycelium growing
+
+participant "f : Fungus" as F
+participant "tek: Tekton" as Tek
+participant "m : Mycelium" as M
+participant "t : Tile" as T
+
+activate F
+activate T
+activate Tek
+
+
+F->Tek : growMycelium()
+Tek --> F : <<true>>
+F -> M ** : <<construct>>
+activate M
+M --> F
+F -> T : addEntity()
+T-->F
+
+
+
+@enduml

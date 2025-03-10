@@ -1,0 +1,28 @@
+@startuml TektonBreak
+title Tekton breaking
+
+participant "m : Map" as M
+participant "t : Tekton" as T
+participant "t1 : Tekton" as T1
+participant "t2 : Tekton" as T2
+
+activate T
+activate M
+
+M->T : update()
+opt breakChance chance of this happening
+T->T : break()
+T->T1 : <<construct>>
+activate T1
+T1-->T
+
+T->T2 : <<construct>>
+activate T2
+T2-->T
+
+T-->M
+destroy T
+end
+
+
+@enduml

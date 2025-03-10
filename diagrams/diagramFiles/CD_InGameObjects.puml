@@ -14,6 +14,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + break()
         + growMycelium(neighbour : Tile)
         + increaseChance(amount : int)
+        + update()
     }
 
     class Tile {
@@ -49,6 +50,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + isDying : boolean
         + connect()
         + detach()
+        +update()
     }
 
     class Spore {
@@ -103,6 +105,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     class FungusBody {
         sporeCharge : int
         + sporeCloud(size : int)
+        + update()
     }
     
     class InsectPlayer {

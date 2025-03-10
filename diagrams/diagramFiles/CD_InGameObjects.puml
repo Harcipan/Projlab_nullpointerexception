@@ -20,7 +20,9 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + growthRate : int
         + maxMycelium : int
         + parentTekton : Tekton
+        + List<GameEntity> onTile
         + getParentTekton()
+        +growMycelium()
         + addEntity(e : GameEntity)
         + removeEntity(e : GameEntity)
     }

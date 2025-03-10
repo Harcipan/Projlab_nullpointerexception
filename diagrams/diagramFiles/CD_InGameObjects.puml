@@ -12,6 +12,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + breakChance : int
         + sporeCount : int
         + break()
+        + growMycelium(neighbour : Tile)
         + increaseChance(amount : int)
     }
 
@@ -21,6 +22,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + parentTekton : Tekton
         + getParentTekton()
         + addEntity(e : GameEntity)
+        + removeEntity(e : GameEntity)
     }
 
     class MonoTile {
@@ -57,6 +59,10 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     }
 
     class SlowSpore {
+        + override getEaten(i : Insect)
+    }
+
+    class SpeedUpSpore {
         + override getEaten(i : Insect)
     }
 
@@ -110,6 +116,9 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + eat(target : Spore)
         + step(target : Tile)
         + cut(target : Tile)
+        + update()
+        + setSpeedupEffect()
+        + setCut()
     }
 
     'connections'
@@ -122,6 +131,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     Mycelium --o FungusBody
     SlowSpore --|> Spore
     FreezeSpore --|> Spore
+    SpeedUpSpore --|> Spore
     CutSpore --|> Spore
     Tekton --o "1" Map
     FungusBody "1" --* "1" Tekton
@@ -142,6 +152,8 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     Insect "1" --* "1" InsectPlayer
     FungusBody "*" --* "1" FungusPlayer
     Spore "1" --* "*" Insect
+
+    
 }
 
 @enduml

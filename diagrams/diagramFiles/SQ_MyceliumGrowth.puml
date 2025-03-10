@@ -12,7 +12,7 @@ activate T
 activate Tek
 
 
-F->Tek : growMycelium()
+F->Tek : growMycelium(t)
 Tek --> F : <<true>>
 F -> M ** : <<construct>>
 activate M

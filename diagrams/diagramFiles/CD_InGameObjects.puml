@@ -122,6 +122,8 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + cut(target : Tile)
         + update()
         + setSpeedupEffect()
+        + setFreezeEffect()
+        + setSlowEffect()
         + setCut()
     }
 

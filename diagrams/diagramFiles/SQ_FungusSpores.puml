@@ -2,16 +2,19 @@
 
 title Fungus spreading spores
 
+actor "Player person" as Ac
 participant "fb : FungusBody" as Fb
 participant "t : Tile" as T
 participant "s : Spore" as S
 
+activate Ac
 activate Fb
 activate T
 
-opt have enough points to spread
+Ac -> Fb : sporeCloud()
+opt sporeCharge == 0
 loop 
-Fb -> S ** : <<construct>>
+Fb -> S ** : <<create>>
 activate S
 S --> Fb
 Fb -> T : addEntity(s)
@@ -19,6 +22,7 @@ T-->Fb
 
 end
 end
+Fb --> Ac
 
 
 @enduml

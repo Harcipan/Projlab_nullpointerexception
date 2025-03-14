@@ -11,15 +11,7 @@ activate T
 activate Sp
 
 I -> Sp : getEaten(i)
-alt Sp is a CutSpore 
-ref over I, Sp : Cut spore affecting insect
-else Sp is a FreezeSpore
-ref over I, Sp : Freezing spore affecting insect
-else Sp is a SlowSpore
-ref over I, Sp : Slowing spore affecting insect
-else Sp is a SpeedupSpore
-ref over I, Sp : Speedup spore affecting insect
-end
+note over Sp : for each spore type, action happens here 
 Sp -> T : removeEntity(sp)
 T --> Sp
 Sp --> I

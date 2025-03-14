@@ -2,6 +2,7 @@
 
 title Multiple mycelium growing on Tekton
 
+actor "Player person" as Ac
 participant "f1 : Fungus" as F1
 participant "f2 : Fungus" as F2
 participant "tek: Tekton" as Tek
@@ -9,29 +10,39 @@ participant "m1 : Mycelium" as M1
 participant "m2 : Mycelium" as M2
 participant "t : Tile" as T
 
+activate Ac
 activate F1
 activate F2
 activate T
 activate Tek
 
+Ac -> F1 : growMycelium()
 
 F1->Tek : growMycelium(t)
-Tek --> F1 : <<true>>
-F1 -> M1 ** : <<construct>>
+opt canGrowMycelium
+Tek -> M1 ** : <<create>>
 activate M1
-M1 --> F1
-F1 -> T : addEntity(m1)
-T-->F1
+M1 --> Tek
+Tek -> T : addEntity(m1)
+T-->Tek
+end
+Tek-->F1
 
-F1-->F2
+F1 --> Ac
+
+Ac -> F2 : growMycelium()
 
 F2->Tek : growMycelium(t)
-Tek --> F2 : <<true>>
-F2 -> M2 ** : <<construct>>
+opt canGrowMycelium
+Tek -> M2 ** : <<create>>
 activate M2
-M2 --> F2
-F2 -> T : addEntity(m2)
-T-->F2
+M2 --> Tek
+Tek -> T : addEntity(m2)
+T-->Tek
+end
+Tek-->F2
+
+F2 --> Ac
 
 
 @enduml

@@ -2,21 +2,21 @@
 
 title Fungus growing a mushroom
 
+participant "fp : FungusPlayer" as Fp
 participant "f : Fungus" as F
 participant "t : Tile" as T
 participant "fb : FungusBody" as Fb
 
+activate Fp
 activate F
 activate T
 
-opt have enough points
-F -> Fb ** : <<construct>>
+Fp -> F : growBody(t)
+F -> Fb ** : <<create>>
 activate Fb
 Fb --> F
 F -> T : addEntity(fb)
-
-
-end
+F --> Fb
 
 
 @enduml

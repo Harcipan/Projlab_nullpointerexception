@@ -1,0 +1,73 @@
+@startuml UC_SkeletonFunctions
+
+package "Use-Case Diagram for Skeleton test cases"{
+
+   
+
+    skinparam Linetype polyline
+
+    left to right direction
+
+    actor UserSelect as "User Selection"
+    
+    (InsectStep) as "Insect Steps across Tektons"
+    (InsectCut) as "Insect Cuts Mycelium between Tektons"
+    (InsectEat) as "Insect Eats Spore"
+    (InsectSpeedUpSpore) as "Insect Eats Spore and Speeds Up"
+    (InsectSlowDownSpore) as "Insect Eats Spore and Slows Down"
+    (InsectFreezeSpore) as "Insect Eats Spore and gets Paralyzed"
+    (InsectCutSpore) as "Insect Eats Spore and loses cut ability"
+
+    (GrowMycelium) as "Mycelium Grows"
+    (GrowMyceliumSpore) as "Mycelium Grows with Spore on Tekton"
+    (MyceliumRot) as "Mycelium rots and dies"
+
+    (FungusBodyGrow) as "Fungus Body Grows"
+    (FungusBodySporeCloud) as "Fungus Body releases Spore Cloud"
+    (FungusBodyDies) as "Fungus Body Dies"
+
+    (TektonBreak) as "Tekton Breaks"
+    (TektonCutsMycelium) as "Tekton Cuts Mycelium"
+    (TektonCantGrow) as "Fungus Body can't grow on Tekton"
+    
+    (MonoTile) as "Tile grows maximum of 1 Mycelium"
+    (AcidTileDamage) as "Acid Tile damages Mycelium"
+
+    (FungusScore) as "Fungus Score increases" 
+    (InsectScore) as "Insect Score increases"    
+
+   (InsectSpeedUpSpore) .> (InsectEat) : <<extend>>
+   (InsectSlowDownSpore) .> (InsectEat) : <<extend>>
+   (InsectFreezeSpore) .> (InsectEat) : <<extend>>
+   (InsectCutSpore) .> (InsectEat) : <<extend>>
+   (InsectEat) .> (InsectScore): <<include>>
+   
+    UserSelect -u- (InsectStep)
+    UserSelect -u- (InsectCut)
+    UserSelect -[hidden]u- (InsectEat)
+    UserSelect -u- (InsectSpeedUpSpore)
+    UserSelect -u- (InsectSlowDownSpore)
+    UserSelect -u- (InsectFreezeSpore)
+    UserSelect -u- (InsectCutSpore)
+
+
+
+    UserSelect -- (GrowMycelium)
+    UserSelect -- (GrowMyceliumSpore)
+ '   (GrowMyceliumSpore) ...> (GrowMycelium) : <<extend>>
+    UserSelect -- (MyceliumRot)
+
+    UserSelect -- (FungusBodyGrow)
+    UserSelect -- (FungusBodySporeCloud)
+    UserSelect -- (FungusBodyDies)
+  '  (FungusBodyDies) ...> (FungusBodySporeCloud) : <<extend>>
+    (FungusBodyGrow) .> (FungusScore): <<include>>
+
+    UserSelect -- (MonoTile)
+    UserSelect -- (AcidTileDamage)  
+
+    UserSelect -- (TektonBreak)
+    (TektonCutsMycelium) .> (TektonBreak) : <<extend>>
+    UserSelect -- (TektonCantGrow)
+
+} 

@@ -11,7 +11,7 @@ activate Tx
 activate Ty
 
 'tell don't ask... 
-I -> I : canMoveTo(targetTile)
+I -> I : step(targetTile)
 opt  have enough move points & path exists to desired tile (i.e. the result of canMoveTo())
 I -> Tx : removeEntity(i)
 Tx --> I

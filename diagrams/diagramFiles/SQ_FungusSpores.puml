@@ -2,25 +2,22 @@
 
 title Fungus spreading spores
 
-actor "Player controlling the fungus" as P
-actor "FungusPlayer" as Fp
-actor "FungusBody" as Fb
-actor "Tile" as T
-actor "Spore" as S
+participant "fb : FungusBody" as Fb
+participant "t : Tile" as T
+participant "s : Spore" as S
 
-activate P
-activate Fp
 activate Fb
 activate T
 
-P --> Fp : sporeCloud
 opt have enough points to spread
-Fp -> Fb : sporeCloud
-Fb -> S ** : construct
-Fb -> T : addEntity
-Fb --> Fp
-Fp -> Fp : updateScore
+loop 
+Fb -> S ** : <<construct>>
+activate S
+S --> Fb
+Fb -> T : addEntity(s)
+T-->Fb
 
+end
 end
 
 

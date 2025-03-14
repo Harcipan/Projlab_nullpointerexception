@@ -43,6 +43,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + id : int
         + currentTile : Tile
         + getCurrentTile()
+        + setTile(t : Tile)
     }
 
     class Mycelium {
@@ -158,8 +159,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     Insect "1" --* "1" InsectPlayer
     FungusBody "*" --* "1" FungusPlayer
     Spore "1" --* "*" Insect
-
-    
+    Mycelium  -- Tile
 }
 
 @enduml

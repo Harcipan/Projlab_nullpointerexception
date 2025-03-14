@@ -11,7 +11,7 @@ activate M
 activate Fb
 
 M->Fb : update()
-opt Exhausted spore spreads
+opt sporeCharge == 0
 
 Fb -> T : removeEntity(fb)
 T-->Fb

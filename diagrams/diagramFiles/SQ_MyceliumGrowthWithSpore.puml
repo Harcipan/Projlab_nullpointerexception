@@ -2,25 +2,31 @@
 
 title Mycelium growing quicker with spore
 
+actor "Player person" as Ac
 participant "f : Fungus" as F
 participant "tek: Tekton" as Tek
 participant "m : Mycelium" as M
 participant "t : Tile" as T
 
+activate Ac
 activate F
 activate T
 activate Tek
 
 
+Ac -> F : growMycelium()
+
 F->Tek : growMycelium(t)
-Tek -> F : hasSpore()
-F --> Tek 
-Tek --> F : <<true>>
-F -> M ** : <<construct>>
+opt hasSpore() && canGrowMycelium
+Tek -> M ** : <<create>>
 activate M
-M --> F
-F -> T : addEntity()
-T-->F
+M --> Tek
+Tek -> T : addEntity(m1)
+T-->Tek
+end
+Tek-->F
+
+F --> Ac
 
 
 

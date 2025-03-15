@@ -2,7 +2,7 @@
 title SQ_CannotGrowBodyOnTecton
 
 actor "Player person" as Pp
-participant "Insect player" as Ip
+participant "InsectPlayer" as Ip
 participant "t : targetTile" as Tt
 participant "t : Tekton" as T
 participant "fb : FungusBody" as Fb

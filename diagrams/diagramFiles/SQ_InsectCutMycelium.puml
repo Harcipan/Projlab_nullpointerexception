@@ -1,0 +1,28 @@
+@startuml SQ_InsectCutMycelium 
+
+title SQ_InsectCutMycelium - Insect cuts Mycelium
+
+actor "Player Person" as Pp
+participant "ip : InsectPlayer" as Ip
+participant "i : Insect" as I
+participant "tm : targetMycelium" as TM
+
+activate Pp
+activate Ip
+activate I
+activate TM
+
+Pp -> Ip : cut(targetTile)
+Ip -> I : cut(targetTile)
+alt isNeighbor(tm.getTile, i.getTile)
+    I -> TM : detach()
+    TM --> I
+end
+I --> Ip
+Ip --> Pp
+
+deactivate I
+deactivate Ip
+deactivate Pp
+
+@enduml

@@ -12,16 +12,17 @@ activate Ip
 activate I
 activate TM
 
+
+Pp -> Ip : cut(targetTile)
 opt cuttingAbility
-    Pp -> Ip : cut(targetTile)
     Ip -> I : cut(targetTile)
     alt isNeighbor(tm.getTile, i.getTile)
         I -> TM : detach()
         TM --> I
     end
     I --> Ip
-    Ip --> Pp
 end
+Ip --> Pp
 
 deactivate I
 deactivate Ip

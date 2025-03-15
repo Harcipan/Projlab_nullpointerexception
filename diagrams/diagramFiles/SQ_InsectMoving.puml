@@ -2,23 +2,32 @@
 
 title Insect player moving to a tile
 
+actor "Player Person" as PP
+participant " ip : InsectPlayer" as IP
 participant "i : Insect" as I
 participant "currentTile : Tile" as Tx
 participant "targetTile : Tile" as Ty
 
+activate PP
 activate I
 activate Tx
 activate Ty
+activate IP
 
 'tell don't ask... 
-I -> I : step(targetTile)
-opt  have enough move points & path exists to desired tile (i.e. the result of canMoveTo())
+PP -> IP : moveTo(targetTile)
+opt actionPoints > 0
+IP -> I : step(targetTile)
+opt isValidStep(targetTile)
 I -> Tx : removeEntity(i)
 Tx --> I
 I -> Ty : addEntity(i)
 Ty --> I
 end
+I --> IP 
+end
 
+IP --> PP
 
 
 @enduml

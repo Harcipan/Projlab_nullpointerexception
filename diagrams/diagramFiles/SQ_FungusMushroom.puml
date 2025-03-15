@@ -2,27 +2,28 @@
 
 title Fungus growing a mushroom
 
-actor "Player controlling the fungus" as P
-actor "FungusPlayer" as Fp
-actor "Fungus" as F
-actor "Tile" as T
-actor "FungusBody" as Fb
+actor "Person player" as Ac
+participant "fp : FungusPlayer" as Fp
+participant "f : Fungus" as F
+participant "t : Tile" as T
+participant "fb : FungusBody" as Fb
 
-activate P
+activate Ac
 activate Fp
 activate F
 activate T
 
-P --> Fp : GrowBody
-opt have enough points
-Fp -> F : growBody
-F -> Fb ** : construct
-F -> T : addEntity
+Ac -> Fp : growBody(t)
+opt actionPoints > 0
+Fp -> F : growBody(t)
+F -> Fb ** : <<create>>
+activate Fb
+Fb --> F
+F -> T : addEntity(fb)
+T --> F
 F --> Fp
-Fp -> Fp : updateScore
-
-
 end
+Fp --> Ac
 
 
 @enduml

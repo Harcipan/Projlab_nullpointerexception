@@ -1,0 +1,30 @@
+@startuml Fungus player score
+
+title Fungus player getting its score updated after an event
+
+actor "Player person" as Ac
+participant "p : FungusPlayer" as P
+
+activate Ac
+activate P
+
+alt
+    Ac -> P : placeMycelium()
+else 
+    Ac -> P : growBody()
+else
+    Ac -> P : placeMycelium()
+end 
+note right 
+Here, we don't really care 
+about what these functions 
+are called with and what 
+they are supposed to do.
+end note
+
+P -> P : updateScore()
+
+P --> Ac
+
+
+@enduml

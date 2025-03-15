@@ -1,0 +1,31 @@
+@startuml Insect player score
+
+title Insect player getting its score updated after an event
+
+actor "Player person" as Ac
+participant "p : InsectPlayer" as P
+
+activate Ac
+activate P
+
+alt
+    Ac -> P : eat()
+else 
+    Ac -> P : cut()
+else
+    Ac -> P : moveTo()
+end 
+note right 
+Here, we don't really care 
+about what these functions 
+are called with and what 
+they are supposed to do.
+end note
+
+P -> P : updateScore()
+
+P --> Ac
+
+
+
+@enduml

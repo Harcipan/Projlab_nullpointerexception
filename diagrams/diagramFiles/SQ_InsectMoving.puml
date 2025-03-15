@@ -2,29 +2,32 @@
 
 title Insect player moving to a tile
 
-actor "Player controlling the insect" as P
-actor "InsectPlayer" as Ip
-actor "Insect" as I
-actor "Current tile" as Tx
-actor "Target tile" as Ty
+actor "Player Person" as PP
+participant " ip : InsectPlayer" as IP
+participant "i : Insect" as I
+participant "currentTile : Tile" as Tx
+participant "targetTile : Tile" as Ty
 
-activate Ip
-activate P
+activate PP
 activate I
 activate Tx
 activate Ty
-
-P --> Ip : moveTo
-Ip -> I : moveTo
+activate IP
 
 'tell don't ask... 
-opt  have enough move points & path exists to desired tile
-I -> Tx : removeEntity
-I -> Ty : addEntity
-I --> Ip
-Ip -> Ip : updateScore
+PP -> IP : moveTo(targetTile)
+opt actionPoints > 0
+IP -> I : step(targetTile)
+opt isValidStep(targetTile)
+I -> Tx : removeEntity(i)
+Tx --> I
+I -> Ty : addEntity(i)
+Ty --> I
+end
+I --> IP 
 end
 
+IP --> PP
 
 
 @enduml

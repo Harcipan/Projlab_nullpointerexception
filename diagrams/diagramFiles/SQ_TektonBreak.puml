@@ -10,19 +10,29 @@ activate T
 activate M
 
 M->T : update()
-opt breakChance chance of this happening
+opt rngBreak(breakChance)
 T->T : break()
-T->T1 : <<construct>>
+T->T1 : <<create>>
 activate T1
 T1-->T
 
-T->T2 : <<construct>>
+T->T2 : <<create>>
 activate T2
 T2-->T
 
-T-->M
+T->T1 : migrateTiles(List<Tile>)
+T->T2 : migrateTiles(List<Tile>)
+
 destroy T
 end
+T-->M
 
+note right
+spores and insects 
+does not need to be 
+migrated since they 
+are being managed on 
+a tile level
+end note
 
 @enduml

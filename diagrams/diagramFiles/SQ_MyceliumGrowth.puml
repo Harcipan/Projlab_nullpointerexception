@@ -1,0 +1,32 @@
+@startuml Mycelium growth
+
+title Mycelium growing
+
+actor "Player person" as Ac
+participant "f : Fungus" as F
+participant "tek: Tekton" as Tek
+participant "m : Mycelium" as M
+participant "t : Tile" as T
+
+activate Ac
+activate F
+activate T
+activate Tek
+
+Ac -> F : growMycelium()
+
+F->Tek : growMycelium(t)
+opt canGrowMycelium
+Tek -> M ** : <<create>>
+activate M
+M --> Tek
+Tek -> T : addEntity(m1)
+T-->Tek
+end
+Tek-->F
+
+F --> Ac
+
+
+
+@enduml

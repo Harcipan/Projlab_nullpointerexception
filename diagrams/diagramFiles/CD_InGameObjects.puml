@@ -5,48 +5,45 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     'world elements'
 
     class Map {
-        + List<Tekton> Tektons
         + tick()
     }
 
     class Tekton {
         + breakChance : int
         + sporeCount : int
-        + List<Tile> tiles
-        + List<Tekton> neighbours
         + break()
+        + growMycelium(neighbour : Tile)
         + increaseChance(amount : int)
+        + update()
     }
 
     class Tile {
-        + growthRate
-        + maxMycelium
-        + List<Tile> neighbours
-        + List<Entity> entities
+        + growthRate : int
+        + maxMycelium : int
         + parentTekton : Tekton
         + getParentTekton()
-        + addEntity(e : Entity)
+        +growMycelium()
+        + addEntity(e : GameEntity)
+        + removeEntity(e : GameEntity)
     }
 
     class MonoTile {
         + isTaken : boolean
-        + override addEntity(e : Entity)
+        + override addEntity(e : GameEntity)
     }
 
     class AcidTile {
         damageRate : int
-        + override addEntity(e : Entity)
+        + override addEntity(e : GameEntity)
         + damage()
     }
     'interactive elements'
 
     abstract class GameEntity {
         + id : int
-        + x, y : float
-        + update()
-        + draw()
         + currentTile : Tile
         + getCurrentTile()
+        + setTile(t : Tile)
     }
 
     class Mycelium {
@@ -54,6 +51,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + isDying : boolean
         + connect()
         + detach()
+        +update()
     }
 
     class Spore {
@@ -61,10 +59,14 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + lifetime : int
         + effectTime : int
         + effectValue : int
-        void getEaten(i : Insect)
+        + void getEaten(i : Insect)
     }
 
     class SlowSpore {
+        + override getEaten(i : Insect)
+    }
+
+    class SpeedUpSpore {
         + override getEaten(i : Insect)
     }
 
@@ -81,10 +83,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     abstract class Player {
         + score : int
         + actionPoints : int
-        + currentTile : Tile
-        + List<Effect> effects
         + pickStartingTile(t : Tile)
-        + endTurn()
         + calculatePoints()
         + updateScore(score : int)
     }
@@ -107,6 +106,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     class FungusBody {
         sporeCharge : int
         + sporeCloud(size : int)
+        + update()
     }
     
     class InsectPlayer {
@@ -121,30 +121,45 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + eat(target : Spore)
         + step(target : Tile)
         + cut(target : Tile)
+        + update()
+        + setSpeedupEffect()
+        + setFreezeEffect()
+        + setSlowEffect()
+        + setCut()
     }
 
     'connections'
 
     Spore --|> GameEntity
+    Fungus --|> GameEntity
+    Insect --|> GameEntity
+    Tile --|> GameEntity
+
+    Mycelium --o FungusBody
     SlowSpore --|> Spore
     FreezeSpore --|> Spore
+    SpeedUpSpore --|> Spore
     CutSpore --|> Spore
-    Tekton "1" --o "1" Map
-    FungusBody "1" --o "1" Tekton
+    Tekton --o "1" Map
+    FungusBody "1" --* "1" Tekton
+    Fungus --> Tekton
+    Mycelium --> Tekton
     Tile "*" --* "1" Tekton
     MonoTile --|> Tile
     AcidTile --|> Tile
-    Mycelium "1" --o "1" Tile
+    
     Mycelium --|> Fungus
     FungusBody --|> Fungus
-    Fungus --|> GameEntity
-    Insect --|> GameEntity
-    Spore "1" --o "1" Tile
+    GameEntity "*" --* "1" Tile
+    Tile  --o  Tile
+    Tekton --o Tekton
     FungusPlayer --|> Player
-    FungusPlayer "1" --* "*" Mycelium
+    Mycelium "*" --* "1" FungusPlayer
     InsectPlayer --|> Player
     Insect "1" --* "1" InsectPlayer
     FungusBody "*" --* "1" FungusPlayer
+    Spore "1" --* "*" Insect
+    Mycelium  -- Tile
 }
 
 @enduml

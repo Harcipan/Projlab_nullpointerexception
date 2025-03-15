@@ -9,8 +9,8 @@ activate M
 activate I
 
 M -> I : update()
-opt hasFreezeEffect() 
-    I -> I : setCut()
+opt !hasFreezeEffect() 
+    I -> I : setCut(true)
 end
 I --> M
 

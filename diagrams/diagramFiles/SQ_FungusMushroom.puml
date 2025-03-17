@@ -2,7 +2,7 @@
 
 title Fungus growing a mushroom
 
-actor "Person player" as Ac
+actor "Skeleton" as Ac
 participant "fp : FungusPlayer" as Fp
 participant "f : Fungus" as F
 participant "t : Tile" as T

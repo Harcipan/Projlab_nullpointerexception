@@ -22,7 +22,8 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + maxMycelium : int
         + parentTekton : Tekton
         + getParentTekton()
-        +growMycelium()
+        + setParentTekton(t : Tekton)
+        + growMycelium()
         + addEntity(e : GameEntity)
         + removeEntity(e : GameEntity)
     }

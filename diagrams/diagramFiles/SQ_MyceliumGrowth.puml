@@ -2,7 +2,7 @@
 
 title Mycelium growing
 
-actor "Player person" as Ac
+actor "Skeleton" as Ac
 participant "f : Fungus" as F
 participant "tek: Tekton" as Tek
 participant "m : Mycelium" as M

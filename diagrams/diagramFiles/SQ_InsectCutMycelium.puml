@@ -2,7 +2,7 @@
 
 title SQ_InsectCutMycelium - Insect cuts Mycelium
 
-actor "Player Person" as Pp
+actor "Skeleton" as Pp
 participant "ip : InsectPlayer" as Ip
 participant "i : Insect" as I
 participant "tm : targetMycelium" as TM

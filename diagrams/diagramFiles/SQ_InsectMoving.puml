@@ -2,7 +2,7 @@
 
 title Insect player moving to a tile
 
-actor "Player Person" as PP
+actor "Skeleton" as PP
 participant " ip : InsectPlayer" as IP
 participant "i : Insect" as I
 participant "currentTile : Tile" as Tx

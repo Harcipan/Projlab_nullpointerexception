@@ -2,7 +2,7 @@
 
 title Fungus player getting its score updated after an event
 
-actor "Player person" as Ac
+actor "Skeleton" as Ac
 participant "p : FungusPlayer" as P
 
 activate Ac

@@ -1,6 +1,6 @@
 @startuml InsectSpeedUp
 
-title Freezing spore affecting insect
+title 6. Freezing spore affecting insect
 
 participant "i: Insect" as I
 participant "s: FreezeSpore" as Sp

@@ -1,5 +1,5 @@
 @startuml SQ_CannotGrowBodyOnTecton
-title SQ_CannotGrowBodyOnTecton
+title 16. CannotGrowBodyOnTecton
 
 actor "Skeleton" as Pp
 participant "InsectPlayer" as Ip

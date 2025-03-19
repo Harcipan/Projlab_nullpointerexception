@@ -1,6 +1,6 @@
 @startuml Fungus growth with spore
 
-title Mycelium growing quicker with spore
+title 10. Mycelium growing quicker with spore
 
 actor "Skeleton" as Ac
 participant "f : Fungus" as F

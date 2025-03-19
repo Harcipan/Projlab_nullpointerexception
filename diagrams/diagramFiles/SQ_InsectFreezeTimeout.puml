@@ -1,6 +1,6 @@
 @startuml Insect freeze times out
 
-title Insect freeze times out
+title 8. Insect freeze times out
 
 participant "m : Map" as M
 participant "i : Insect" as I

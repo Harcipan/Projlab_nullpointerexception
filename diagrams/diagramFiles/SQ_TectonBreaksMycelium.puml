@@ -1,5 +1,5 @@
 @startuml TektonBreakMycelium
-title Tekton breaking mycelium
+title 19. Tekton breaking mycelium
 
 participant "map : Map" as M
 participant "t : Tekton" as T

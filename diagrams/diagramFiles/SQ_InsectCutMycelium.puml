@@ -1,6 +1,6 @@
 @startuml SQ_InsectCutMycelium 
 
-title SQ_InsectCutMycelium - Insect cuts Mycelium
+title 2. InsectCutMycelium - Insect cuts Mycelium
 
 actor "Skeleton" as Pp
 participant "ip : InsectPlayer" as Ip

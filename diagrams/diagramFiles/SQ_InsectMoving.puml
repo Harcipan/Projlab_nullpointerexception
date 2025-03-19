@@ -1,6 +1,6 @@
 @startuml Insect moving
 
-title Insect player moving to a tile
+title 1. Insect player moving to a tile
 
 actor "Skeleton" as PP
 participant " ip : InsectPlayer" as IP

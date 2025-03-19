@@ -1,6 +1,6 @@
 @startuml Mycelium dies
 
-title Detached mycelium dies
+title 11. Detached mycelium dies
 
 participant "map : Map" as M
 participant "m : Mycelium" as T

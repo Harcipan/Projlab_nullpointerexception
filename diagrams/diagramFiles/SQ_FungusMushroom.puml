@@ -1,6 +1,6 @@
 @startuml Fungus mushroom
 
-title Fungus growing a mushroom
+title 12. Fungus growing a mushroom
 
 actor "Skeleton" as Ac
 participant "fp : FungusPlayer" as Fp

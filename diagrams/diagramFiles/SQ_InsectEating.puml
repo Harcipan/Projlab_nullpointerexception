@@ -1,6 +1,6 @@
 @startuml Insect eating
 
-title Insect player eating a spore
+title 3. Insect player eating a spore
 
 participant "i : Insect" as I
 participant "sp : Spore" as Sp

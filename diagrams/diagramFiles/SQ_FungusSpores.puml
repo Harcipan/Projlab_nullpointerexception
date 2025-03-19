@@ -1,6 +1,6 @@
 @startuml Fungus spores
 
-title Fungus spreading spores
+title 13. Fungus spreading spores
 
 actor "Skeleton" as Ac
 participant "fb : FungusBody" as Fb

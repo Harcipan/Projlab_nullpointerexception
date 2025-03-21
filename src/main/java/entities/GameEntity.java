@@ -1,10 +1,6 @@
 package entities;
-<<<<<<< HEAD
-
 import map.Tile;
 
-=======
->>>>>>> 682187e326a4ae59cdee63ff95aeb6cb4ebcf6c7
 public class GameEntity {
     int id;             // Unique identifier for the entity
     Tile currentTile;   // The tile the entity is currently on

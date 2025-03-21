@@ -1,10 +1,7 @@
 package entities;
 
-<<<<<<< HEAD
 import map.Tile;
 
-=======
->>>>>>> 682187e326a4ae59cdee63ff95aeb6cb4ebcf6c7
 public abstract class Fungus extends GameEntity {
     int health;
 
@@ -15,11 +12,17 @@ public abstract class Fungus extends GameEntity {
 
     public void growMycelium(Tile neighbor) {
         boolean isValid = checkNeighbor(neighbor);
+        if(!isValid) {
+            return;
+        }
         // Will implement later
     }
 
     public void growBody(Tile neighbor) {
         boolean isValid = checkNeighbor(neighbor);
+        if(!isValid) {
+            return;
+        }
         // Will implement later
     }
 

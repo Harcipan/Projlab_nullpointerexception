@@ -14,7 +14,28 @@ public abstract class Spore {
     }
 
     public void getEaten(Insect i) {
-        // Will implement later
+        // override this method in subclasses
+    }
+
+    public void removeEffect(Insect i){
+        // implemented in subclasses
+    }
+
+    public void update() {
+        lifetime--;
+        effectTime--;
+    }
+
+    public int getLifetime() {
+        return lifetime;
+    }
+
+    public int getEffectTime() {
+        return effectTime;
+    }
+
+    public int getNutrientValue() {
+        return nutrientValue;
     }
 
 }

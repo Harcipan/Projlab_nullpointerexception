@@ -9,7 +9,7 @@ public abstract class Fungus extends GameEntity {
     int health;
 
     protected Fungus(int health, Tile currentTile) {
-        super(currentTile);
+        super(1, currentTile);
         this.health = health;
     }
 

@@ -1,10 +1,8 @@
 package entities;
 
-<<<<<<< HEAD
-import map.Tile;
+import java.util.ArrayList;
+import java.util.List;
 
-=======
->>>>>>> 682187e326a4ae59cdee63ff95aeb6cb4ebcf6c7
 public class Mycelium extends Fungus{
     boolean isDying = false;
     List<FungusBody> connectedBodies = new ArrayList<FungusBody>();

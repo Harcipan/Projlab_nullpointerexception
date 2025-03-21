@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tekton {
@@ -15,7 +16,8 @@ public class Tekton {
         fungusBody = null;
     }
 
-    public void break() {
+    // Cannot use keyword 'break' as method name
+    public void breakTekton() {
         // Will implement later
     }
 

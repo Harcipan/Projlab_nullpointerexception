@@ -7,7 +7,13 @@ public class CutSpore extends Spore {
 
     @Override
     public void getEaten(Insect i) {
-        // Will implement later
+        i.setCut(false);
+        i.addSpore(this);
+    }
+
+    @Override
+    public void removeEffect(Insect i) {
+        i.setCut(true);
     }
 
 }

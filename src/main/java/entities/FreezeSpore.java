@@ -7,7 +7,13 @@ public class FreezeSpore extends Spore {
 
     @Override
     public void getEaten(Insect i) {
-        // Will implement later
+        i.setSpeedPercent(-100);
+        i.addSpore(this);
+    }
+
+    @Override
+    public void removeEffect(Insect i) {
+        i.setSpeedPercent(0);
     }
 
 

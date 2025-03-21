@@ -2,6 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import map.*;
 
 public class Mycelium extends Fungus{
     boolean isDying = false;
@@ -27,8 +28,4 @@ public class Mycelium extends Fungus{
         // Will implement later
         return false;
     }
-
-
-
-    
 }

@@ -1,5 +1,4 @@
 package entities;
-
 import map.Tile;
 
 public abstract class Fungus extends GameEntity {

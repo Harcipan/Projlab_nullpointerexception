@@ -4,26 +4,35 @@ public abstract class Spore {
     int nutrientValue;  // The amount of nutrients the spore contains
     int lifetime;       // The number of turns the spore will last
     int effectTime;     // The number of turns the spore will apply an effect
-    int efffectValue;   // The strength of the effect the spore will apply
+    int effectValue;   // The strength of the effect the spore will apply
+    boolean isConsumed; // Whether the spore has been eaten by an insect
 
     protected Spore(int nutrientValue, int lifetime, int effectTime, int effectValue) {
         this.nutrientValue = nutrientValue;
         this.lifetime = lifetime;
         this.effectTime = effectTime;
-        this.efffectValue = effectValue;
+        this.effectValue = effectValue;
     }
 
     public void getEaten(Insect i) {
-        // override this method in subclasses
+        isConsumed = true;
+        // implemented in subclasses
+        // take care to set flag in overridden method
     }
 
     public void removeEffect(Insect i){
         // implemented in subclasses
     }
 
+    /*
+     * Decrease the lifetime of the spore when on the ground
+     * Decrease the effectTime of the spore when applied to an insect
+     */
     public void update() {
         lifetime--;
-        effectTime--;
+        if(isConsumed){
+            effectTime--;
+        }
     }
 
     public int getLifetime() {

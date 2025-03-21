@@ -20,9 +20,12 @@ public class Insect extends GameEntity {
         underInfluence = new ArrayList<Spore>();
     }
 
+    /*
+     * Update the insect
+     * Decrease effect times and remove expired spores
+     */
     @Override
     public void update() {
-        // Decrease effect times and remove expired spores
         for (Spore spore : underInfluence) {
             spore.update();
             if(spore.getEffectTime() <= 0) {
@@ -32,19 +35,33 @@ public class Insect extends GameEntity {
         }
     }
 
+    /*
+     * Eat the spore and update the score of the player
+     * Adds spore to affecting list
+     */
     public void eat(Spore target) {
         controlledBy.updateScore(target.getNutrientValue());
         target.getEaten(this);
     }
 
+    /*
+     * Move the insect to the target tile
+     * If the target tile is not adjacent, the insect will not move
+     */
     public void step(Tile target) {
         // Will implement later
     }
 
+    /*
+     * Remove the mycelium in the target tile
+     */
     public void cut(Tile target) {
         // Will implement later
     }
 
+    /*
+     * Add a spore to the list of spores affecting the insect
+     */
     public void addSpore(Spore spore){
         underInfluence.add(spore);
     }
@@ -66,6 +83,9 @@ public class Insect extends GameEntity {
         }
     }
 
+    /*
+     * set cutting ability
+     */
     public void setCut(boolean canCut) {
         this.canCut = canCut;
     }

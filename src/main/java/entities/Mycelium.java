@@ -1,5 +1,8 @@
 package entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Mycelium extends Fungus{
     boolean isDying = false;
     List<FungusBody> connectedBodies = new ArrayList<FungusBody>();

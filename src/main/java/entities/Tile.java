@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Tile {
@@ -27,7 +28,7 @@ public class Tile {
         entities.remove(entity);
     }
 
-    public void getParentTekton() {
+    public Tekton getParentTekton() {
         return parentTekton;
     }
 

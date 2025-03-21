@@ -1,5 +1,7 @@
 package entities;
 
+import map.Tile;
+
 public class Insect extends GameEntity {
     int speed;  // The speed of the insect
     boolean canCut; // Whether the insect can cut through mycelium

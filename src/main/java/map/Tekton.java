@@ -1,6 +1,10 @@
-package entities;
+package map;
 
+import entities.*;
+import java.util.ArrayList;
 import java.util.List;
+
+import entities.FungusBody;
 
 public class Tekton {
     int breakChance;
@@ -15,7 +19,8 @@ public class Tekton {
         fungusBody = null;
     }
 
-    public void break() {
+    //"break" is reserved keyword
+    public void breakApart() {
         // Will implement later
     }
 

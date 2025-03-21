@@ -1,5 +1,7 @@
 package entities;
 
+import map.Tile;
+
 public class FungusBody extends Fungus{
     int sporeCharge = 0;
 

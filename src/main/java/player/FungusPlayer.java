@@ -3,6 +3,7 @@ package player;
 import java.util.List;
 
 import entities.*;
+import map.*;
 
 public class FungusPlayer extends Player{
     List<FungusBody> fungusBodies;

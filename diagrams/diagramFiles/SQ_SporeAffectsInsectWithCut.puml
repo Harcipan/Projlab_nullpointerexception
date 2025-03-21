@@ -1,6 +1,6 @@
 @startuml InsectSpeedUp
 
-title 7. Cut spore affecting insect
+title Cut spore affecting insect
 
 participant "i: Insect" as I
 participant "s: CutSpore" as Sp
@@ -8,7 +8,8 @@ participant "s: CutSpore" as Sp
 activate I
 activate Sp
 
-Sp -> I : setCut()
-I --> Sp
+I -> Sp : eat(s)
+Sp -> I : getEaten(i)
+
 
 @enduml

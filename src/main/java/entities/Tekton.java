@@ -2,6 +2,7 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import map.*;
 
 public class Tekton {
     int breakChance;

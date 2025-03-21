@@ -1,5 +1,4 @@
 package entities;
-
 import map.Tile;
 
 public class GameEntity {

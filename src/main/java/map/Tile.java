@@ -1,6 +1,8 @@
-package entities;
+package map;
 
 import java.util.List;
+import java.util.ArrayList;
+import entities.*;
 
 public class Tile {
     int growthRate;
@@ -27,7 +29,7 @@ public class Tile {
         entities.remove(entity);
     }
 
-    public void getParentTekton() {
+    public Tekton getParentTekton() {
         return parentTekton;
     }
 

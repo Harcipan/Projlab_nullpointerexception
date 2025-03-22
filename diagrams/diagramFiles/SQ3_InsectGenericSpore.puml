@@ -1,23 +1,22 @@
 @startuml Insect eating
 
-title 4. Insect eats Slow Down Spore
+title 3. Insect eats Spore
 
 actor "Skeleton" as PP
 participant "i : Insect" as I
-participant "ss : SlowSpore" as Sp
+participant "s : Spore" as Sp
 participant "t : Tile" as T
 
 activate I
 activate T
 activate Sp
 
-PP -> I : eat(ss)
+PP -> I : eat(s)
 I -> Sp : getEaten(i)
-Sp -> I : setSpeed(effectValue)
+Sp -> I : addSpore(s)
 I --> Sp
-Sp -> I : addSpore(ss)
-I --> Sp
-Sp -> T : removeEntity(ss)
+
+Sp -> T : removeEntity(s)
 T --> Sp
 Sp --> I
 

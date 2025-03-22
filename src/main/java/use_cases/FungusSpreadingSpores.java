@@ -1,40 +1,46 @@
 package use_cases;
 
+import map.Tile;
+import entities.*;
 import map.*;
-import player.FungusPlayer;
+import player.*;
 
 public class FungusSpreadingSpores extends UseCase {
 
-    @Override
-    public void execute() {
-        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
-
-        printWrapper("Creating map...", ArrowDirection.RIGHT, 0);
-        Map m = new Map();
-
-        printWrapper("Creating tekton...", ArrowDirection.RIGHT, 0);
-        map.Tekton tek = new map.Tekton(1, 1);
-
-        m.addTekton(tek);
-
-        printWrapper("Creating tile...", ArrowDirection.RIGHT, 0);
-        Tile t1 = new Tile();
-
-        printWrapper("Creating neighboring tile...", ArrowDirection.RIGHT, 0);
-        Tile t2 = new Tile();
-
-        printWrapper("Creating player...", ArrowDirection.RIGHT, 0);
-        FungusPlayer fp = new FungusPlayer();
-
-        printWrapper("Player trying to grow a body...", ArrowDirection.RIGHT, 0);
-
-        //fp.growBody(
-
-        printWrapper("Player trying to spread spores...", ArrowDirection.RIGHT, 0);
-        //fp.sporeCloud(, 1);
+    FungusSpreadingSpores() {
+        super(13, "Fungus Spreading Spores");
     }
 
-    public FungusSpreadingSpores() {
-        super(3, "Fungus Spreading Spores");
+    @Override
+    public void execute() {
+        // Initializing scene
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+
+        // Initializing map
+        Map m = new Map();
+
+        // Initializing tekton
+        Tekton tek = new Tekton(1, 1);
+
+        // Adding tekton to map
+        m.addTekton(tek);
+
+        // Initializing tile
+        Tile t = new Tile();
+
+        // Initializing fungusPlayer
+        FungusPlayer fp = new FungusPlayer();
+
+        // Initializing a FungusBody
+
+        FungusBody fb = null;
+        if (true /* TODO: check validity via fp function */) {
+            fb = new FungusBody(1, t);
+            t.addEntity(fb);
+        }
+
+        // FungusPlayer spreading spores
+        fp.sporeCloud(fb, 5);
+
     }
 }

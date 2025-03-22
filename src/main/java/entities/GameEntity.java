@@ -10,6 +10,8 @@ public class GameEntity {
         this.currentTile = currentTile;
     }
 
+    protected GameEntity(){};
+
     public void setTile(Tile tile) {
         this.currentTile = tile;
     }

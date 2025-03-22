@@ -5,7 +5,7 @@ import map.*;
 
 public class MyceliumDies extends UseCase {
 
-    public MyceliumDies() {
+    public MyceliumDies() {//legyen az id azonos azzal ami az usecase id-ja
         super(1, "Mycelium Dies");
     }
 

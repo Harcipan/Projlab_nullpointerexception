@@ -3,6 +3,8 @@ package map;
 import java.util.List;
 import java.util.ArrayList;
 import entities.*;
+import use_cases.*;
+import use_cases.UseCase.Direction;
 
 public class Tile {
     int growthRate;
@@ -10,15 +12,22 @@ public class Tile {
     Tekton parentTekton;
     List<GameEntity> entities;
 
-    public Tile(int growthRate, int maxMycelium, Tekton parentTekton) {
+    /*public Tile(int growthRate, int maxMycelium, Tekton parentTekton) {
         this.growthRate = growthRate;
         this.maxMycelium = maxMycelium;
         this.parentTekton = parentTekton;
         entities = new ArrayList<>();
+    }*/
+
+    public Tile() {
+        UseCase.printWrapper("Tile",Direction.RIGHT);
     }
 
     public void addEntity(GameEntity entity) {
         entities.add(entity);
+
+        //add tile to entity
+        entity.setTile(this);
     }
 
     public List<GameEntity> getEntities() {

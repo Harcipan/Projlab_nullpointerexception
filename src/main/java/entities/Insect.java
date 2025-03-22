@@ -5,6 +5,8 @@ import java.util.List;
 
 import map.*;
 import player.*;
+import use_cases.UseCase;
+import use_cases.UseCase.Direction;
 
 public class Insect extends GameEntity {
     int speed;  // The speed of the insect
@@ -12,12 +14,18 @@ public class Insect extends GameEntity {
     Player controlledBy; // The player that controls the insect
     List<Spore> underInfluence; //The spores that are affecting the insect
 
-    public Insect(int id, Tile currentTile, Player player) {
+    /*public Insect(int id, Tile currentTile, Player player) {
         super(id, currentTile);
         speed = 100;
         canCut = true;
         controlledBy = player;
         underInfluence = new ArrayList<Spore>();
+    }*/
+
+    public Insect()
+    {
+        super();
+        UseCase.printWrapper("Insect",Direction.RIGHT);
     }
 
     /*

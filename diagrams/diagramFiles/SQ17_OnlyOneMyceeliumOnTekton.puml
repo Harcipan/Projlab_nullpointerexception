@@ -1,4 +1,4 @@
-@startuml Mycelium growth
+@startuml 17. Only one mycelium can grow on Tile
 
 title 17. Only one mycelium can grow on Tile
 

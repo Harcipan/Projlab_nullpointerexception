@@ -15,6 +15,7 @@ public abstract class Fungus extends GameEntity {
             return;
         }
         // Will implement later
+        
     }
 
     public void growBody(Tile neighbor) {
@@ -23,6 +24,7 @@ public abstract class Fungus extends GameEntity {
             return;
         }
         // Will implement later
+
     }
 
     public void die() {

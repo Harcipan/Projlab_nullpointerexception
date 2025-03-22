@@ -50,6 +50,8 @@ public class Insect extends GameEntity {
      */
     public void step(Tile target) {
         // Will implement later
+        currentTile.removeEntity(this);
+        target.addEntity(this);
     }
 
     /*
@@ -57,6 +59,7 @@ public class Insect extends GameEntity {
      */
     public void cut(Tile target) {
         // Will implement later
+        
     }
 
     /*

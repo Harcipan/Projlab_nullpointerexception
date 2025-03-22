@@ -1,0 +1,28 @@
+@startuml Insect eating
+
+title 6. Insect eats Cut Spore
+
+actor "Skeleton" as PP
+participant "i : Insect" as I
+participant "cs : CutSpore" as Sp
+participant "t : Tile" as T
+
+activate I
+activate T
+activate Sp
+
+PP -> I : eat(ss)
+I -> Sp : getEaten(i)
+Sp -> I : setCut(false)
+I --> Sp
+Sp -> I : addSpore(ss)
+I --> Sp
+
+Sp -> T : removeEntity(ss)
+T --> Sp
+Sp --> I
+
+I --> PP
+
+
+@enduml

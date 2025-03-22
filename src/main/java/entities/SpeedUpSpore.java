@@ -1,12 +1,14 @@
 package entities;
 
+import map.Tile;
+
 /*
  * Spore that speeds up the insect
  * effectValue must be greater than 100 (its a percentage)
  */
 public class SpeedUpSpore extends Spore {
-    public SpeedUpSpore(int nutrientValue, int lifetime, int effectTime, int effectValue) {
-        super(nutrientValue, lifetime, effectTime, effectValue);
+    public SpeedUpSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
     }
 
     /*
@@ -17,6 +19,7 @@ public class SpeedUpSpore extends Spore {
         isConsumed = true;
         i.setSpeedPercent(effectValue);
         i.addSpore(this);
+        currentTile.removeEntity(this);
     }
 
     /*

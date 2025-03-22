@@ -20,7 +20,7 @@ public class Tekton {
     }
 
     //"break" is reserved keyword
-    public void breakApart() {
+    public void breakTekton() {
         // Will implement later
     }
 

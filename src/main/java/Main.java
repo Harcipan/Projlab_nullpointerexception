@@ -30,6 +30,8 @@ public class Main {
             if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("quit")) {
                 running = false;
             } else if (input.equalsIgnoreCase("list")) {
+                System.out.println("Sorting use-cases...");
+                useCases.sortUseCases();
                 System.out.println("Available use-cases:");
                 for (UseCase useCase : useCases.getUseCases()) {
                     System.out.println(useCase.getID() + " - " + useCase.getName());
@@ -50,15 +52,25 @@ public class Main {
                         System.out.println("Use-case with ID " + id + " not found.");
                     }
                 } catch (NumberFormatException e) {
+                    // Not a number, search by name
                     for (UseCase useCase : useCases.getUseCases()) {
                         if (useCase.getName().equalsIgnoreCase(identifier)) {
                             useCase.execute();
                             break;
                         }
                     }
+                    // keyword 'all'
+                    if (identifier.equalsIgnoreCase("all")) {
+                        System.out.println("Sorting use-cases...");
+                        useCases.sortUseCases();
+                        for (UseCase useCase : useCases.getUseCases()) {
+                            System.out.println("\n====== Use Case " + useCase.getID() + " - " + useCase.getName() + " ======");
+                            useCase.execute();
+                        }
+                    }
                 }
             } else {
-                System.out.println("Unknown command. Try 'list', 'execute [id/name]', or 'exit'");
+                System.out.println("Unknown command. Try 'list', 'execute [id/name/all]', or 'exit'");
             }
         }
 

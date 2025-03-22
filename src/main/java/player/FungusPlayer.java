@@ -42,6 +42,10 @@ public class FungusPlayer extends Player{
     }
 
     public void sporeCloud(FungusBody target, int size) {
-        // Will implement later
+        if (target == null) {
+            printWrapper("No target selected", UseCase.ArrowDirection.RIGHT);
+            return;
+        }
+        printWrapper("Player trying to release a spore cloud...", UseCase.ArrowDirection.RIGHT);
     }
 }

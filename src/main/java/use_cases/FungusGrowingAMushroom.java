@@ -6,31 +6,32 @@ import player.FungusPlayer;
 public class FungusGrowingAMushroom extends UseCase {
 
     @Override
+
     public void execute() {
         // initializing scene
-        System.out.println("Initializing scene...");
+        printWrapper("Initializing scene...", Direction.RIGHT, 0);
 
         // initializing map
-        System.out.println("Creating map...");
+        printWrapper("Creating map...", Direction.RIGHT, 0);
         Map m = new Map();
 
         // initializing tekton
-        System.out.println("Creating tekton...");
+        printWrapper("Creating tekton...", Direction.RIGHT, 0);
         Tekton tek = new Tekton(1, 1);
 
         // adding tekton to map
         m.addTekton(tek);
 
         // initializing tile
-        System.out.println("Creating tile...");
+        printWrapper("Creating tile...", Direction.RIGHT, 0);
         Tile t = new Tile(1, 1, tek);
 
         // initializing player
-        System.out.println("Creating player...");
+        printWrapper("Creating player...", Direction.RIGHT, 0);
         FungusPlayer fp = new FungusPlayer();
 
         // player trying to grow a mushroom
-        System.out.println("Player trying to grow a mushroom...");
+        printWrapper("Player trying to grow a mushroom...", Direction.RIGHT, 0);
         fp.growBody(t);
     }
 

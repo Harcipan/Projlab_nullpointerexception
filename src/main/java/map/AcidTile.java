@@ -6,7 +6,8 @@ public class AcidTile extends Tile{
     int damageRate; // The rate at which the acid damages entities
 
     public AcidTile(int growthRate, int maxMycelium, Tekton parentTekton, int damageRate) {
-        super(growthRate, maxMycelium, parentTekton);
+        //super(growthRate, maxMycelium, parentTekton);
+        super();
         this.damageRate = damageRate;
     }
 

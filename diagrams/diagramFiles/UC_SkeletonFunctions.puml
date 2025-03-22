@@ -1,0 +1,71 @@
+@startuml UC_SkeletonFunctions
+
+package "Use-Case Diagram for Skeleton test cases"{
+
+   
+
+    skinparam Linetype polyline
+
+    left to right direction
+
+    actor UserSelect as "User Selection"
+    
+    (InsectStep) as "Insect Steps across Tektons"
+    (InsectCut) as "Insect Cuts Mycelium between Tektons"
+    (InsectEat) as "Insect Eats Spore"
+    (InsectSpeedUpSpore) as "Insect Speeds Up"
+    (InsectSlowDownSpore) as "Insect Slows Down"
+    (InsectFreezeSpore) as "Insect Paralyzed"
+    (InsectUnfreeze) as "Insect Unparalyzed"
+    (InsectCutSpore) as "Insect unable to Cut"
+
+    (GrowMycelium) as "Mycelium Grows"
+    (GrowMyceliumSpore) as "Mycelium Grows with Spore on Tekton"
+    (MyceliumRot) as "Mycelium Dies"
+
+    (FungusBodyGrow) as "Fungus Body Grows"
+    (FungusBodySporeCloud) as "Fungus Body releases Spore Cloud"
+    (FungusBodyDies) as "Fungus Body Dies"
+
+    (TektonBreak) as "Tekton Breaks"
+    (TektonCantGrow) as "Fungus Body can't grow on Tekton"
+    
+    (MonoTile) as "Tekton Grows max. of 1 Mycelium"
+    (MultiTile) as "Tekton Grows multiple kinds of Mycelia"
+    (AcidTileDamage) as "Acid Tekton kills Mycelium"
+
+    (FungusScore) as "Fungus Score increases" 
+    (InsectScore) as "Insect Score increases"    
+
+
+   (InsectEat) .> (InsectScore): <<include>>
+   
+    UserSelect -u- (InsectStep)
+    UserSelect -u- (InsectCut)
+    UserSelect -u- (InsectEat)
+    UserSelect -u- (InsectSpeedUpSpore)
+    UserSelect -u- (InsectSlowDownSpore)
+    UserSelect -u- (InsectFreezeSpore)
+    UserSelect -u- (InsectUnfreeze)
+    UserSelect -u- (InsectCutSpore)
+
+    UserSelect -- (TektonBreak)
+
+    UserSelect -- (GrowMycelium)
+    UserSelect -- (GrowMyceliumSpore)
+ '   (GrowMyceliumSpore) ...> (GrowMycelium) : <<extend>>
+    UserSelect -- (MyceliumRot)
+
+    UserSelect -- (FungusBodyGrow)
+    UserSelect -- (FungusBodySporeCloud)
+    UserSelect -- (FungusBodyDies)
+  '  (FungusBodyDies) ...> (FungusBodySporeCloud) : <<extend>>
+    (FungusBodyGrow) .> (FungusScore): <<include>>
+
+    UserSelect -- (MonoTile)
+    UserSelect -- (AcidTileDamage)  
+
+    UserSelect -- (MultiTile)
+    UserSelect -- (TektonCantGrow)
+
+} 

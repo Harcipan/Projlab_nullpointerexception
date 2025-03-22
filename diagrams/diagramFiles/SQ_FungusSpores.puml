@@ -1,8 +1,8 @@
 @startuml Fungus spores
 
-title Fungus spreading spores
+title 13. Fungus spreading spores
 
-actor "Player person" as Ac
+actor "Skeleton" as Ac
 participant "fb : FungusBody" as Fb
 participant "t : Tile" as T
 participant "s : Spore" as S

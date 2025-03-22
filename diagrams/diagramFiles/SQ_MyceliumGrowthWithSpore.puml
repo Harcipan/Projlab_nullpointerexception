@@ -1,8 +1,8 @@
 @startuml Fungus growth with spore
 
-title Mycelium growing quicker with spore
+title 10. Mycelium growing quicker with spore
 
-actor "Player person" as Ac
+actor "Skeleton" as Ac
 participant "f : Fungus" as F
 participant "tek: Tekton" as Tek
 participant "m : Mycelium" as M

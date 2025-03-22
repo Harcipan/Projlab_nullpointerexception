@@ -1,6 +1,6 @@
 @startuml InsectSpeedUp
 
-title Speedup spore affecting insect
+title 4. Speedup spore affecting insect
 
 participant "i: Insect" as I
 participant "s: SpeedupSpore" as Sp
@@ -8,7 +8,7 @@ participant "s: SpeedupSpore" as Sp
 activate I
 activate Sp
 
-Sp -> I : setSpeedupEffect()
-I --> Sp
+I -> Sp : eat(s)
+Sp -> I : getEaten(i)
 
 @enduml

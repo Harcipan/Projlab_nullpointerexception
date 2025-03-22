@@ -1,4 +1,4 @@
-@startuml TektonBreak
+@startuml 15. Tekton breaking
 title 15. Tekton breaking
 
 actor "Skeleton" as M

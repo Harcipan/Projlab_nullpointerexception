@@ -1,4 +1,4 @@
-@startuml Insect moving
+@startuml 1. Insect player moving to a tile
 
 title 1. Insect player moving to a tile
 

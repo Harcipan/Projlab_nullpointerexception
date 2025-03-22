@@ -1,4 +1,4 @@
-@startuml TektonBreakMycelium
+@startuml 19. Tekton breaking mycelium
 title 19. Tekton breaking mycelium
 
 participant "map : Map" as M

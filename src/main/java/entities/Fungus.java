@@ -10,19 +10,13 @@ public abstract class Fungus extends GameEntity {
     }
 
     public void growMycelium(Tile neighbor) {
-        boolean isValid = checkNeighbor(neighbor);
-        if(!isValid) {
-            return;
-        }
+
         // Will implement later
         
     }
 
     public void growBody(Tile neighbor) {
-        boolean isValid = checkNeighbor(neighbor);
-        if(!isValid) {
-            return;
-        }
+
         // Will implement later
 
     }
@@ -32,8 +26,8 @@ public abstract class Fungus extends GameEntity {
     }
 
 
-    private boolean checkNeighbor(Tile neighbor) {
-        // Will implement later
-        return false;
-    }
+    // private boolean checkNeighbor(Tile neighbor) {
+    //     // Will implement later
+    //     return false;
+    // }
 }

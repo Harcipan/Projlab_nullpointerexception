@@ -13,10 +13,7 @@ public class FungusBody extends Fungus{
         // Will implement later
     }
 
-    public void update() {
-        // Will implement later
-        // Probably should be in GameEntity
-    }
+
 
 
 

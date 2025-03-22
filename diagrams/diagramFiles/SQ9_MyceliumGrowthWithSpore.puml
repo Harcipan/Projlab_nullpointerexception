@@ -1,6 +1,6 @@
-@startuml Mycelium growth
+@startuml Fungus growth with spore
 
-title 9. Mycelium growing
+title 9. Mycelium growing quicker with spore
 
 actor "Skeleton" as Ac
 participant "f : Fungus" as F
@@ -13,10 +13,11 @@ activate F
 activate T
 activate Tek
 
+
 Ac -> F : growMycelium()
 
 F->Tek : growMycelium(t)
-opt canGrowMycelium
+opt hasSpore() && canGrowMycelium
 Tek -> M ** : <<create>>
 activate M
 M --> Tek
@@ -26,5 +27,7 @@ end
 Tek-->F
 
 F --> Ac
+
+
 
 @enduml

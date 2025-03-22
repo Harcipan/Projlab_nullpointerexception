@@ -1,0 +1,27 @@
+@startuml Insect eating
+
+title 4. Insect eats Slow Down Spore
+
+actor "Skeleton" as PP
+participant "i : Insect" as I
+participant "ss : SlowSpore" as Sp
+participant "t : Tile" as T
+
+activate I
+activate T
+activate Sp
+
+PP -> I : eat(ss)
+I -> Sp : getEaten(i)
+Sp -> I : setSpeed(effectValue)
+I --> Sp
+Sp -> I : addSpore(ss)
+I --> Sp
+Sp -> T : removeEntity(ss)
+T --> Sp
+Sp --> I
+
+I --> PP
+
+
+@enduml

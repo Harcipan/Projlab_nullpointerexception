@@ -1,8 +1,10 @@
 package entities;
 
+import map.Tile;
+
 public class CutSpore extends Spore {
-    public CutSpore(int nutrientValue, int lifetime, int effectTime, int effectValue) {
-        super(nutrientValue, lifetime, effectTime, effectValue);
+    public CutSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
     }
 
     /*
@@ -13,6 +15,7 @@ public class CutSpore extends Spore {
         isConsumed = true;
         i.setCut(false);
         i.addSpore(this);
+        currentTile.removeEntity(this);
     }
 
     /*

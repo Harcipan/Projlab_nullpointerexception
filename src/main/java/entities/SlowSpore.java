@@ -1,12 +1,14 @@
 package entities;
 
+import map.Tile;
+
 /*
  * Spore that slows down the insect that eats it
  * effectValue must be less than 100 (its a percentage)
  */
 public class SlowSpore extends Spore {
-    public SlowSpore(int nutrientValue, int lifetime, int effectTime, int effectValue) {
-        super(nutrientValue, lifetime, effectTime, effectValue);
+    public SlowSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
     }
 
     /*
@@ -17,6 +19,7 @@ public class SlowSpore extends Spore {
         isConsumed = true;
         i.setSpeedPercent(effectValue);
         i.addSpore(this);
+        currentTile.removeEntity(this);
     }
 
     /*

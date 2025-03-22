@@ -1,8 +1,8 @@
 @startuml Mycelium growth
 
-title Multiple mycelium growing on Tekton
+title 18. Multiple mycelium growing on Tekton
 
-actor "Player person" as Ac
+actor "Skeleton" as Ac
 participant "f1 : Fungus" as F1
 participant "f2 : Fungus" as F2
 participant "tek: Tekton" as Tek

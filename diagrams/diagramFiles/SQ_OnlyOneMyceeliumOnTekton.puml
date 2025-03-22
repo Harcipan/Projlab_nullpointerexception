@@ -1,6 +1,6 @@
 @startuml Mycelium growth
 
-title Only one mycelium growing on Tekton
+title 17. Only one mycelium growing on Tekton
 
 participant "f1 : Fungus" as F1
 participant "f2 : Fungus" as F2

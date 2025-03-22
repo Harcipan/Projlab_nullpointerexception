@@ -19,10 +19,10 @@ public class FungusSpreadingSpores extends UseCase {
         m.addTekton(tek);
 
         printWrapper("Creating tile...", Direction.RIGHT, 0);
-        Tile t1 = new Tile(1, 1, tek);
+        Tile t1 = new Tile();
 
         printWrapper("Creating neighboring tile...", Direction.RIGHT, 0);
-        Tile t2 = new Tile(1, 2, tek);
+        Tile t2 = new Tile();
 
         printWrapper("Creating player...", Direction.RIGHT, 0);
         FungusPlayer fp = new FungusPlayer();

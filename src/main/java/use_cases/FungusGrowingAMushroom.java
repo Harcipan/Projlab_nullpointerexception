@@ -24,7 +24,7 @@ public class FungusGrowingAMushroom extends UseCase {
 
         // initializing tile
         printWrapper("Creating tile...", Direction.RIGHT, 0);
-        Tile t = new Tile(1, 1, tek);
+        Tile t = new Tile();
 
         // initializing player
         printWrapper("Creating player...", Direction.RIGHT, 0);

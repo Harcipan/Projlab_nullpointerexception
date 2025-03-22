@@ -28,7 +28,7 @@ public class MyceliumDies extends UseCase {
 
         // tile creation and parent tekton assignment in constructor
         System.out.println("Creating tile...");
-        Tile t = new Tile(1, 1, tek);
+        Tile t = new Tile();
 
         // mycelium creation and tile assignment in constructor
         System.out.println("Creating mycelium...");

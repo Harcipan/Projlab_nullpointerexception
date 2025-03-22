@@ -1,12 +1,17 @@
 package map;
 
+import use_cases.UseCase;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static use_cases.UseCase.printWrapper;
 
 public class Map {
     List<Tekton> tektons;
 
     public Map() {
+        UseCase.printWrapper("Initializing Map as " + System.identityHashCode(this), UseCase.ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
         tektons = new ArrayList<>();
     }
 

@@ -1,10 +1,12 @@
 package map;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
 import entities.*;
 import use_cases.*;
-import use_cases.UseCase.Direction;
+import static use_cases.UseCase.*;
+
 
 public class Tile {
     int growthRate;
@@ -20,7 +22,8 @@ public class Tile {
     }*/
 
     public Tile() {
-        UseCase.printWrapper("Tile",Direction.RIGHT);
+        entities = new ArrayList<>();
+        printWrapper("Initializing Tile as " + System.identityHashCode(this), ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
     }
 
     public void addEntity(GameEntity entity) {
@@ -36,6 +39,7 @@ public class Tile {
 
     public void removeEntity(GameEntity entity) {
         entities.remove(entity);
+        printWrapper("Removing entity from tile", ArrowDirection.RIGHT, IndentDirection.STAY);
     }
 
     public Tekton getParentTekton() {

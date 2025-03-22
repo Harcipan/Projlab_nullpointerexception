@@ -3,7 +3,7 @@ package player;
 import entities.Insect;
 import map.Tile;
 import use_cases.UseCase;
-import use_cases.UseCase.Direction;
+import use_cases.UseCase.ArrowDirection;
 
 public class InsectPlayer extends Player{
     Insect controlledInsect;
@@ -11,7 +11,7 @@ public class InsectPlayer extends Player{
     public InsectPlayer() {
         super();
         this.controlledInsect = null;
-        UseCase.printWrapper("InsectPlayer",Direction.RIGHT);
+        UseCase.printWrapper("Initializing InsectPlayer as " + System.identityHashCode(this), ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
     }
 
     public void setControlledInsect(Insect controlledInsect) {

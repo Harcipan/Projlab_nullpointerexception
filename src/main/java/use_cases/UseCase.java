@@ -3,8 +3,10 @@ package use_cases;
 public abstract class UseCase {
     private int id;
     private String name;
-    private static Direction persistentDir = Direction.RIGHT;
-    public enum Direction {LEFT, RIGHT}
+    private static int persistentIndentDepth = 0;
+    private static ArrowDirection persistentDir = ArrowDirection.RIGHT;
+    public enum IndentDirection {LEFT, RIGHT,STAY}
+    public enum ArrowDirection {LEFT, RIGHT}
 
     UseCase(int id, String name) {
         this.id = id;
@@ -19,23 +21,38 @@ public abstract class UseCase {
         return name;
     }
 
-    public static void printWrapper(String message, Direction dir, int indentDepth) {
-        String arrow = (dir == Direction.LEFT) ? "<-" : "->";
+    public static void printWrapper(String message, ArrowDirection dir, int indentDepth) {
+        String arrow = (dir == ArrowDirection.LEFT) ? "<-" : "->";
         persistentDir = dir;
+        persistentIndentDepth = indentDepth;
         String indent = "\t".repeat(indentDepth);
-        System.out.println(indent + arrow + " " + message + " " + arrow);
+        System.out.println(indent + arrow + " " + message + " ");
     }
 
-    // Uses 0 indent depth by default
-    public static void printWrapper(String message, Direction dir) {
-        printWrapper(message, dir, 0);
+    // Uses both persistent direction and depth
+    public static void printWrapper(String message, ArrowDirection dir) {
+        printWrapper(message, dir, persistentIndentDepth);
     }
 
-
-    // Remembers the last direction used
+    // Remembers the last direction used and uses the last direction by default
     public static void printWrapper(String message) {
-        printWrapper(message, persistentDir, 0);
+        printWrapper(message, persistentDir, persistentIndentDepth);
     }
+
+    // Relative depth of the printWrapper with stepping after execution
+    public static void printWrapper(String message, ArrowDirection dir, IndentDirection indentDir) {
+        printWrapper(message, dir, persistentIndentDepth);
+
+        // Indentation change happens after the message is printed
+        if (indentDir == IndentDirection.LEFT) {
+            persistentIndentDepth--;
+        } else if (indentDir == IndentDirection.RIGHT) {
+            persistentIndentDepth++;
+        } else if (indentDir == IndentDirection.STAY) {
+            // Do nothing
+        }
+    }
+
 
     public abstract void execute();
 }

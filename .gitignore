@@ -41,6 +41,7 @@ build/
 
 ### PUML ###
 diagrams/diagramFiles/*.png
+out/
 
 ### Word-os szemet (https://raw.githubusercontent.com/github/gitignore/refs/heads/main/Global/MicrosoftOffice.gitignore) ###
 *.tmp

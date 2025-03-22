@@ -1,8 +1,10 @@
 package entities;
 
+import map.Tile;
+
 public class FreezeSpore extends Spore {
-    public FreezeSpore(int nutrientValue, int lifetime, int effectTime, int effectValue) {
-        super(nutrientValue, lifetime, effectTime, effectValue);
+    public FreezeSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
     }
 
     /*
@@ -13,6 +15,7 @@ public class FreezeSpore extends Spore {
         isConsumed = true;
         i.setSpeedPercent(-100);
         i.addSpore(this);
+        currentTile.removeEntity(this);
     }
 
     /*

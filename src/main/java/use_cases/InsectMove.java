@@ -1,0 +1,42 @@
+package use_cases;
+
+import player.InsectPlayer;
+import entities.Insect;
+import map.Tekton;
+import map.Tile;
+
+public class InsectMove extends UseCase {
+    
+    public InsectMove() {
+        super(1, "Insect player moving to tile");
+    }
+
+    @Override
+    public void execute() {
+        //insect Player is created
+        InsectPlayer ip=new InsectPlayer();
+
+        //tekton of tiles
+        Tekton tek=new Tekton(1,1);
+
+        //current tile cration
+        Tile currentTile=new Tile();
+        
+        //target tile creation
+        Tile targetTile=new Tile();
+
+        //insect creation
+        Insect i=new Insect();
+
+        //add tiles to tekton
+        currentTile.setParentTekton(tek);
+        targetTile.setParentTekton(tek);
+
+        
+        //add insect to tile
+        currentTile.addEntity(i);
+
+        //add insect to insectplayer
+        ip.setControlledInsect(i);
+    }
+}

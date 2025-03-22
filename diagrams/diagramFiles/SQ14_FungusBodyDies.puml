@@ -2,20 +2,20 @@
 
 title 14. Fungus body dies after an amount of spore spreads
 
-participant "m : Map" as M
+actor "Skeleton" as S
 participant "fb : FungusBody" as Fb
 participant "t : Tile" as T
 
 activate T
-activate M
+activate S
 activate Fb
 
-M->Fb : update()
-opt sporeCharge == 0
+S->Fb : update()
+opt health == 0
 
 Fb -> T : removeEntity(fb)
 T-->Fb
-Fb --> M
+Fb --> S
 destroy Fb
 
 end

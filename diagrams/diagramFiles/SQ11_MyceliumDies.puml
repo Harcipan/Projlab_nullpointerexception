@@ -1,20 +1,20 @@
 @startuml Mycelium dies
 
-title 10. Detached mycelium dies
+title 11. Detached mycelium dies
 
-participant "map : Map" as M
+actor "Skeleton" as S
 participant "m : Mycelium" as T
 participant "t : Tile" as Tl
 
 activate T
-activate M
+activate S
 activate Tl
 
-M -> T : update()
+S -> T : update()
 opt isDying
     T -> Tl : removeEntity(m)
     Tl --> T
-    T --> M
+    T --> S
 
 destroy T
 

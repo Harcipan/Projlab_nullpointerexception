@@ -12,7 +12,7 @@ activate Fb
 activate T
 
 Ac -> Fb : sporeCloud()
-opt sporeCharge == 0
+opt sporeCharge != 0
 loop 
 Fb -> S ** : <<create>>
 activate S

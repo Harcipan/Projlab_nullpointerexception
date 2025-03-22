@@ -11,14 +11,14 @@ activate I
 activate T
 activate Sp
 
-PP -> I : eat(ss)
+PP -> I : eat(cs)
 I -> Sp : getEaten(i)
 Sp -> I : setCut(false)
 I --> Sp
-Sp -> I : addSpore(ss)
+Sp -> I : addSpore(cs)
 I --> Sp
 
-Sp -> T : removeEntity(ss)
+Sp -> T : removeEntity(cs)
 T --> Sp
 Sp --> I
 

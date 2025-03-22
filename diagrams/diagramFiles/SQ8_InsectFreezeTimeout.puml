@@ -1,6 +1,6 @@
 @startuml Insect freeze times out
 
-title 7. Insect freeze times out
+title 8. Insect freeze times out
 
 actor "Skeleton" as S
 participant "i : Insect" as I

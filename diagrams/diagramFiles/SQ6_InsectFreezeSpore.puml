@@ -1,10 +1,10 @@
 @startuml Insect eating
 
-title 6. Insect eats Cut Spore
+title 6. Insect eats Freeze Spore
 
 actor "Skeleton" as PP
 participant "i : Insect" as I
-participant "cs : CutSpore" as Sp
+participant "fs : FreezeSpore" as Sp
 participant "t : Tile" as T
 
 activate I
@@ -13,7 +13,7 @@ activate Sp
 
 PP -> I : eat(ss)
 I -> Sp : getEaten(i)
-Sp -> I : setCut(false)
+Sp -> I : setSpeed(-100)
 I --> Sp
 Sp -> I : addSpore(ss)
 I --> Sp

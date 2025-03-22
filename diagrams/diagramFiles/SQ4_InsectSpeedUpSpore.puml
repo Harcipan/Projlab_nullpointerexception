@@ -1,6 +1,6 @@
 @startuml Insect eating
 
-title 3. Insect eats Speed Up Spore
+title 4. Insect eats Speed Up Spore
 
 actor "Skeleton" as PP
 participant "i : Insect" as I

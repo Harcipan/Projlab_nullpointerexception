@@ -38,11 +38,16 @@ public class Main {
                 String identifier = input.substring(8).trim();
                 try {
                     int id = Integer.parseInt(identifier);
+                    Boolean isFound = false;
                     for (UseCase useCase : useCases.getUseCases()) {
                         if (useCase.getID() == id) {
                             useCase.execute();
+                            isFound = true;
                             break;
                         }
+                    }
+                    if (!isFound) {
+                        System.out.println("Use-case with ID " + id + " not found.");
                     }
                 } catch (NumberFormatException e) {
                     for (UseCase useCase : useCases.getUseCases()) {

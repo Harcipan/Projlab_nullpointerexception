@@ -1,12 +1,11 @@
 package entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import map.*;
 import player.*;
 import use_cases.UseCase;
-import use_cases.UseCase.Direction;
+import use_cases.UseCase.ArrowDirection;
 
 public class Insect extends GameEntity {
     int speed;  // The speed of the insect
@@ -25,7 +24,7 @@ public class Insect extends GameEntity {
     public Insect()
     {
         super();
-        UseCase.printWrapper("Insect",Direction.RIGHT);
+        UseCase.printWrapper("Insect", ArrowDirection.RIGHT);
     }
 
     /*

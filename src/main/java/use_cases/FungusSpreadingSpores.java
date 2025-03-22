@@ -35,7 +35,7 @@ public class FungusSpreadingSpores extends UseCase {
 
         FungusBody fb = null;
         if (true /* TODO: check validity via fp function */) {
-            fb = new FungusBody(1, t);
+            fb = new FungusBody(1, 1, t);
             t.addEntity(fb);
         }
 

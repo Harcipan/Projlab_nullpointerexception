@@ -15,6 +15,7 @@ public class UseCaseList {
         useCases.add(new MyceliumDies());
         useCases.add(new FungusGrowingAMushroom());
         useCases.add(new FungusSpreadingSpores());
+        useCases.add(new FungusBodyDies());
     }
 
     public List<UseCase> getUseCases() {

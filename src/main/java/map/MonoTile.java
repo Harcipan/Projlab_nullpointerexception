@@ -6,7 +6,8 @@ public class MonoTile extends Tile{
     boolean isTaken; // Whether the tile is taken by a Fungus
 
     public MonoTile(int growthRate, int maxMycelium, Tekton parentTekton){
-        super(growthRate, maxMycelium, parentTekton);
+        //super(growthRate, maxMycelium, parentTekton);
+        super();
         isTaken =false;
     }
 

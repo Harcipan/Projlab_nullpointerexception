@@ -17,6 +17,7 @@ public class InsectPlayer extends Player{
 
     public void moveTo(Tile tile) {
         // Will implement later
+        controlledInsect.step(tile);
     }
 
     public void eat(){
@@ -25,6 +26,7 @@ public class InsectPlayer extends Player{
 
     public void cut(){
         // Will implement later
+        //controlledInsect.cut(tile);
     }
 
     

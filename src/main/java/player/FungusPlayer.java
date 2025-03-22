@@ -16,7 +16,17 @@ public class FungusPlayer extends Player{
     }
 
     public void growBody(Tile tile) {
-        // Will implement later
+        // neighbor testing happens here
+        // (aggreed on handling game logic as soon as possible to prevent chained function calls and constant dispatching)
+        System.out.println("Checking if the tile is a neighbor of a living mycelium");
+
+        // presuming that the tile is a neighbor of a living mycelium
+        System.out.println("The tile is a neighbor of a living mycelium");
+        FungusBody fb = new FungusBody(1, tile);
+
+        // adding the fungus body to the tile
+        System.out.println("Adding the fungus body to the tile");
+        tile.addEntity(fb);
     }
 
     public void growMycelium(Tile tile) {

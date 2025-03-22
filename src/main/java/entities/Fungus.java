@@ -1,6 +1,8 @@
 package entities;
 import map.Tile;
 
+import static use_cases.UseCase.*;
+
 public abstract class Fungus extends GameEntity {
     int health;
 
@@ -22,7 +24,7 @@ public abstract class Fungus extends GameEntity {
     }
 
     public void die() {
-        // Will implement later
+        printWrapper("Fungus " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, IndentDirection.STAY);
     }
 
 

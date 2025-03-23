@@ -1,9 +1,6 @@
 import use_cases.UseCase;
-import use_cases.MyceliumDies;
 import use_cases.UseCaseList;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 /*
@@ -39,7 +36,7 @@ public class Main {
                 String identifier = input.substring(8).trim();
                 try {
                     int id = Integer.parseInt(identifier);
-                    Boolean isFound = false;
+                    boolean isFound = false;
                     for (UseCase useCase : useCases.getUseCases()) {
                         if (useCase.getID() == id) {
                             useCase.execute();

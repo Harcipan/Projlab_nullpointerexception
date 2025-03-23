@@ -10,11 +10,20 @@ public class UseCaseList {
     *       ADD YOUR USE CASES HERE
     * */
     public UseCaseList() {
+        useCases.add(new InsectCutMycelium());
+        useCases.add(new InsectMove());
         useCases.add(new MyceliumDies());
         useCases.add(new FungusGrowingAMushroom());
+        useCases.add(new FungusSpreadingSpores());
+        useCases.add(new FungusBodyDies());
     }
 
     public List<UseCase> getUseCases() {
         return useCases;
+    }
+
+    // sort them based on id
+    public void sortUseCases() {
+        useCases.sort((a, b) -> a.getID() - b.getID());
     }
 }

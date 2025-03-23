@@ -1,14 +1,15 @@
 package use_cases;
 
+import entities.FungusBody;
+import map.Map;
+import map.Tekton;
 import map.Tile;
-import entities.*;
-import map.*;
-import player.*;
+import player.FungusPlayer;
 
-public class FungusSpreadingSpores extends UseCase {
+public class FungusBodyDies extends UseCase {
 
-    FungusSpreadingSpores() {
-        super(13, "Fungus Spreading Spores");
+    public FungusBodyDies() {
+        super(14, "Fungus Body Dies");
     }
 
     @Override
@@ -35,12 +36,13 @@ public class FungusSpreadingSpores extends UseCase {
 
         FungusBody fb = null;
         if (true /* TODO: check validity via fp function */) {
-            fb = new FungusBody(1, 1, t);
+            fb = new FungusBody(1, 3, t);
             t.addEntity(fb);
         }
 
         // FungusPlayer spreading spores
-        fp.sporeCloud(fb, 5);
-
+        fp.sporeCloud(fb, 1);
+        fp.sporeCloud(fb, 1);
+        fp.sporeCloud(fb, 1);
     }
 }

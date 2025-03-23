@@ -25,6 +25,7 @@ public class UseCaseList {
         useCases.add(new TektonBreaking()); // 15
         useCases.add(new CannotGrowBodyOnTekton()); // 16
         useCases.add(new OnlyOneMyceliumGrowingOnTekton()); // 17
+        useCases.add(new MultipleMyceliumGrowingOnTekton()); // 18
     }
 
     public List<UseCase> getUseCases() {

@@ -12,13 +12,14 @@ public class UseCaseList {
     *       ADD YOUR USE CASES HERE
     * */
     public UseCaseList() {
-        useCases.add(new InsectCutMycelium());
-        useCases.add(new InsectMove());
-        useCases.add(new MyceliumDies());
-        useCases.add(new FungusGrowingAMushroom());
-        useCases.add(new FungusSpreadingSpores());
-        useCases.add(new FungusBodyDies());
-        useCases.add(new TektonBreaking());
+        useCases.add(new InsectMove()); // 1
+        useCases.add(new InsectCutMycelium()); // 2
+        useCases.add(new MyceliumDies()); // 11
+        useCases.add(new FungusGrowingAMushroom()); // 12
+        useCases.add(new FungusSpreadingSpores()); // 13
+        useCases.add(new FungusBodyDies()); // 14
+        useCases.add(new TektonBreaking()); // 15
+
     }
 
     public List<UseCase> getUseCases() {

@@ -15,28 +15,28 @@ public class InsectMove extends UseCase {
     public void execute() {
         //insect Player is created
         InsectPlayer ip=new InsectPlayer();
-        printWrapper("InsectPlayer: i",Direction.LEFT);
+        printWrapper("InsectPlayer: i", ArrowDirection.LEFT);
 
         //tekton of tiles
         Tekton tek=new Tekton(1,1);
-        printWrapper("Tekton: tek",Direction.LEFT);
+        printWrapper("Tekton: tek", ArrowDirection.LEFT);
 
 
         //current tile cration
         Tile currentTile=new Tile();
-        printWrapper("Tile: currentTile",Direction.LEFT);
+        printWrapper("Tile: currentTile", ArrowDirection.LEFT);
         
         //target tile creation
         Tile targetTile=new Tile();
-        printWrapper("Tile: targetTile",Direction.LEFT);
+        printWrapper("Tile: targetTile", ArrowDirection.LEFT);
 
         //insect creation
         Insect i=new Insect();
-        printWrapper("Insect: i",Direction.LEFT);
+        printWrapper("Insect: i", ArrowDirection.LEFT);
 
         //add tiles to tekton
         currentTile.setParentTekton(tek);
-        printWrapper("currentTile.setParentTekton()",Direction.LEFT);
+        printWrapper("currentTile.setParentTekton()", ArrowDirection.LEFT);
         targetTile.setParentTekton(tek);
 
         

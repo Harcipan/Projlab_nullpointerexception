@@ -4,9 +4,9 @@ import map.Tekton;
 import map.Tile;
 import player.FungusPlayer;
 
-public class MyceliumGrowing extends UseCase {
+public class MyceliumGrowingWithSpore extends UseCase {
 
-    public MyceliumGrowing() {
+    public MyceliumGrowingWithSpore() {
         super(8, "Mycelium growing");
     }
 

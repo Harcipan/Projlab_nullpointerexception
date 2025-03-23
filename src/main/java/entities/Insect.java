@@ -33,13 +33,14 @@ public class Insect extends GameEntity {
      */
     @Override
     public void update() {
-        for (Spore spore : underInfluence) {
+        /*for (Spore spore : underInfluence) {
             spore.update();
             if(spore.getEffectTime() <= 0) {
                 spore.removeEffect(this);
                 underInfluence.remove(spore);
             }
-        }
+        }*/
+        setCut(true);
     }
 
     /*
@@ -66,7 +67,10 @@ public class Insect extends GameEntity {
      */
     public void cut(Tile target) {
         // Will implement later
-        
+        target.getEntities();
+        for (GameEntity ge : target.getEntities()) {
+            //if()
+        }
     }
 
     /*

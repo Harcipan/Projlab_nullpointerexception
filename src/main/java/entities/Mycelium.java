@@ -8,8 +8,13 @@ public class Mycelium extends Fungus{
     boolean isDying = false;
     List<FungusBody> connectedBodies = new ArrayList<FungusBody>();
 
-    public Mycelium(int health, Tile currentTile) {
+    /*public Mycelium(int health, Tile currentTile) {
         super(health, currentTile);
+    }*/
+
+    public Mycelium()
+    {
+        super();
     }
 
     // Reconnect with the mycelium network, recover health

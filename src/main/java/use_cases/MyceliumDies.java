@@ -32,7 +32,8 @@ public class MyceliumDies extends UseCase {
 
         // mycelium creation and tile assignment in constructor
         System.out.println("Creating mycelium...");
-        Mycelium myc = new Mycelium(1, t);
+        Mycelium myc = new Mycelium();
+        myc.setTile(t);
 
         // make the reference mutual
         t.addEntity(myc);

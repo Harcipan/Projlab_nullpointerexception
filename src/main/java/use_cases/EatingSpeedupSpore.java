@@ -1,15 +1,15 @@
 package use_cases;
 
+import player.InsectPlayer;
 import entities.Insect;
-import entities.Mycelium;
+import entities.SpeedUpSpore;
+import entities.Spore;
 import map.Tekton;
 import map.Tile;
-import player.InsectPlayer;
 
-public class InsectCutMycelium extends UseCase {
-
-    public InsectCutMycelium() {
-        super(2, "Insect cuts Mycelium");
+public class EatingSpeedupSpore extends UseCase {
+    public EatingSpeedupSpore() {
+        super(3, "Speedup spore affecting insect");
     }
 
     @Override
@@ -26,21 +26,13 @@ public class InsectCutMycelium extends UseCase {
         Tile t=new Tile();
         //printWrapper("Tile: currentTile",Direction.LEFT);
         
-        //mycelium created
-        Mycelium tm=new Mycelium();
-
-        //insect created
+        //insect create
         Insect i=new Insect();
 
-        //add tile to the tekton
-        t.setParentTekton(tek);
+        //Speedupspore create
+        Spore s=new SpeedUpSpore();
 
-        t.addEntity(tm);
-        t.addEntity(i);
-
-        ip.setControlledInsect(i);
-
-        ip.cut(t);
+        //insect eat spore
+        ip.eat(s);
     }
-    
 }

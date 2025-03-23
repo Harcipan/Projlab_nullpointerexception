@@ -6,7 +6,8 @@ public class FungusBody extends Fungus{
     private int sporeCharge = 0;
 
     public FungusBody(int health, int initialSporeCharge, Tile currentTile) {
-        super(health, currentTile);
+        //super(health, currentTile);
+        super();
         this.sporeCharge = initialSporeCharge;
     }
 

@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Tester program for Use-Cases derived from Sequence Diagrams.\nUse the command 'list' to see the available use-cases. Use the command 'execute' followed by the name of the use-case or ID number to execute it.");
+        System.out.println("Tester program for Use-Cases derived from Sequence Diagrams.\nUse the command 'list' to see the available use-cases. Use the command 'execute' followed by the name of the use-case or ID number to execute it. Use exit to terminate the program.");
 
         Scanner scanner = new Scanner(System.in);
         boolean running = true;

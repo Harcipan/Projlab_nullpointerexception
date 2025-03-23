@@ -11,7 +11,7 @@ public class Map {
     List<Tekton> tektons;
 
     public Map() {
-        UseCase.printWrapper("Initializing Map as " + System.identityHashCode(this), UseCase.ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
+        UseCase.printWrapper("Initializing Map as " + System.identityHashCode(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         tektons = new ArrayList<>();
     }
 

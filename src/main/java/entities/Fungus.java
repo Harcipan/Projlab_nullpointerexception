@@ -29,7 +29,7 @@ public abstract class Fungus extends GameEntity {
     }
 
     public void die() {
-        printWrapper("Fungus " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, IndentDirection.STAY);
+        printWrapper("Fungus " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, Indent.KEEP);
     }
 
 

@@ -23,7 +23,7 @@ public class UseCaseList {
         useCases.add(new FungusSpreadingSpores()); // 13
         useCases.add(new FungusBodyDies()); // 14
         useCases.add(new TektonBreaking()); // 15
-
+        useCases.add(new CannotGrowBodyOnTekton()); // 16
     }
 
     public List<UseCase> getUseCases() {

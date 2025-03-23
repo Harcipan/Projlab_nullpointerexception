@@ -5,7 +5,7 @@ public abstract class UseCase {
     private String name;
     private static int persistentIndentDepth = 0;
     private static ArrowDirection persistentDir = ArrowDirection.RIGHT;
-    public enum IndentDirection {LEFT, RIGHT,STAY}
+    public enum Indent {UNINDENT, INDENT, KEEP}
     public enum ArrowDirection {LEFT, RIGHT}
 
     UseCase(int id, String name) {
@@ -40,15 +40,15 @@ public abstract class UseCase {
     }
 
     // Relative depth of the printWrapper with stepping after execution
-    public static void printWrapper(String message, ArrowDirection dir, IndentDirection indentDir) {
+    public static void printWrapper(String message, ArrowDirection dir, Indent indentDir) {
         printWrapper(message, dir, persistentIndentDepth);
 
         // Indentation change happens after the message is printed
-        if (indentDir == IndentDirection.LEFT) {
+        if (indentDir == Indent.UNINDENT) {
             persistentIndentDepth--;
-        } else if (indentDir == IndentDirection.RIGHT) {
+        } else if (indentDir == Indent.INDENT) {
             persistentIndentDepth++;
-        } else if (indentDir == IndentDirection.STAY) {
+        } else if (indentDir == Indent.KEEP) {
             // Do nothing
         }
     }

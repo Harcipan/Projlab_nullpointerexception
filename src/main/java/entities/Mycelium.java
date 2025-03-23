@@ -2,7 +2,6 @@ package entities;
 
 import java.util.ArrayList;
 import java.util.List;
-import map.*;
 
 import static use_cases.UseCase.*;
 
@@ -17,7 +16,7 @@ public class Mycelium extends Fungus{
     public Mycelium()
     {
         super();
-        printWrapper("Initializing Mycelium as " + System.identityHashCode(this), ArrowDirection.RIGHT, IndentDirection.STAY);
+        printWrapper("Initializing Mycelium as " + System.identityHashCode(this), ArrowDirection.RIGHT, Indent.KEEP);
     }
 
     // Reconnect with the mycelium network, recover health

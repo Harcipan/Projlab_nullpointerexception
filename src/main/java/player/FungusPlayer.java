@@ -58,11 +58,45 @@ public class FungusPlayer extends Player{
         tile.addEntity(new_fb);
 
         // increment forwards
-        printWrapper("Finished growing a mushroom.", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+        printWrapper("Finished growing a fungus body.", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
 }
 
     public void growMycelium(Tile tile) {
-        // Will implement later
+        printWrapper("Player " + System.identityHashCode(this) + " trying to grow a mycelium...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
+        // neighbor testing happens here
+        // (agreed on handling game logic as soon as possible to prevent chained function calls and constant dispatching)
+        printWrapper("Checking if the tile " + System.identityHashCode(tile) + " is a neighbor of a living mycelium/fungus body");
+
+        // TODO presuming that the tile is a neighbor of a living mycelium
+        printWrapper("The tile " + System.identityHashCode(tile) +  "is a neighbor of a living mycelium/fungus body", UseCase.ArrowDirection.RIGHT);
+
+        // validate if the tile has a parent tekton
+        if (tile.getParentTekton() == null) {
+            printWrapper("Tile " + System.identityHashCode(tile) + " has no parent tekton", UseCase.ArrowDirection.RIGHT);
+            return;
+        }
+
+        // check if there is a mycelium already on the tile
+        Mycelium myc = null;
+        for (GameEntity e : tile.getEntities()) {
+            if (e instanceof Mycelium) {
+                myc = (Mycelium) e;
+                break;
+            }
+        }
+        if (myc != null) {
+            printWrapper("Mycelium " + System.identityHashCode(myc) + " on tile " + System.identityHashCode(tile) + " already exists", UseCase.ArrowDirection.RIGHT);
+            return;
+        }
+
+        Mycelium new_myc = new Mycelium();
+
+        // adding the fungus body to the tile
+        printWrapper("Adding the mycelium " + System.identityHashCode(new_myc) + " to tile " + System.identityHashCode(tile));
+        tile.addEntity(new_myc);
+
+        // increment forwards
+        printWrapper("Finished growing a mycelium.", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
     }
 
     public void sporeCloud(FungusBody target, int size) {

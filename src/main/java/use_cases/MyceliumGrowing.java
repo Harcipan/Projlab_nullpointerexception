@@ -18,7 +18,7 @@ public class MyceliumGrowing extends UseCase {
         //create tile
         Tile t=new Tile();
         
-        //create fungus
+        //create ungus
         FungusPlayer fp=new FungusPlayer();
 
         //add tile to tekton

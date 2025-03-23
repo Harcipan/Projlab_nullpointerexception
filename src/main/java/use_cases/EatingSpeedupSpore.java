@@ -29,8 +29,16 @@ public class EatingSpeedupSpore extends UseCase {
         //insect create
         Insect i=new Insect();
 
+
         //Speedupspore create
         Spore s=new SpeedUpSpore();
+
+        //add insect to insectplayer
+        ip.setControlledInsect(i);
+
+        //add insect and spore to tile
+        t.addEntity(s);
+        t.addEntity(i);
 
         //insect eat spore
         ip.eat(s);

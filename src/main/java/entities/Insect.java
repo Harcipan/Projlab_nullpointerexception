@@ -73,7 +73,7 @@ public class Insect extends GameEntity {
      * Add a spore to the list of spores affecting the insect
      */
     public void addSpore(Spore spore){
-        underInfluence.add(spore);
+        //underInfluence.add(spore);
     }
 
     /*

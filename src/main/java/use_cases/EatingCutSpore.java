@@ -10,7 +10,7 @@ import map.Tile;
 
 public class EatingCutSpore extends UseCase {
     public EatingCutSpore() {
-        super(6, "SCut spore affecting insect");
+        super(6, "Cut spore affecting insect");
     }
 
     @Override
@@ -32,6 +32,13 @@ public class EatingCutSpore extends UseCase {
 
         //Speedupspore create
         Spore s=new CutSpore();
+
+        //add insect to insectplayer
+        ip.setControlledInsect(i);
+
+        //add insect and spore to tile
+        t.addEntity(s);
+        t.addEntity(i);
 
         //insect eat spore
         ip.eat(s);

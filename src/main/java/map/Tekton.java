@@ -1,6 +1,8 @@
 package map;
 
 import entities.*;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +26,23 @@ public class Tekton {
     }
 
     //"break" is reserved keyword
-    public void breakTekton() {
-        // Will implement later
+    // TODO this is a crude simplification of the actual process
+    public ArrayList<Tekton> breakTekton() {
+
+        ArrayList<Tekton> tl = new ArrayList<>();
+        printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
+
+        // based on some algorithm we break it into two pieces
+        tl.add(new Tekton(breakChance, sporeCount));
+        tl.add(new Tekton(breakChance, sporeCount));
+        for (Tekton tekton : tl) {
+            // migrating elements into new tektons
+            printWrapper("New tekton " + System.identityHashCode(tekton)
+                    + " created and migrated elements based on some algorithm",
+                    UseCase.ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
+        }
+
+        return tl;
     }
 
     public void increaseChance(int amount) {

@@ -30,7 +30,6 @@ public class Main {
             if (input.equalsIgnoreCase("exit") || input.equalsIgnoreCase("quit")) {
                 running = false;
             } else if (input.equalsIgnoreCase("list")) {
-                System.out.println("Sorting use-cases...");
                 useCases.sortUseCases();
                 System.out.println("Available use-cases:");
                 for (UseCase useCase : useCases.getUseCases()) {
@@ -61,7 +60,6 @@ public class Main {
                     }
                     // keyword 'all'
                     if (identifier.equalsIgnoreCase("all")) {
-                        System.out.println("Sorting use-cases...");
                         useCases.sortUseCases();
                         for (UseCase useCase : useCases.getUseCases()) {
                             System.out.println("\n====== Use Case " + useCase.getID() + " - " + useCase.getName() + " ======");

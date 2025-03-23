@@ -14,6 +14,10 @@ public class UseCaseList {
     public UseCaseList() {
         useCases.add(new InsectMove()); // 1
         useCases.add(new InsectCutMycelium()); // 2
+        useCases.add(new EatingSpeedupSpore()); // 3
+        useCases.add(new EatingSlowSpore()); // 4
+        useCases.add(new EatingFreezingSpore()); // 5
+        useCases.add(new EatingCutSpore()); // 6
         useCases.add(new MyceliumDies()); // 11
         useCases.add(new FungusGrowingAMushroom()); // 12
         useCases.add(new FungusSpreadingSpores()); // 13

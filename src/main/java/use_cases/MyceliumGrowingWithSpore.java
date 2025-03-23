@@ -7,7 +7,7 @@ import player.FungusPlayer;
 public class MyceliumGrowingWithSpore extends UseCase {
 
     public MyceliumGrowingWithSpore() {
-        super(8, "Mycelium growing");
+        super(9, "Mycelium growing with spore");
     }
 
     @Override

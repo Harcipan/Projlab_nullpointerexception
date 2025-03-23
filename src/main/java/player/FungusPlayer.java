@@ -19,7 +19,7 @@ public class FungusPlayer extends Player{
         printWrapper("Initializing FungusPlayer as " + System.identityHashCode(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
     }
 
-    public void growBody(Tile tile) {
+    public FungusBody growBody(Tile tile) {
         printWrapper("Player " + System.identityHashCode(this) + " trying to grow a mushroom...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
         // neighbor testing happens here
         // (agreed on handling game logic as soon as possible to prevent chained function calls and constant dispatching)
@@ -34,7 +34,7 @@ public class FungusPlayer extends Player{
         // validate if the tile has a parent tekton
         if (tile.getParentTekton() == null) {
             printWrapper("Tile " + System.identityHashCode(tile) + " has no parent tekton", UseCase.ArrowDirection.RIGHT);
-            return;
+            return null;
         }
 
         // check for existing tiles next to the tile
@@ -49,7 +49,7 @@ public class FungusPlayer extends Player{
         if (fb != null) {
             printWrapper("Body " + System.identityHashCode(fb) + " on tekton "
                     + System.identityHashCode(tile.getParentTekton()) + " already exists", UseCase.ArrowDirection.RIGHT);
-            return;
+            return null;
         }
         FungusBody new_fb = new FungusBody(1, 1, tile);
 
@@ -59,9 +59,10 @@ public class FungusPlayer extends Player{
 
         // increment forwards
         printWrapper("Finished growing a fungus body.", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
-}
+        return fb;
+    }
 
-    public void growMycelium(Tile tile) {
+    public Mycelium growMycelium(Tile tile) {
         printWrapper("Player " + System.identityHashCode(this) + " trying to grow a mycelium...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
         // neighbor testing happens here
         // (agreed on handling game logic as soon as possible to prevent chained function calls and constant dispatching)
@@ -73,7 +74,7 @@ public class FungusPlayer extends Player{
         // validate if the tile has a parent tekton
         if (tile.getParentTekton() == null) {
             printWrapper("Tile " + System.identityHashCode(tile) + " has no parent tekton", UseCase.ArrowDirection.RIGHT);
-            return;
+            return null;
         }
 
         // check if there is a mycelium already on the tile
@@ -86,7 +87,7 @@ public class FungusPlayer extends Player{
         }
         if (myc != null) {
             printWrapper("Mycelium " + System.identityHashCode(myc) + " on tile " + System.identityHashCode(tile) + " already exists", UseCase.ArrowDirection.RIGHT);
-            return;
+            return null;
         }
 
         Mycelium new_myc = new Mycelium();
@@ -97,6 +98,7 @@ public class FungusPlayer extends Player{
 
         // increment forwards
         printWrapper("Finished growing a mycelium.", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+        return myc;
     }
 
     public void sporeCloud(FungusBody target, int size) {

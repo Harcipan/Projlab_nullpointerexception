@@ -29,7 +29,8 @@ public abstract class Fungus extends GameEntity {
     }
 
     public void die() {
-        printWrapper("Fungus " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, Indent.KEEP);
+        printWrapper("Fungus (typeof " + this.getClass().getName()
+                + ") " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, Indent.KEEP);
     }
 
 

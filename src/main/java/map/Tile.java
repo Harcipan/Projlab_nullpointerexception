@@ -39,7 +39,8 @@ public class Tile {
 
     public void removeEntity(GameEntity entity) {
         entities.remove(entity);
-        printWrapper("Removing entity from tile", ArrowDirection.RIGHT, Indent.KEEP);
+        printWrapper("Removing entity (typeof " + entity.getClass().getName()
+                + ")" + System.identityHashCode(entity)+ " from tile", ArrowDirection.RIGHT, Indent.KEEP);
     }
 
     public Tekton getParentTekton() {

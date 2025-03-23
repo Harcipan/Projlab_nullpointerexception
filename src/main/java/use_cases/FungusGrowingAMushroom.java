@@ -5,7 +5,6 @@ import player.FungusPlayer;
 public class FungusGrowingAMushroom extends UseCase {
 
     @Override
-
     public void execute() {
         // initializing scene
         printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);

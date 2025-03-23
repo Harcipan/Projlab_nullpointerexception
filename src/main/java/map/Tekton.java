@@ -1,8 +1,5 @@
 package map;
 
-import entities.*;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,11 +15,19 @@ public class Tekton {
     FungusBody fungusBody;
 
     public Tekton(int breakChance, int sporeCount) {
-        UseCase.printWrapper("Initializing Tekton as " + System.identityHashCode(this), UseCase.ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
+        UseCase.printWrapper("Initializing Tekton as " + System.identityHashCode(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         this.breakChance = breakChance;
         this.sporeCount = sporeCount;
         tiles = new ArrayList<>();
         fungusBody = null;
+    }
+
+    public void addTile(Tile tile) {
+        tiles.add(tile);
+    }
+
+    public List<Tile> getTiles() {
+        return tiles;
     }
 
     //"break" is reserved keyword
@@ -30,7 +35,7 @@ public class Tekton {
     public ArrayList<Tekton> breakTekton() {
 
         ArrayList<Tekton> tl = new ArrayList<>();
-        printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
+        printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
 
         // based on some algorithm we break it into two pieces
         tl.add(new Tekton(breakChance, sporeCount));
@@ -39,7 +44,7 @@ public class Tekton {
             // migrating elements into new tektons
             printWrapper("New tekton " + System.identityHashCode(tekton)
                     + " created and migrated elements based on some algorithm",
-                    UseCase.ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
+                    UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         }
 
         return tl;

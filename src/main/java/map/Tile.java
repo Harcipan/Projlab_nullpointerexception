@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.*;
-import use_cases.*;
+
 import static use_cases.UseCase.*;
 
 
@@ -23,7 +23,7 @@ public class Tile {
 
     public Tile() {
         entities = new ArrayList<>();
-        printWrapper("Initializing Tile as " + System.identityHashCode(this), ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
+        printWrapper("Initializing Tile as " + System.identityHashCode(this), ArrowDirection.RIGHT, Indent.KEEP);
     }
 
     public void addEntity(GameEntity entity) {
@@ -39,7 +39,7 @@ public class Tile {
 
     public void removeEntity(GameEntity entity) {
         entities.remove(entity);
-        printWrapper("Removing entity from tile", ArrowDirection.RIGHT, IndentDirection.STAY);
+        printWrapper("Removing entity from tile", ArrowDirection.RIGHT, Indent.KEEP);
     }
 
     public Tekton getParentTekton() {

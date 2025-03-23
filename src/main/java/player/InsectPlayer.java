@@ -12,7 +12,7 @@ public class InsectPlayer extends Player{
     public InsectPlayer() {
         super();
         this.controlledInsect = null;
-        UseCase.printWrapper("Initializing InsectPlayer as " + System.identityHashCode(this), ArrowDirection.RIGHT, UseCase.IndentDirection.STAY);
+        UseCase.printWrapper("Initializing InsectPlayer as " + System.identityHashCode(this), ArrowDirection.RIGHT, UseCase.Indent.KEEP);
     }
 
     public void setControlledInsect(Insect controlledInsect) {

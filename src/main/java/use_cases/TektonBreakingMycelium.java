@@ -14,7 +14,7 @@ import java.util.List;
 public class TektonBreakingMycelium extends UseCase {
 
     public TektonBreakingMycelium() {
-        super(19, "Tekton breaking with mycelium");
+        super(18, "Tekton breaking with mycelium");
     }
 
     @Override

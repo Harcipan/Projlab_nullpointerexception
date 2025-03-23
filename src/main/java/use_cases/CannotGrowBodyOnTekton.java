@@ -8,7 +8,7 @@ import player.FungusPlayer;
 public class CannotGrowBodyOnTekton extends UseCase {
 
     public CannotGrowBodyOnTekton() {
-        super(16, "Cannot Grow Body on Tekton");
+        super(15, "Cannot Grow Body on Tekton");
     }
 
     @Override

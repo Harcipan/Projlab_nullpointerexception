@@ -29,6 +29,6 @@ public class FungusGrowingAMushroom extends UseCase {
     }
 
     FungusGrowingAMushroom() {
-        super(12, "Fungus Growing a Mushroom");
+        super(11, "Fungus Growing a Mushroom");
     }
 }

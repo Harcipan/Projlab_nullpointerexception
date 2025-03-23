@@ -7,8 +7,12 @@ import map.Tile;
  * effectValue must be greater than 100 (its a percentage)
  */
 public class SpeedUpSpore extends Spore {
-    public SpeedUpSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+    /*public SpeedUpSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
+    }*/
+
+    public SpeedUpSpore() {
+        super();
     }
 
     /*

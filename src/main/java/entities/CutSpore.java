@@ -3,8 +3,12 @@ package entities;
 import map.Tile;
 
 public class CutSpore extends Spore {
-    public CutSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+    /*public CutSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
+    }*/
+
+    public CutSpore() {
+        super();
     }
 
     /*

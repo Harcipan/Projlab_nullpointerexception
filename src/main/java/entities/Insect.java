@@ -48,7 +48,7 @@ public class Insect extends GameEntity {
      * Adds spore to affecting list
      */
     public void eat(Spore target) {
-        controlledBy.updateScore(target.getNutrientValue());
+        //controlledBy.updateScore(target.getNutrientValue());
         target.getEaten(this);
     }
 

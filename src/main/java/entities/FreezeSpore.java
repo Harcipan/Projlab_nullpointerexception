@@ -3,8 +3,12 @@ package entities;
 import map.Tile;
 
 public class FreezeSpore extends Spore {
-    public FreezeSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+    /*public FreezeSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
+    }*/
+
+    public FreezeSpore() {
+        super();
     }
 
     /*

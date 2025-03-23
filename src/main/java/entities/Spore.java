@@ -9,12 +9,16 @@ public abstract class Spore extends GameEntity{
     int effectValue;   // The strength of the effect the spore will apply
     boolean isConsumed; // Whether the spore has been eaten by an insect
 
-    protected Spore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+    /*protected Spore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile);
         this.nutrientValue = nutrientValue;
         this.lifetime = lifetime;
         this.effectTime = effectTime;
         this.effectValue = effectValue;
+    }*/
+
+    protected Spore() {
+        super();
     }
 
     public void getEaten(Insect i) {

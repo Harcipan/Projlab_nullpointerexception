@@ -5,6 +5,8 @@ import use_cases.UseCase;
 import java.util.ArrayList;
 import java.util.List;
 
+import entities.GameEntity;
+
 import static use_cases.UseCase.printWrapper;
 
 public class Map {
@@ -25,6 +27,10 @@ public class Map {
 
     public void removeTekton(Tekton tekton) {
         tektons.remove(tekton);
+    }
+
+    public void update(GameEntity e) {
+        e.update();
     }
 
     public void tick() {

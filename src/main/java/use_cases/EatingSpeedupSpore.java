@@ -14,6 +14,7 @@ public class EatingSpeedupSpore extends UseCase {
 
     @Override
     public void execute() {
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
         //insect player is created
         UseCase.logger.put(null, "ip");
         InsectPlayer ip=new InsectPlayer();

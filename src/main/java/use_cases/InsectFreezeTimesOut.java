@@ -11,6 +11,7 @@ public class InsectFreezeTimesOut extends UseCase {
 
     @Override
     public void execute() {
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
        //create map 
        
        UseCase.logger.put(null, "m");

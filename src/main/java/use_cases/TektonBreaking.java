@@ -21,9 +21,11 @@ public class TektonBreaking extends UseCase {
         printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
 
         // Initializing map
+        UseCase.logger.put(null, "m");
         Map m = new Map();
 
         // Initializing tekton
+        UseCase.logger.put(null, "tek");
         Tekton tek = new Tekton(1, 1);
 
         // Adding tekton to map

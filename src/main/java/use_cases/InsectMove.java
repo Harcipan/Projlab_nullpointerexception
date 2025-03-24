@@ -1,6 +1,9 @@
 package use_cases;
 
 import player.InsectPlayer;
+
+import java.util.HashMap;
+
 import entities.Insect;
 import map.Tekton;
 import map.Tile;
@@ -13,30 +16,30 @@ public class InsectMove extends UseCase {
 
     @Override
     public void execute() {
+
         //insect Player is created
+        UseCase.logger.put(null, "ip");
         InsectPlayer ip=new InsectPlayer();
-        printWrapper("InsectPlayer: i", ArrowDirection.LEFT);
 
         //tekton of tiles
+        UseCase.logger.put(null, "tek");
         Tekton tek=new Tekton(1,1);
-        printWrapper("Tekton: tek", ArrowDirection.LEFT);
 
 
         //current tile cration
+        UseCase.logger.put(null, "currentTile");
         Tile currentTile=new Tile();
-        printWrapper("Tile: currentTile", ArrowDirection.LEFT);
         
         //target tile creation
+        UseCase.logger.put(null, "targetTile");
         Tile targetTile=new Tile();
-        printWrapper("Tile: targetTile", ArrowDirection.LEFT);
 
         //insect creation
+        UseCase.logger.put(null, "i");
         Insect i=new Insect();
-        printWrapper("Insect: i", ArrowDirection.LEFT);
 
         //add tiles to tekton
         currentTile.setParentTekton(tek);
-        printWrapper("currentTile.setParentTekton()", ArrowDirection.LEFT);
         targetTile.setParentTekton(tek);
 
         

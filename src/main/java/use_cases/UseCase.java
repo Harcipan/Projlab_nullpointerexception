@@ -1,5 +1,7 @@
 package use_cases;
 
+import java.util.HashMap;
+
 public abstract class UseCase {
     private int id;
     private String name;
@@ -7,10 +9,17 @@ public abstract class UseCase {
     private static ArrowDirection persistentDir = ArrowDirection.RIGHT;
     public enum Indent {UNINDENT, INDENT, KEEP}
     public enum ArrowDirection {LEFT, RIGHT}
+    public static HashMap<Object,String> logger;
 
     UseCase(int id, String name) {
         this.id = id;
         this.name = name;
+        logger=new HashMap<Object,String>();
+    }
+
+    public static void replace(Object o) {
+        logger.put(o,logger.get(null));
+        logger.remove(null);
     }
 
     public int getID() {
@@ -41,12 +50,17 @@ public abstract class UseCase {
 
     // Relative depth of the printWrapper with stepping after execution
     public static void printWrapper(String message, ArrowDirection dir, Indent indentDir) {
+        //unindentation happens before the message is printed so it can be used in the same function where the indentation happens
+        if (indentDir == Indent.UNINDENT) {
+            persistentIndentDepth--;
+        } 
+        
         printWrapper(message, dir, persistentIndentDepth);
 
         // Indentation change happens after the message is printed
-        if (indentDir == Indent.UNINDENT) {
+        /*if (indentDir == Indent.UNINDENT) {
             persistentIndentDepth--;
-        } else if (indentDir == Indent.INDENT) {
+        } else */if (indentDir == Indent.INDENT) {
             persistentIndentDepth++;
         } else if (indentDir == Indent.KEEP) {
             // Do nothing

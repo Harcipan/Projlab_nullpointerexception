@@ -12,9 +12,13 @@ public class InsectFreezeTimesOut extends UseCase {
     @Override
     public void execute() {
        //create map 
+       
+       UseCase.logger.put(null, "m");
        Map m=new Map();
 
        //create insect
+       
+       UseCase.logger.put(null, "i");
        Insect i=new Insect();
 
        m.update(i);

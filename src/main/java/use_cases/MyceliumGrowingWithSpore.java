@@ -13,12 +13,15 @@ public class MyceliumGrowingWithSpore extends UseCase {
     @Override
     public void execute() {
         //create tekton
+        UseCase.logger.put(null, "tek");
         Tekton tek=new Tekton(1,1);
 
         //create tile
+        UseCase.logger.put(null, "t");
         Tile t=new Tile();
         
-        //create fungus
+        //create ungus
+        UseCase.logger.put(null, "fp");
         FungusPlayer fp=new FungusPlayer();
 
         //add tile to tekton

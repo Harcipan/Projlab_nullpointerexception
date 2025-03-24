@@ -5,8 +5,11 @@ import java.util.List;
 import entities.*;
 import map.Tile;
 import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
 
+import static use_cases.UseCase.logger;
 import static use_cases.UseCase.printWrapper;
+import static use_cases.UseCase.replace;
 
 public class FungusPlayer extends Player{
     List<FungusBody> fungusBodies;
@@ -14,9 +17,11 @@ public class FungusPlayer extends Player{
 
     public FungusPlayer() {
         super();
+        replace(this);
         fungusBodies = null;
         mycelia = null;
-        printWrapper("Initializing FungusPlayer as " + System.identityHashCode(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
+        printWrapper("Initializing FungusPlayer as " + logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
+        UseCase.printWrapper("FungusPlayer: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     public FungusBody growBody(Tile tile) {

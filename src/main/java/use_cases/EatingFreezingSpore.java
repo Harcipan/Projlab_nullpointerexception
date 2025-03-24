@@ -15,32 +15,41 @@ public class EatingFreezingSpore extends UseCase {
 
     @Override
     public void execute() {
-        //insect player is created
-        InsectPlayer ip=new InsectPlayer();
+       //insect player is created
+       UseCase.logger.put(null, "ip");
+       InsectPlayer ip=new InsectPlayer();
 
-        //tekton of tiles
-        Tekton tek=new Tekton(1,1);
-        //printWrapper("Tekton: tek",Direction.LEFT);
+       //tekton of tiles
+       UseCase.logger.put(null, "tek");
+       Tekton tek=new Tekton(1,1);
+       //printWrapper("Tekton: tek",Direction.LEFT);
 
 
-        //current tile cration
-        Tile t=new Tile();
-        //printWrapper("Tile: currentTile",Direction.LEFT);
-        
-        //insect create
-        Insect i=new Insect();
+       //current tile cration
+       UseCase.logger.put(null, "t");
+       Tile t=new Tile();
+       //printWrapper("Tile: currentTile",Direction.LEFT);
+       
+       //insect create
+       UseCase.logger.put(null, "i");
+       Insect i=new Insect();
 
-        //Speedupspore create
-        Spore s=new FreezeSpore();
 
-        //add insect to insectplayer
-        ip.setControlledInsect(i);
+       //Freezespore create
+       UseCase.logger.put(null, "s");
+       Spore s=new FreezeSpore();
 
-        //add insect and spore to tile
-        t.addEntity(s);
-        t.addEntity(i);
+       //add insect to insectplayer
+       ip.setControlledInsect(i);
 
-        //insect eat spore
-        ip.eat(s);
+       //add tiles to tekton
+       t.setParentTekton(tek);
+
+       //add insect and spore to tile
+       t.addEntity(s);
+       t.addEntity(i);
+
+       //insect eat spore
+       ip.eat(s);
     }
 }

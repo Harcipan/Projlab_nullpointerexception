@@ -6,6 +6,7 @@ import map.*;
 import player.*;
 import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
 
 public class Insect extends GameEntity {
     int speed;  // The speed of the insect
@@ -24,7 +25,9 @@ public class Insect extends GameEntity {
     public Insect()
     {
         super();
-        UseCase.printWrapper("Insect", ArrowDirection.RIGHT);
+        UseCase.replace(this);
+        UseCase.printWrapper("Initializing Insect as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
+        UseCase.printWrapper("Insect: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     /*
@@ -40,7 +43,10 @@ public class Insect extends GameEntity {
                 underInfluence.remove(spore);
             }
         }*/
+
+        UseCase.printWrapper(UseCase.logger.get(this)+".update()", ArrowDirection.RIGHT, Indent.INDENT);
         setCut(true);
+        UseCase.printWrapper(UseCase.logger.get(this)+".update()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*
@@ -49,7 +55,9 @@ public class Insect extends GameEntity {
      */
     public void eat(Spore target) {
         //controlledBy.updateScore(target.getNutrientValue());
+        UseCase.printWrapper(UseCase.logger.get(this)+".eat(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         target.getEaten(this);
+        UseCase.printWrapper(UseCase.logger.get(this)+".eat()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*
@@ -58,8 +66,10 @@ public class Insect extends GameEntity {
      */
     public void step(Tile target) {
         // Will implement later
+        UseCase.printWrapper(UseCase.logger.get(this)+".step(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         currentTile.removeEntity(this);
         target.addEntity(this);
+        UseCase.printWrapper(UseCase.logger.get(this)+".step()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*
@@ -67,10 +77,12 @@ public class Insect extends GameEntity {
      */
     public void cut(Tile target) {
         // Will implement later
+        UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         target.getEntities();
         for (GameEntity ge : target.getEntities()) {
             //if()
         }
+        UseCase.printWrapper(UseCase.logger.get(this)+".cut())", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*

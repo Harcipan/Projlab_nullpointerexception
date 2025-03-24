@@ -23,16 +23,21 @@ public class TektonBreakingMycelium extends UseCase {
         printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
 
         // Initializing map
+        
+        UseCase.logger.put(null, "m");
         Map m = new Map();
 
         // Initializing tekton
+        UseCase.logger.put(null, "tek");
         Tekton tek = new Tekton(1, 1);
 
         // Adding tekton to map
         m.addTekton(tek);
 
         // Adding tile to tekton
+        UseCase.logger.put(null, "t1");
         Tile t1 = new Tile();
+        UseCase.logger.put(null, "t2");
         Tile t2 = new Tile();
         t1.setParentTekton(tek);
         t2.setParentTekton(tek);
@@ -41,6 +46,7 @@ public class TektonBreakingMycelium extends UseCase {
         tek.addTile(t2);
 
         // Adding fungusPlayer
+        UseCase.logger.put(null, "fp");
         FungusPlayer fp = new FungusPlayer();
 
         // Adding fungusBody

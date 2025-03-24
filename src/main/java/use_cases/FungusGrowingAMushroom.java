@@ -10,18 +10,22 @@ public class FungusGrowingAMushroom extends UseCase {
         printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
 
         // initializing map
+        logger.put(null, "m");
         Map m = new Map();
 
         // initializing tekton
+        UseCase.logger.put(null, "tek");
         Tekton tek = new Tekton(1, 1);
 
         // adding tekton to map
         m.addTekton(tek);
 
         // initializing tile
+        UseCase.logger.put(null, "t");
         Tile t = new Tile();
 
         // initializing player
+        UseCase.logger.put(null, "fp");
         FungusPlayer fp = new FungusPlayer();
 
         // player trying to grow a mushroom

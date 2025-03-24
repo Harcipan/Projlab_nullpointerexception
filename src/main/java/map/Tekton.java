@@ -5,6 +5,7 @@ import java.util.List;
 
 import entities.FungusBody;
 import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
 
 import static use_cases.UseCase.printWrapper;
 
@@ -15,11 +16,13 @@ public class Tekton {
     FungusBody fungusBody;
 
     public Tekton(int breakChance, int sporeCount) {
-        UseCase.printWrapper("Initializing Tekton as " + System.identityHashCode(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
+        UseCase.replace(this);
+        UseCase.printWrapper("Initializing Tekton as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         this.breakChance = breakChance;
         this.sporeCount = sporeCount;
         tiles = new ArrayList<>();
         fungusBody = null;
+        UseCase.printWrapper("Tekton: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     public void addTile(Tile tile) {

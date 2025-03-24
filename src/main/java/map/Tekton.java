@@ -41,7 +41,9 @@ public class Tekton {
         printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
 
         // based on some algorithm we break it into two pieces
+        UseCase.logger.put(null, "t1");
         tl.add(new Tekton(breakChance, sporeCount));
+        UseCase.logger.put(null, "t2");
         tl.add(new Tekton(breakChance, sporeCount));
         for (Tekton tekton : tl) {
             // migrating elements into new tektons

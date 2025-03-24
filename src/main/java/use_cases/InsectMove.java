@@ -16,6 +16,8 @@ public class InsectMove extends UseCase {
 
     @Override
     public void execute() {
+        
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
 
         //insect Player is created
         UseCase.logger.put(null, "ip");

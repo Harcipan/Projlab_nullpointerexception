@@ -14,6 +14,8 @@ public class InsectCutMycelium extends UseCase {
 
     @Override
     public void execute() {
+        
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
         //insect player is created
         logger.put(null, "ip");
         InsectPlayer ip=new InsectPlayer();

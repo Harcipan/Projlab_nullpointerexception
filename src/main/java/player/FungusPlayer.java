@@ -56,6 +56,7 @@ public class FungusPlayer extends Player{
                     + System.identityHashCode(tile.getParentTekton()) + " already exists", UseCase.ArrowDirection.RIGHT);
             return null;
         }
+        logger.put(null,"new_fb");
         FungusBody new_fb = new FungusBody(1, 1, tile);
 
         // adding the fungus body to the tile
@@ -95,6 +96,7 @@ public class FungusPlayer extends Player{
             return null;
         }
 
+        logger.put(null, "new_myc");
         Mycelium new_myc = new Mycelium();
 
         // adding the fungus body to the tile

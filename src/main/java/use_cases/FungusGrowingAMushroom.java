@@ -24,6 +24,9 @@ public class FungusGrowingAMushroom extends UseCase {
         UseCase.logger.put(null, "t");
         Tile t = new Tile();
 
+        //add tile to tekton
+        t.setParentTekton(tek);
+
         // initializing player
         UseCase.logger.put(null, "fp");
         FungusPlayer fp = new FungusPlayer();

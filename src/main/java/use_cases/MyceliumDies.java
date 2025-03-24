@@ -31,12 +31,15 @@ public class MyceliumDies extends UseCase {
         UseCase.logger.put(null, "t");
         Tile t = new Tile();
 
+
         // mycelium creation and tile assignment in constructor
 
         System.out.println("Creating mycelium...");
         UseCase.logger.put(null, "myc");
         Mycelium myc = new Mycelium();
-        myc.setTile(t);
+        //add tile to tekton
+        t.setParentTekton(tek);
+
         // make the reference mutual
         t.addEntity(myc);
 

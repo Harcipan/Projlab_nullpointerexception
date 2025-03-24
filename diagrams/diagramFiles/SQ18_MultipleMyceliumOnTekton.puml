@@ -5,10 +5,10 @@ title 18. Multiple mycelium growing on Tekton
 actor "Skeleton" as Ac
 participant "f1 : Fungus" as F1
 participant "f2 : Fungus" as F2
-participant "tek: Tekton" as Tek
+participant "tek: Tile" as Tek
 participant "m1 : Mycelium" as M1
 participant "m2 : Mycelium" as M2
-participant "t : Tile" as T
+participant "t : Tekton" as T
 
 activate Ac
 activate F1

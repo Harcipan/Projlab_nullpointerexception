@@ -33,6 +33,8 @@ public class FungusBodyDies extends UseCase {
         UseCase.logger.put(null, "t");
         Tile t = new Tile();
 
+        t.setParentTekton(tek);
+
         // Initializing fungusPlayer
         UseCase.logger.put(null, "fp");
         FungusPlayer fp = new FungusPlayer();

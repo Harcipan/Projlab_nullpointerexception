@@ -33,7 +33,7 @@ public class FungusPlayer extends Player{
         // presuming that the tile is a neighbor of a living mycelium
         printWrapper("The tile " + System.identityHashCode(tile) +  "is a neighbor of a living mycelium/fungus body", UseCase.ArrowDirection.RIGHT);
 
-        // check if there is a body already on the tekton
+        // start checking if there is a body already on the tekton
         FungusBody fb = null;
 
         // validate if the tile has a parent tekton
@@ -56,6 +56,13 @@ public class FungusPlayer extends Player{
                     + System.identityHashCode(tile.getParentTekton()) + " already exists", UseCase.ArrowDirection.RIGHT);
             return null;
         }
+        System.out.println("Doest the player have enough action points to grow a body? Y/N");
+        String answer = System.console().readLine();
+        if (answer.equalsIgnoreCase("N")) {
+            printWrapper("Player does not have enough points to grow a body, end of use-case", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+            return null;
+        }
+        // checking complete, create the body
         logger.put(null,"new_fb");
         FungusBody new_fb = new FungusBody(1, 1, tile);
 
@@ -99,7 +106,7 @@ public class FungusPlayer extends Player{
         logger.put(null, "new_myc");
         Mycelium new_myc = new Mycelium();
 
-        // adding the fungus body to the tile
+        // adding the mycelium to the tile
         printWrapper("Adding the mycelium " + System.identityHashCode(new_myc) + " to tile " + System.identityHashCode(tile));
         tile.addEntity(new_myc);
 

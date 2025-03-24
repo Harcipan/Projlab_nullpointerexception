@@ -1,5 +1,7 @@
 package player;
 
+import static use_cases.UseCase.printWrapper;
+
 import entities.Insect;
 import map.Tile;
 import use_cases.UseCase;
@@ -26,6 +28,13 @@ public class InsectPlayer extends Player{
     public void moveTo(Tile tile) {
         // Will implement later
         UseCase.printWrapper(UseCase.logger.get(this)+".moveTo(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
+
+        System.out.println("Is the insect paralyzed? Y/N");
+        String answer = System.console().readLine();
+        if(answer.equalsIgnoreCase("Y")){
+            printWrapper("The insect is paralyzed and cannot move, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
         
         controlledInsect.step(tile);
 
@@ -42,7 +51,15 @@ public class InsectPlayer extends Player{
     public void cut(Tile tile){
         // Will implement later
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
+        
+        System.out.println("Can the insect cut? Y/N");
+        String answer = System.console().readLine();
+        if(answer.equalsIgnoreCase("N")){
+            printWrapper("The insect cannot cut, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
         controlledInsect.cut(tile);
+
         UseCase.printWrapper(UseCase.logger.get(this)+".cut()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 

@@ -59,7 +59,6 @@ public class InsectPlayer extends Player{
             return;
         }
         controlledInsect.cut(tile);
-
         UseCase.printWrapper(UseCase.logger.get(this)+".cut()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 

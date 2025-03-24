@@ -3,6 +3,10 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
+
 import static use_cases.UseCase.*;
 
 public class Mycelium extends Fungus{
@@ -16,7 +20,9 @@ public class Mycelium extends Fungus{
     public Mycelium()
     {
         super();
-        printWrapper("Initializing Mycelium as " + System.identityHashCode(this), ArrowDirection.RIGHT, Indent.KEEP);
+        replace(this);
+        printWrapper("Initializing Mycelium as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
+        printWrapper("Mycelium: "+UseCase.logger.get(this),ArrowDirection.LEFT);
     }
 
     // Reconnect with the mycelium network, recover health

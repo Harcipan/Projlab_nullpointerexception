@@ -15,21 +15,26 @@ public class InsectCutMycelium extends UseCase {
     @Override
     public void execute() {
         //insect player is created
+        logger.put(null, "ip");
         InsectPlayer ip=new InsectPlayer();
 
         //tekton of tiles
+        logger.put(null, "tek");
         Tekton tek=new Tekton(1,1);
         //printWrapper("Tekton: tek",Direction.LEFT);
 
 
         //current tile cration
+        logger.put(null, "t");
         Tile t=new Tile();
         //printWrapper("Tile: currentTile",Direction.LEFT);
         
         //mycelium created
+        logger.put(null, "tm");
         Mycelium tm=new Mycelium();
 
         //insect created
+        logger.put(null, "i");
         Insect i=new Insect();
 
         //add tile to the tekton

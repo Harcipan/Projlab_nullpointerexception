@@ -21,15 +21,15 @@ public class UseCaseList {
         useCases.add(new InsectFreezeTimesOut()); //7
         useCases.add(new MyceliumGrowing()); // 8
         useCases.add(new MyceliumGrowingWithSpore()); // 9
-        useCases.add(new MyceliumDies()); // 11
-        useCases.add(new FungusGrowingAMushroom()); // 12
-        useCases.add(new FungusSpreadingSpores()); // 13
-        useCases.add(new FungusBodyDies()); // 14
-        useCases.add(new TektonBreaking()); // 15
-        useCases.add(new CannotGrowBodyOnTekton()); // 16
-        useCases.add(new OnlyOneMyceliumGrowingOnTekton()); // 17
-        useCases.add(new MultipleMyceliumGrowingOnTekton()); // 18
-        useCases.add(new TektonBreakingMycelium()); // 19
+        useCases.add(new MyceliumDies()); // 10
+        useCases.add(new FungusGrowingAMushroom()); // 11
+        useCases.add(new FungusSpreadingSpores()); // 12
+        useCases.add(new FungusBodyDies()); // 13
+        useCases.add(new TektonBreaking()); // 14
+        useCases.add(new CannotGrowBodyOnTekton()); // 15
+        useCases.add(new OnlyOneMyceliumGrowingOnTekton()); // 16
+        useCases.add(new MultipleMyceliumGrowingOnTekton()); // 17
+        useCases.add(new TektonBreakingMycelium()); // 18
     }
 
     public List<UseCase> getUseCases() {

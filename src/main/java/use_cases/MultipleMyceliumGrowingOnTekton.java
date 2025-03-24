@@ -17,16 +17,21 @@ public class MultipleMyceliumGrowingOnTekton extends UseCase {
         printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
 
         // initializing map
+        
+        UseCase.logger.put(null, "m");
         Map m = new Map();
 
         // initializing tekton
+        UseCase.logger.put(null, "tek");
         Tekton tek = new Tekton(1, 1);
 
         // adding tekton to map
         m.addTekton(tek);
 
         // initializing tile
+        UseCase.logger.put(null, "t1");
         Tile t1 = new Tile();
+        UseCase.logger.put(null, "t2");
         Tile t2 = new Tile();
 
         // adding tiles to tekton
@@ -38,7 +43,9 @@ public class MultipleMyceliumGrowingOnTekton extends UseCase {
         t2.setParentTekton(tek);
 
         // initializing player
+        UseCase.logger.put(null, "fp1");
         FungusPlayer fp1 = new FungusPlayer();
+        UseCase.logger.put(null, "fp2");
         FungusPlayer fp2 = new FungusPlayer();
 
         // player trying to grow a mushroom

@@ -1,6 +1,9 @@
 package entities;
 
 import map.Tile;
+import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
 
 public abstract class Spore extends GameEntity{
     int nutrientValue;  // The amount of nutrients the spore contains
@@ -22,7 +25,9 @@ public abstract class Spore extends GameEntity{
     }
 
     public void getEaten(Insect i) {
+        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten(" + UseCase.logger.get(i)+")", ArrowDirection.RIGHT, Indent.INDENT);
         isConsumed = true;
+        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten()", ArrowDirection.LEFT, Indent.UNINDENT);
         // implemented in subclasses
         // take care to set flag in overridden method
     }

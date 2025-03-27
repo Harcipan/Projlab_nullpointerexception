@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import map.*;
@@ -11,16 +12,16 @@ import use_cases.UseCase.Indent;
 public class Insect extends GameEntity {
     int speed;  // The speed of the insect
     boolean canCut; // Whether the insect can cut through mycelium
-    Player controlledBy; // The player that controls the insect
+    InsectPlayer controlledBy; // The player that controls the insect
     List<Spore> underInfluence; //The spores that are affecting the insect
 
-    /*public Insect(int id, Tile currentTile, Player player) {
+    public Insect(int id, Tile currentTile, InsectPlayer player) {
         super(id, currentTile);
         speed = 100;
         canCut = true;
         controlledBy = player;
         underInfluence = new ArrayList<Spore>();
-    }*/
+    }
 
     public Insect()
     {
@@ -30,6 +31,30 @@ public class Insect extends GameEntity {
         UseCase.printWrapper("Insect: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
+
+    /*
+     * Split the insect
+     * Creates another insect controlled by the same player
+     * The new insect will be placed in the same tile as the original insect
+     */
+    public Insect split() {
+        UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.RIGHT, Indent.INDENT);
+        Insect newInsect = new Insect(100+id, getCurrentTile(), controlledBy);
+        controlledBy.addControlledInsect(newInsect);
+        UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.LEFT, Indent.UNINDENT);
+        return newInsect;
+    }
+
+    /*
+     * Kill the insect
+     * Remove the insect from the tile and the player
+     */
+    public void die() {
+        UseCase.printWrapper(UseCase.logger.get(this)+".die()", ArrowDirection.RIGHT, Indent.INDENT);
+        controlledBy.removeControlledInsect(this);
+        currentTile.removeEntity(this);
+        UseCase.printWrapper(UseCase.logger.get(this)+".die()", ArrowDirection.LEFT, Indent.UNINDENT);
+    }
     /*
      * Update the insect
      * Decrease effect times and remove expired spores
@@ -107,6 +132,13 @@ public class Insect extends GameEntity {
         if(speed < 0) {
             speed = 0;
         }
+    }
+
+    /*
+     * Get the speed of the insect
+     */
+    public int getSpeed() {
+        return speed;
     }
 
     /*

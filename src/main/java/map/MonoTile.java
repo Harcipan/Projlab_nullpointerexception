@@ -21,4 +21,9 @@ public class MonoTile extends Tile{
         isTaken = true;
         // TODO needs fixing to check if the entity is a fungus without type checking
     }
+
+    @Override
+    public void update() {
+        // Will implement later
+    }
 }

@@ -41,7 +41,7 @@ public class EatingSlowSpore extends UseCase {
         Spore s=new SlowSpore();
 
         //add insect to insectplayer
-        ip.setControlledInsect(i);
+        ip.addControlledInsect(i);
 
         //add tiles to tekton
         t.setParentTekton(tek);

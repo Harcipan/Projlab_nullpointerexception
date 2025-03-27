@@ -31,4 +31,18 @@ public class GameEntity {
         
         UseCase.printWrapper(UseCase.logger.get(this)+".step()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
+
+    public void damage() {
+        UseCase.printWrapper(UseCase.logger.get(this)+".damage()", ArrowDirection.RIGHT, Indent.INDENT);
+        // implementations vary in subclasses
+        
+        UseCase.printWrapper(UseCase.logger.get(this)+".damage()", ArrowDirection.LEFT, Indent.UNINDENT);
+    }
+
+    public void heal() {
+        UseCase.printWrapper(UseCase.logger.get(this)+".heal()", ArrowDirection.RIGHT, Indent.INDENT);
+        // implementations vary in subclasses
+        
+        UseCase.printWrapper(UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
+    }
 }

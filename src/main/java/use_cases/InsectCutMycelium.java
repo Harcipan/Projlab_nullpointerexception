@@ -45,7 +45,7 @@ public class InsectCutMycelium extends UseCase {
         t.addEntity(tm);
         t.addEntity(i);
 
-        ip.setControlledInsect(i);
+        ip.addControlledInsect(i);
 
         ip.cut(t);
     }

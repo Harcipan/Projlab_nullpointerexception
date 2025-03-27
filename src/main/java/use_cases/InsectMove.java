@@ -49,7 +49,7 @@ public class InsectMove extends UseCase {
         currentTile.addEntity(i);
 
         //add insect to insectplayer
-        ip.setControlledInsect(i);
+        ip.addControlledInsect(i);
 
 
         //insect steps

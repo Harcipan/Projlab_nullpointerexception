@@ -24,6 +24,41 @@ public class FungusPlayer extends Player{
         UseCase.printWrapper("FungusPlayer: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
+    /*
+     * consume an insect if it is paralyzed and a neighbor of a fungus body or mycelium
+     * grow a fungus body in place of the insect
+     */
+    public void consumeInsect(Insect insect){
+        printWrapper("Player " + System.identityHashCode(this) + " trying to consume insect " + System.identityHashCode(insect), UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
+        //check if insect is paralyzed
+        if(insect.getSpeed() == 0){
+            Tile insectTile = insect.getCurrentTile();
+            // check if insect Tile is a neighbor of a fungus body or mycelium
+            boolean isNeighbor = false;
+            for (Mycelium myc: mycelia){
+                if (myc.getCurrentTile().isNeighbor(insectTile)) {
+                    isNeighbor = true;
+                    break;
+                }
+            }
+            for (FungusBody fb: fungusBodies){
+                if (fb.getCurrentTile().isNeighbor(insectTile)) {
+                    isNeighbor = true;
+                    break;
+                }
+            }
+            if (!isNeighbor) {
+                printWrapper("The insect " + System.identityHashCode(insect) + " is not a neighbor of a fungus body or mycelium", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+                return;
+            }
+            insect.die();
+            // grow fungus body in place of insect
+            growBody(insectTile);
+
+        }
+        printWrapper("Finished consuming insect " + System.identityHashCode(insect), UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+    }
+
     public FungusBody growBody(Tile tile) {
         printWrapper("Player " + System.identityHashCode(this) + " trying to grow a mushroom...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
         // neighbor testing happens here
@@ -56,7 +91,7 @@ public class FungusPlayer extends Player{
                     + System.identityHashCode(tile.getParentTekton()) + " already exists", UseCase.ArrowDirection.RIGHT);
             return null;
         }
-        System.out.println("Doest the player have enough action points to grow a body? Y/N");
+        System.out.println("Does the player have enough action points to grow a body? Y/N");
         String answer = System.console().readLine();
         if (answer.equalsIgnoreCase("N")) {
             printWrapper("Player does not have enough points to grow a body, end of use-case", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);

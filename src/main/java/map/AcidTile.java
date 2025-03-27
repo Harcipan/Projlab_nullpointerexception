@@ -21,4 +21,9 @@ public class AcidTile extends Tile{
         // Will implement later
     }
 
+    @Override
+    public void update() {
+        // Will implement later
+    }
+
 }

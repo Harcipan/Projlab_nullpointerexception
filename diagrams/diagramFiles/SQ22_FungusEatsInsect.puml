@@ -1,0 +1,26 @@
+@startuml 22. Fungus eats Insect
+
+title 22. Fungus eats Insect, grows body in its place
+
+actor "Skeleton" as S
+participant "fp : FungusPlayer" as Fp
+participant "i : Insect" as I
+participant "t : Tile" as T
+
+activate S
+activate Fp
+activate I
+activate T
+
+S -> Fp : consumeInsect(i)
+opt i.speed == 0 && isNeighbor
+    Fp -> I: die()
+    I -> T: removeEntity(i)
+    T --> I
+    I --> Fp
+    destroy I
+end
+Fp -> Fp: growBody(t)
+
+
+@enduml

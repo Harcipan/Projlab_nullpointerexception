@@ -11,7 +11,7 @@ activate S
 activate Tl
 
 S -> T : update()
-opt isDying
+opt health == 0
     T -> Tl : removeEntity(m)
     Tl --> T
     T --> S

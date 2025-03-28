@@ -41,10 +41,12 @@ public class FungusPlayer extends Player{
                     break;
                 }
             }
-            for (FungusBody fb: fungusBodies){
-                if (fb.getCurrentTile().isNeighbor(insectTile)) {
-                    isNeighbor = true;
-                    break;
+            if (!isNeighbor) {
+                for (FungusBody fb: fungusBodies){
+                    if (fb.getCurrentTile().isNeighbor(insectTile)) {
+                        isNeighbor = true;
+                        break;
+                    }
                 }
             }
             if (!isNeighbor) {

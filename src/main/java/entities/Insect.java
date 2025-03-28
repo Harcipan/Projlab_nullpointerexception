@@ -61,13 +61,13 @@ public class Insect extends GameEntity {
      */
     @Override
     public void update() {
-        /*for (Spore spore : underInfluence) {
+        for (Spore spore : underInfluence) {
             spore.update();
             if(spore.getEffectTime() <= 0) {
                 spore.removeEffect(this);
                 underInfluence.remove(spore);
             }
-        }*/
+        }
 
         UseCase.printWrapper(UseCase.logger.get(this)+".update()", ArrowDirection.RIGHT, Indent.INDENT);
         setCut(true);
@@ -114,7 +114,7 @@ public class Insect extends GameEntity {
      * Add a spore to the list of spores affecting the insect
      */
     public void addSpore(Spore spore){
-        //underInfluence.add(spore);
+        underInfluence.add(spore);
     }
 
     /*

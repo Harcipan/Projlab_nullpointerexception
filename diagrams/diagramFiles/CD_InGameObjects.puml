@@ -26,6 +26,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + growMycelium()
         + addEntity(e : GameEntity)
         + removeEntity(e : GameEntity)
+        + isNeighbor(t : Tile) : boolean
     }
 
     class MonoTile {
@@ -135,11 +136,10 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + step(target : Tile)
         + cut(target : Tile)
         + update()
-        + setSpeedupEffect()
-        + setFreezeEffect()
-        + setSlowEffect()
+        + setSpeedPercent(percent : int)
         + setCut()
         + split()
+        + die()
     }
 
     'connections'

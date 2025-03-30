@@ -3,6 +3,7 @@ package entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import map.HealTile;
 import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 import use_cases.UseCase.Indent;
@@ -33,6 +34,8 @@ public class Mycelium extends Fungus{
         // if it has at least one body, reset health
         if(!connectedBodies.isEmpty()) {
             health = maxHealth;
+        } else if (this.getCurrentTile() instanceof HealTile) {
+            this.heal();
         }
         else {
             health--;
@@ -72,7 +75,9 @@ public class Mycelium extends Fungus{
     @Override
     public void heal() {
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.RIGHT, Indent.INDENT);
-        health = maxHealth;
+        if (health < maxHealth) {
+            health++;
+        }
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
-}
+    }
 }

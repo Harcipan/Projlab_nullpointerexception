@@ -28,6 +28,10 @@ public class InsectPlayer extends Player{
         UseCase.printWrapper(UseCase.logger.get(this)+".addControlledInsect()", ArrowDirection.LEFT, Indent.KEEP);
     }
 
+    public List<Insect> getControlledInsects() {
+        return controlledInsects;
+    }
+
     public void moveTo(Tile tile){
         moveTo(tile, controlledInsects.get(0));
     }

@@ -72,6 +72,17 @@ public class Tile {
     // check if the tile is a neighbor of this tile
     // A tile is a neighbor if it is adjacent (horizontally, vertically, or diagonally)
     public boolean isNeighbor(Tile tile) {
+        // check if the tile is null
+        if (tile == null) {
+            return false;
+        }
+
+        // check if the tile is the same as this tile
+        if (this == tile) {
+            return true;
+        }
+
+        // else compute the distance between the two tiles
         return Math.abs(this.x - tile.x) <= 1 && Math.abs(this.y - tile.y) <= 1;
     }
 

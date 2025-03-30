@@ -7,6 +7,7 @@ public class EatingSpore extends UseCase {
 
     @Override
     public void execute() {
-        //TODO
+        //TODO: implement
+        printWrapper("TODO: implement", ArrowDirection.RIGHT, 0);
     }
 }

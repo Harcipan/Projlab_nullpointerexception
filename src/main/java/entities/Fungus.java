@@ -33,6 +33,9 @@ public abstract class Fungus extends GameEntity {
                 + ") " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, Indent.KEEP);
     }
 
+    public int getHealth() {
+        return health;
+    }
 
     // private boolean checkNeighbor(Tile neighbor) {
     //     // Will implement later

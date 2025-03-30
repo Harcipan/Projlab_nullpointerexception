@@ -38,7 +38,7 @@ public class InsectMove extends UseCase {
 
         //insect creation
         UseCase.logger.put(null, "i");
-        Insect i=new Insect();
+        Insect i=new Insect(1, currentTile, ip);
 
         //add tiles to tekton
         currentTile.setParentTekton(tek);

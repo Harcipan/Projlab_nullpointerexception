@@ -3,10 +3,10 @@ package use_cases;
 import entities.Mycelium;
 import map.*;
 
-public class MyceliumDies extends UseCase {
+public class DetachedMyceliumDies extends UseCase {
 
-    public MyceliumDies() {//legyen az id azonos azzal ami az usecase id-ja
-        super(10, "Mycelium Dies");
+    public DetachedMyceliumDies() {//legyen az id azonos azzal ami az usecase id-ja
+        super(10, "Detached Mycelium Dies");
     }
 
     @Override
@@ -43,8 +43,16 @@ public class MyceliumDies extends UseCase {
         // make the reference mutual
         t.addEntity(myc);
 
+        // simulate a tick
+        // this will call the mycelium's update method (health determined here)
+        for (int i = 0; i < 5; i++) {
+            myc.update();
+        }
+
         // action: mycelium dies
-        // this is a placeholder for the actual action TODO
+        if (myc.getHealth() <= 0) {
+            myc.die();
+        }
 
         // remove mycelium from tile
         t.removeEntity(myc);

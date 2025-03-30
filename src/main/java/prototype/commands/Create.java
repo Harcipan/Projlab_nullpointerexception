@@ -75,21 +75,9 @@ public class Create extends Command {
     }
 
     private Integer promptForPositiveInteger(String forWhat) {
-        String forWhatLowercase = forWhat.toLowerCase();
         System.out.print(forWhat + "> ");
         String rawStr = scanner.nextLine().trim();
-        int ret;
-        try {
-            ret = Integer.parseInt(rawStr);
-        } catch (NumberFormatException e) {
-            System.out.println("This is not a number. The " + forWhatLowercase + " can only be a number.");
-            return null;
-        }
-        if (ret < 0) {
-            System.out.println("The " + forWhatLowercase + " must be positive");
-            return null;
-        }
-        return ret;
+        return parsePositiveNumber(rawStr, forWhat);
     }
 
     private Tekton promptForTekton(String forWhat) {

@@ -56,6 +56,20 @@ public abstract class Command {
     protected int askForId(){
         return entityId++;
     }
+    protected Integer parsePositiveNumber(String input, String forWhat){
+        Integer ret;
+        try {
+            ret = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("This is not a number. The " + forWhat.toLowerCase() + " can only be a number.");
+            return null;
+        }
+        if (ret < 0) {
+            System.out.println("The " +  forWhat.toLowerCase()  + " must be positive");
+            return null;
+        }
+        return ret;
+    }
 
     public void setApp(App app){
         this.app = app;

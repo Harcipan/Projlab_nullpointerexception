@@ -40,10 +40,16 @@ public abstract class Command {
         }
         return false;
     }
+    protected void announceIdAssign(GameEntity entity){
+        System.out.println("Assigned the number \"" + entity.getId() + "\" to the " + entity.getClass().getSimpleName() + " game entity.");
+    }
     protected GameEntity assignId(GameEntity entity){
-        System.out.println("Assigned the number \"" + entityId + "\" to the " + entity.getClass().getSimpleName() + " game entity.");
         entity.setId(entityId++);
+        announceIdAssign(entity);
         return entity;
+    }
+    protected int askForId(){
+        return entityId++;
     }
 
     public void setApp(App app){

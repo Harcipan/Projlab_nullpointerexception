@@ -22,10 +22,11 @@ public class Map {
         UseCase.printWrapper("Map: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
-    public void addTekton(Tekton tekton) {
+    public int addTekton(Tekton tekton) {
         UseCase.printWrapper(UseCase.logger.get(this)+".addTekton(" + UseCase.logger.get(tekton)+")", ArrowDirection.RIGHT, Indent.INDENT);
         tektons.add(tekton);
         UseCase.printWrapper(UseCase.logger.get(this)+".addTekton()", ArrowDirection.LEFT, Indent.UNINDENT);
+        return tektons.size() - 1;
     }
 
     public List<Tekton> getTektons() {

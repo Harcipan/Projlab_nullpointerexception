@@ -76,7 +76,7 @@ public class Create extends Command {
 
     private Integer promptForPositiveInteger(String forWhat) {
         String forWhatLowercase = forWhat.toLowerCase();
-        System.out.println(forWhat + "> ");
+        System.out.print(forWhat + "> ");
         String rawStr = scanner.nextLine().trim();
         int ret;
         try {
@@ -147,8 +147,7 @@ public class Create extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        if (args.length != 2) {
-            wrongNumbersOfArgs(2, args.length);
+        if (isWrongNumberOfArgs(2, args.length)) {
             return false;
         }
 
@@ -239,7 +238,8 @@ public class Create extends Command {
                     break;
 
                 Tekton tek = new Tekton(breakChance, sporeCount);
-                app.getMap().addTekton(tek);
+                int id = app.getMap().addTekton(tek);
+                System.out.println("Created a Tekton with the id " + id);
 
                 break;
             }
@@ -249,7 +249,8 @@ public class Create extends Command {
                     break;
 
                 Tile tile = new Tile(tileData.getGrowthRate(), tileData.getMaxMycelium(), tileData.getParentTekton());
-                tileData.getParentTekton().addTile(tile);
+                int id = tileData.getParentTekton().addTile(tile);
+                System.out.println("Created a Tile with ID " + id);
 
                 break;
             }
@@ -264,7 +265,8 @@ public class Create extends Command {
 
                 Tile tile = new AcidTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton(), damageRate);
-                tileData.getParentTekton().addTile(tile);
+                int id = tileData.getParentTekton().addTile(tile);
+                System.out.println("Created an AcidTile with ID " + id);
 
                 break;
             }
@@ -275,7 +277,8 @@ public class Create extends Command {
 
                 Tile tile = new HealTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton());
-                tileData.getParentTekton().addTile(tile);
+                int id = tileData.getParentTekton().addTile(tile);
+                System.out.println("Created a HealTile with ID " + id);
 
                 break;
             }
@@ -286,7 +289,8 @@ public class Create extends Command {
 
                 Tile tile = new MonoTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton());
-                tileData.getParentTekton().addTile(tile);
+                int id = tileData.getParentTekton().addTile(tile);
+                System.out.println("Created a MonoTile with ID " + id);
 
                 break;
             }

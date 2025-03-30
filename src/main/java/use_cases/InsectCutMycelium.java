@@ -37,7 +37,7 @@ public class InsectCutMycelium extends UseCase {
 
         //insect created
         logger.put(null, "i");
-        Insect i=new Insect();
+        Insect i=new Insect(1, t, ip);
 
         //add tile to the tekton
         t.setParentTekton(tek);

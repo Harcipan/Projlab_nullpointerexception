@@ -33,7 +33,7 @@ public class EatingSlowSpore extends UseCase {
         
         //insect create
         UseCase.logger.put(null, "i");
-        Insect i=new Insect();
+        Insect i=new Insect(1, t, ip);
 
 
         //Slowpore create

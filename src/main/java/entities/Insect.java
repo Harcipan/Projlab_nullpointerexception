@@ -23,15 +23,6 @@ public class Insect extends GameEntity {
         underInfluence = new ArrayList<Spore>();
     }
 
-    public Insect()
-    {
-        super();
-        UseCase.replace(this);
-        UseCase.printWrapper("Initializing Insect as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
-        UseCase.printWrapper("Insect: "+UseCase.logger.get(this), ArrowDirection.LEFT);
-    }
-
-
     /*
      * Split the insect
      * Creates another insect controlled by the same player
@@ -40,6 +31,7 @@ public class Insect extends GameEntity {
     public Insect split() {
         UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.RIGHT, Indent.INDENT);
         Insect newInsect = new Insect(100+id, getCurrentTile(), controlledBy);
+        UseCase.logger.put(newInsect, "cloned_insect");
         controlledBy.addControlledInsect(newInsect);
         UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.LEFT, Indent.UNINDENT);
         return newInsect;
@@ -82,6 +74,9 @@ public class Insect extends GameEntity {
         //controlledBy.updateScore(target.getNutrientValue());
         UseCase.printWrapper(UseCase.logger.get(this)+".eat(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         target.getEaten(this);
+        if (target instanceof SplitSpore) {
+            split();
+        }
         UseCase.printWrapper(UseCase.logger.get(this)+".eat()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
@@ -147,8 +142,4 @@ public class Insect extends GameEntity {
     public void setCut(boolean canCut) {
         this.canCut = canCut;
     }
-
-
-
-
 }

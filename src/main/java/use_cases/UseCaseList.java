@@ -3,8 +3,6 @@ package use_cases;
 import java.util.ArrayList;
 import java.util.List;
 
-import static use_cases.UseCase.*;
-
 public class UseCaseList {
     List<UseCase> useCases = new ArrayList<>();
 
@@ -21,7 +19,7 @@ public class UseCaseList {
         useCases.add(new InsectFreezeTimesOut()); //7
         useCases.add(new MyceliumGrowing()); // 8
         useCases.add(new MyceliumGrowingWithSpore()); // 9
-        useCases.add(new MyceliumDies()); // 10
+        useCases.add(new DetachedMyceliumDies()); // 10
         useCases.add(new FungusGrowingAMushroom()); // 11
         useCases.add(new FungusSpreadingSpores()); // 12
         useCases.add(new FungusBodyDies()); // 13
@@ -30,6 +28,8 @@ public class UseCaseList {
         useCases.add(new OnlyOneMyceliumGrowingOnTekton()); // 16
         useCases.add(new MultipleMyceliumGrowingOnTekton()); // 17
         useCases.add(new TektonBreakingMycelium()); // 18
+
+        useCases.add(new InsectSplitSpore()); // 20
     }
 
     public List<UseCase> getUseCases() {

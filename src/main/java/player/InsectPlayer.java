@@ -2,6 +2,7 @@ package player;
 
 import static use_cases.UseCase.printWrapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entities.Insect;
@@ -17,7 +18,7 @@ public class InsectPlayer extends Player{
         super();
         UseCase.replace(this);
         UseCase.printWrapper("Initializing InsectPlayer as " + UseCase.logger.get(this), ArrowDirection.RIGHT, UseCase.Indent.KEEP);
-        this.controlledInsects = null;
+        this.controlledInsects = new ArrayList<>();
         UseCase.printWrapper("InsectPlayer: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
@@ -55,6 +56,7 @@ public class InsectPlayer extends Player{
     public void eat(Spore s) {
         eat(s, controlledInsects.get(0));
     }
+
     public void eat(Spore s, Insect controlledInsect) {
         if(!controlledInsects.contains(controlledInsect)){
             printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);

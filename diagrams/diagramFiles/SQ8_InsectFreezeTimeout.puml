@@ -1,0 +1,24 @@
+@startuml 8. Insect freeze times out
+
+title 8. Insect freeze times out
+
+actor "Skeleton" as S
+participant "i : Insect" as I
+participant "fs : FreezeSpore" as Sp
+
+activate S
+activate I
+activate Sp
+
+S -> I : update()
+I -> Sp : update()
+    Sp -> I : setSpeed(0)
+    I --> Sp
+    Sp -> I : removeSpore()
+    I --> Sp
+Sp --> I
+destroy Sp
+I --> S
+
+
+@enduml

@@ -1,0 +1,40 @@
+@startuml 20. Insect eats Split Spore
+
+title 20. Insect eats Split Spore
+
+actor "Skeleton" as PP
+participant "i1 : Insect" as I
+participant "i2: Insect" as I2
+participant "ss : SplitSpore" as Sp
+participant "t : Tile" as T
+
+activate I
+activate T
+activate Sp
+
+PP -> I : eat(ss)
+I -> Sp : getEaten(i)
+Sp -> I : split()
+I --> I2 : <<create>>
+activate I2
+I2 --> I
+I --> Sp
+
+@enduml
+
+
+
+
+
+
+
+Sp -> T : removeEntity(ss)
+T --> Sp
+
+Sp --> I
+destroy Sp
+
+I --> PP
+
+
+@enduml

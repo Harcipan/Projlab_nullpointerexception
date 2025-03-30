@@ -1,0 +1,24 @@
+@startuml 19. Tekton breaking mycelium
+title 19. Tekton breaking mycelium
+
+actor "Skeleton" as S
+participant "t : Tekton" as T
+participant "m : Mycelium" as My
+
+
+
+
+activate T
+activate My
+activate S
+
+
+S->T : break()
+T->My : detach()
+My-->T
+
+T-->S
+
+
+
+@enduml

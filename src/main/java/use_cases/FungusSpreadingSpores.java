@@ -7,7 +7,7 @@ import player.*;
 public class FungusSpreadingSpores extends UseCase {
 
     FungusSpreadingSpores() {
-        super(12, "Fungus Spreading Spores");
+        super(13, "Fungus Spreading Spores");
     }
 
     @Override

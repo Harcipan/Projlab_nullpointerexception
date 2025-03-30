@@ -10,7 +10,7 @@ import map.Tile;
 
 public class EatingSlowSpore extends UseCase {
     public EatingSlowSpore() {
-        super(4, "Slowing spore affecting insect");
+        super(5, "Slowing spore affecting insect");
     }
 
     @Override

@@ -6,7 +6,7 @@ import map.*;
 public class DetachedMyceliumDies extends UseCase {
 
     public DetachedMyceliumDies() {//legyen az id azonos azzal ami az usecase id-ja
-        super(10, "Detached Mycelium Dies");
+        super(11, "Detached Mycelium Dies");
     }
 
     @Override

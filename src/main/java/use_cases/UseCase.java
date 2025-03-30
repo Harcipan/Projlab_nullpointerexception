@@ -9,12 +9,12 @@ public abstract class UseCase {
     private static ArrowDirection persistentDir = ArrowDirection.RIGHT;
     public enum Indent {UNINDENT, INDENT, KEEP}
     public enum ArrowDirection {LEFT, RIGHT}
-    public static HashMap<Object,String> logger;
+    public static HashMap<Object,String> logger =new HashMap<Object,String>();
 
     UseCase(int id, String name) {
         this.id = id;
         this.name = name;
-        logger=new HashMap<Object,String>();
+        logger.clear();
     }
 
     public static void replace(Object o) {

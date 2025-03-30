@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
+
 import prototype.commands.*;
 
 public class CommandList {
@@ -17,7 +19,7 @@ public class CommandList {
     /*
      *       ADD YOUR COMMANDS HERE
      *  */
-    public CommandList(App app) {
+    public CommandList(App app, Scanner scanner) {
         add(new Create());
         add(new Destroy());
         add(new FungusBodyDie());
@@ -45,6 +47,7 @@ public class CommandList {
 
         for(Command cmd : commands.values()){
             cmd.setApp(app);
+            cmd.setScanner(scanner);
         }
     }
 

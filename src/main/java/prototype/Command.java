@@ -29,9 +29,14 @@ public abstract class Command {
     protected void usage(){
         System.out.println("Usage: " + usage);
     }
-    protected void wrongNumbersOfArgs(int expected, int got){
-        System.out.println("Wrong number of arguments (expected " + expected + ", got " + got + " arguments)");
-        usage();
+    protected boolean isWrongNumberOfArgs(int expected, int got){
+        if(expected != got){
+            System.out.println("Wrong number of arguments (expected " + expected + ", got " + got + " arguments)");
+            usage();
+            return true;
+        }else{
+            return false;
+        }
     }
     protected boolean isMapUninitialized(){
         if(app.getMap() == null){
@@ -41,7 +46,7 @@ public abstract class Command {
         return false;
     }
     protected void announceIdAssign(GameEntity entity){
-        System.out.println("Assigned the number \"" + entity.getId() + "\" to the " + entity.getClass().getSimpleName() + " game entity.");
+        System.out.println("Created a \"" + entity.getClass().getSimpleName()  + "\" entity with ID " + entity.getId());
     }
     protected GameEntity assignId(GameEntity entity){
         entity.setId(entityId++);

@@ -25,8 +25,9 @@ public class Tekton {
         UseCase.printWrapper("Tekton: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
-    public void addTile(Tile tile) {
+    public int addTile(Tile tile) {
         tiles.add(tile);
+        return tiles.size() - 1;
     }
 
     public List<Tile> getTiles() {

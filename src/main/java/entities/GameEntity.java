@@ -45,4 +45,11 @@ public class GameEntity {
         
         UseCase.printWrapper(UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
+
+    public void setId(int id){
+        this.id = id;
+    }
+    public int getId(){
+        return id;
+    }
 }

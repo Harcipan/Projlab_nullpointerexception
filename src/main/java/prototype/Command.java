@@ -3,6 +3,8 @@ package prototype;
 import java.util.Scanner;
 
 import entities.GameEntity;
+import map.Tekton;
+import map.Tile;
 
 public abstract class Command {
     protected String name;
@@ -69,6 +71,18 @@ public abstract class Command {
             return null;
         }
         return ret;
+    }
+    protected <T extends GameEntity> T findEntityWithId(int id){
+        for(Tekton tek : app.getMap().getTektons()){
+            for(Tile tile : tek.getTiles()){
+                for(GameEntity entity : tile.getEntities()){
+                    if(entity.getId() == id){
+                        return (T)entity;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public void setApp(App app){

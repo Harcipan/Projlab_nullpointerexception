@@ -1,5 +1,6 @@
 package player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import entities.*;
@@ -11,15 +12,15 @@ import static use_cases.UseCase.logger;
 import static use_cases.UseCase.printWrapper;
 import static use_cases.UseCase.replace;
 
-public class FungusPlayer extends Player{
+public class FungusPlayer extends Player {
     List<FungusBody> fungusBodies;
     List<Mycelium> mycelia;
 
     public FungusPlayer() {
         super();
         replace(this);
-        fungusBodies = null;
-        mycelia = null;
+        fungusBodies = new ArrayList<>();
+        mycelia = new ArrayList<>();
         printWrapper("Initializing FungusPlayer as " + logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         UseCase.printWrapper("FungusPlayer: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
@@ -31,7 +32,7 @@ public class FungusPlayer extends Player{
     public void consumeInsect(Insect insect){
         printWrapper("Player " + System.identityHashCode(this) + " trying to consume insect " + System.identityHashCode(insect), UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
         //check if insect is paralyzed
-        if(insect.getSpeed() == 0){
+        if(insect.getSpeed() == 0) {
             Tile insectTile = insect.getCurrentTile();
             // check if insect Tile is a neighbor of a fungus body or mycelium
             boolean isNeighbor = false;

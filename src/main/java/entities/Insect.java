@@ -20,6 +20,10 @@ public class Insect extends GameEntity {
         speed = 100;
         canCut = true;
         controlledBy = player;
+        // SHOULD BE DEPRECATED: check if this insect is already controlled by the player
+        if (!player.getControlledInsects().contains(this)) {
+            player.addControlledInsect(this);
+        }
         underInfluence = new ArrayList<Spore>();
     }
 

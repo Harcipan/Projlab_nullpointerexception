@@ -1,7 +1,8 @@
-package commands;
+package prototype.commands;
 
 import entities.CutSpore;
 import entities.FreezeSpore;
+import prototype.Command;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,12 +29,14 @@ public class Create extends Command {
             "Tile"
     };
 
-    Create() {
-        super("Create", "Creates a new entity or map element");
+    public Create() {
+        super("create", "Creates a new entity or map element", "create <type>");
     }
 
     @Override
-    public void execute() {
+    public boolean execute(String[] args) {
 
+
+        return false;
     }
 }

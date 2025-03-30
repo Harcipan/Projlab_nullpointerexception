@@ -1,7 +1,10 @@
 package prototype.commands;
 
 import entities.*;
+import map.AcidTile;
+import map.HealTile;
 import map.Map;
+import map.MonoTile;
 import map.Tekton;
 import map.Tile;
 import prototype.Command;
@@ -35,11 +38,11 @@ public class Create extends Command {
         super("create", "Creates a new entity or map element", "create <type>");
     }
 
-    final class Result {
+    final class TektonAndTile {
         private final Tekton first;
         private final Tile second;
 
-        public Result(Tekton first, Tile second) {
+        public TektonAndTile(Tekton first, Tile second) {
             this.first = first;
             this.second = second;
         }
@@ -53,50 +56,99 @@ public class Create extends Command {
         }
     }
 
-    private Optional<Result> promptForTektonAndTile() {
-        if (isMapUninitialized())
-            return Optional.empty();
-        System.out.println("Tectonic plate id> ");
-        String targetPlateIdRaw = scanner.nextLine().trim();
-        int targetPlateId;
-        try {
-            targetPlateId = Integer.parseInt(targetPlateIdRaw);
-        } catch (NumberFormatException e) {
-            System.out.println("This is not a number. Tectonic plate ids can only be numbers.");
-            return Optional.empty();
-        }
-        if (targetPlateId < 0) {
-            System.out.println("Tectonic plate ids must be positive");
-            return Optional.empty();
+    final class TileData {
+        private final int growthRate;
+        private final int maxMycelium;
+        private final Tekton parentTekton;
+
+        public TileData(int growthRate, int maxMycelium, Tekton parentTekton) {
+            this.growthRate = growthRate;
+            this.maxMycelium = maxMycelium;
+            this.parentTekton = parentTekton;
         }
 
-        System.out.println("Target tile id> ");
-        String targetTileIdRaw = scanner.nextLine().trim();
-        int targetTileId;
+        public int getGrowthRate() {
+            return growthRate;
+        }
+
+        public int getMaxMycelium() {
+            return maxMycelium;
+        }
+
+        public Tekton getParentTekton() {
+            return parentTekton;
+        }
+    }
+
+    private Integer promptForPositiveInteger(String forWhat) {
+        String forWhatLowercase = forWhat.toLowerCase();
+        System.out.println(forWhat + "> ");
+        String rawStr = scanner.nextLine().trim();
+        int ret;
         try {
-            targetTileId = Integer.parseInt(targetTileIdRaw);
+            ret = Integer.parseInt(rawStr);
         } catch (NumberFormatException e) {
-            System.out.println("This is not a number. Tile ids can only be numbers.");
-            return Optional.empty();
+            System.out.println("This is not a number. The " + forWhatLowercase + " can only be a number.");
+            return null;
         }
-        if (targetTileId < 0) {
-            System.out.println("Tile ids must be positive");
-            return Optional.empty();
+        if (ret < 0) {
+            System.out.println("The " + forWhatLowercase + " must be positive");
+            return null;
         }
+        return ret;
+    }
+
+    private Tekton promptForTekton(String forWhat) {
+        Integer targetPlateId = promptForPositiveInteger(forWhat);
+        if (targetPlateId == null)
+            return null;
 
         Tekton tek = app.getMap().getTektons().get(targetPlateId);
         if (tek == null) {
             System.out.println("A tectonic plate with the specified ID was not found");
-            return Optional.empty();
+            return null;
         }
+        return tek;
+    }
+
+    private TektonAndTile promptForTektonAndTile() {
+        if (isMapUninitialized())
+            return null;
+
+        Tekton tek = promptForTekton("Tectonic plate id");
+        if (tek == null)
+            return null;
+
+        Integer targetTileId = promptForPositiveInteger("Tile id");
+        if (targetTileId == null)
+            return null;
 
         Tile tile = tek.getTiles().get(targetTileId);
         if (tile == null) {
             System.out.println("A tile with the specified ID on the specified tectonic plate was not found");
-            return Optional.empty();
+            return null;
         }
 
-        return Optional.of(new Result(tek, tile));
+        return new TektonAndTile(tek, tile);
+    }
+
+    private TileData promptForTileData() {
+        if (isMapUninitialized())
+            return null;
+
+        Tekton tek = promptForTekton("Parent tectonic plate id");
+        if (tek == null)
+            return null;
+
+        Integer growthRate = promptForPositiveInteger("Growth rate");
+        if (growthRate == null)
+            return null;
+
+        Integer maxMycelium = promptForPositiveInteger("Max mycelium");
+        if (maxMycelium == null)
+            return null;
+
+        return new TileData(growthRate, maxMycelium, tek);
     }
 
     @Override
@@ -112,55 +164,123 @@ public class Create extends Command {
                 app.setMap(new Map());
                 System.out.println("Created the map");
                 break;
-            case "cutspore":
-            {
-                Optional<Result> res = promptForTektonAndTile();
-                if(res.isEmpty()) break;
+            case "cutspore": {
+                TektonAndTile res = promptForTektonAndTile();
+                if (res == null)
+                    break;
 
-                res.get().getTile().addEntity(assignId(new CutSpore()));
+                res.getTile().addEntity(assignId(new CutSpore()));
 
                 break;
             }
-            case "freezespore":
-            {
-                Optional<Result> res = promptForTektonAndTile();
-                if(res.isEmpty()) break;
+            case "freezespore": {
+                TektonAndTile res = promptForTektonAndTile();
+                if (res == null)
+                    break;
 
-                res.get().getTile().addEntity(assignId(new FreezeSpore()));
+                res.getTile().addEntity(assignId(new FreezeSpore()));
                 break;
             }
-            case "slowspore":
-            {
-                Optional<Result> res = promptForTektonAndTile();
-                if(res.isEmpty()) break;
+            case "slowspore": {
+                TektonAndTile res = promptForTektonAndTile();
+                if (res == null)
+                    break;
 
-                res.get().getTile().addEntity(assignId(new SlowSpore()));
+                res.getTile().addEntity(assignId(new SlowSpore()));
                 break;
             }
-            case "speedupspore":
-            {
-                Optional<Result> res = promptForTektonAndTile();
-                if(res.isEmpty()) break;
+            case "speedupspore": {
+                TektonAndTile res = promptForTektonAndTile();
+                if (res == null)
+                    break;
 
-                res.get().getTile().addEntity(assignId(new SpeedUpSpore()));
+                res.getTile().addEntity(assignId(new SpeedUpSpore()));
                 break;
             }
             case "fungusbody":
+            {
+                TektonAndTile res = promptForTektonAndTile();
+                if (res == null)
+                    break;
+
+                Integer health = promptForPositiveInteger("Health");
+                if(health == null) break;
+
+                Integer initialSporeCharge = promptForPositiveInteger("Initial spore charge");
+                if(initialSporeCharge == null) break;
+
+                FungusBody fb = new FungusBody(health, initialSporeCharge, res.getTile());
+                res.getTile().addEntity(fb);
                 break;
+            }
             case "insect":
                 break;
             case "mycelium":
                 break;
-            case "tekton":
+            case "tekton": {
+                if (isMapUninitialized())
+                    break;
+
+                Integer breakChance = promptForPositiveInteger("Break chance");
+                if (breakChance == null)
+                    break;
+
+                Integer sporeCount = promptForPositiveInteger("Spore count");
+                if (sporeCount == null)
+                    break;
+
+                Tekton tek = new Tekton(breakChance, sporeCount);
+                app.getMap().addTekton(tek);
+
                 break;
-            case "tile":
+            }
+            case "tile": {
+                TileData tileData = promptForTileData();
+                if (tileData == null)
+                    break;
+
+                Tile tile = new Tile(tileData.getGrowthRate(), tileData.getMaxMycelium(), tileData.getParentTekton());
+                tileData.getParentTekton().addTile(tile);
+
                 break;
-            case "acidtile":
+            }
+            case "acidtile": {
+                TileData tileData = promptForTileData();
+                if (tileData == null)
+                    break;
+
+                Integer damageRate = promptForPositiveInteger("Damage rate");
+                if (damageRate == null)
+                    break;
+
+                Tile tile = new AcidTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
+                        tileData.getParentTekton(), damageRate);
+                tileData.getParentTekton().addTile(tile);
+
                 break;
-            case "healtile":
+            }
+            case "healtile": {
+                TileData tileData = promptForTileData();
+                if (tileData == null)
+                    break;
+
+                Tile tile = new HealTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
+                        tileData.getParentTekton());
+                tileData.getParentTekton().addTile(tile);
+
                 break;
-            case "monotile":
+            }
+            case "monotile": {
+                TileData tileData = promptForTileData();
+                if (tileData == null)
+                    break;
+
+                Tile tile = new MonoTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
+                        tileData.getParentTekton());
+                tileData.getParentTekton().addTile(tile);
+
                 break;
+            }
             default:
                 System.out.println("Invalid type specified");
                 System.out.println("Valid types are: ");

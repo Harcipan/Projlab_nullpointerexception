@@ -1,0 +1,22 @@
+@startuml 21. Healing Tile keeps (detached) Mycelium alive
+
+title 21. Healing Tile keeps (detached) Mycelium alive
+
+actor "Skeleton" as S
+participant "t : HealTile" as T
+participant "m : Mycelium" as M
+
+
+activate T
+activate M
+activate S
+
+
+S -> T : update()
+
+T -> M : heal()
+M --> T
+T --> S
+
+@enduml
+

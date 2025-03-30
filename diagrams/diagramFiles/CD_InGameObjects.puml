@@ -26,6 +26,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + growMycelium()
         + addEntity(e : GameEntity)
         + removeEntity(e : GameEntity)
+        + isNeighbor(t : Tile) : boolean
     }
 
     class MonoTile {
@@ -38,6 +39,10 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + override addEntity(e : GameEntity)
         + damage()
     }
+
+    class HealTile {
+        + override addEntity(e : GameEntity)
+    }
     'interactive elements'
 
     abstract class GameEntity {
@@ -45,14 +50,17 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + currentTile : Tile
         + getCurrentTile()
         + setTile(t : Tile)
+        + damage()
+        + heal()
     }
 
     class Mycelium {
-        + health : int
-        + isDying : boolean
+        + maxHealth : int
         + connect()
         + detach()
-        +update()
+        + update()
+        + override damage()
+        + override heal()
     }
 
     class Spore {
@@ -79,6 +87,10 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + override getEaten(i : Insect)
     }
 
+    class SplitSpore {
+        + override getEaten(i : Insect)
+    }
+
     'playable elements'
 
     abstract class Player {
@@ -95,13 +107,14 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + placeMycelium(t : Tile)
         + growBody(t : Tile)
         + sporeCloud(target : FungusBody, size : int)
+        + consumeInsect(i : Insect)
     }
 
     abstract class Fungus {
         health : int
         + growMycelium(neighbour : Tile)
         + growBody(neighbour : Tile)
-        + void die()
+        + die()
     }
 
     class FungusBody {
@@ -111,9 +124,9 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     }
     
     class InsectPlayer {
-        + moveTo(t : Tile)
-        + eat() : boolean
-        + cut() : boolean
+        + moveTo(t : Tile, insect : Insect)
+        + eat(insect : Insect) : boolean
+        + cut(insect : Insect) : boolean
     }
 
     class Insect {
@@ -123,10 +136,10 @@ package "Class diagram for In-Game Objects" #E1DFEB {
         + step(target : Tile)
         + cut(target : Tile)
         + update()
-        + setSpeedupEffect()
-        + setFreezeEffect()
-        + setSlowEffect()
+        + setSpeedPercent(percent : int)
         + setCut()
+        + split()
+        + die()
     }
 
     'connections'
@@ -134,20 +147,24 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     Spore --|> GameEntity
     Fungus --|> GameEntity
     Insect --|> GameEntity
-    Tile --|> GameEntity
 
     Mycelium --o FungusBody
+
     SlowSpore --|> Spore
     FreezeSpore --|> Spore
     SpeedUpSpore --|> Spore
     CutSpore --|> Spore
+    SplitSpore --|> Spore
+
     Tekton --o "1" Map
     FungusBody "1" --* "1" Tekton
     Fungus --> Tekton
     Mycelium --> Tekton
     Tile "*" --* "1" Tekton
+
     MonoTile --|> Tile
     AcidTile --|> Tile
+    HealTile --|> Tile
     
     Mycelium --|> Fungus
     FungusBody --|> Fungus
@@ -157,7 +174,7 @@ package "Class diagram for In-Game Objects" #E1DFEB {
     FungusPlayer --|> Player
     Mycelium "*" --* "1" FungusPlayer
     InsectPlayer --|> Player
-    Insect "1" --* "1" InsectPlayer
+    Insect "*" --* "1" InsectPlayer
     FungusBody "*" --* "1" FungusPlayer
     Spore "1" --* "*" Insect
     Mycelium  -- Tile

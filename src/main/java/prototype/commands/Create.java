@@ -9,12 +9,6 @@ import map.Tekton;
 import map.Tile;
 import prototype.Command;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
-
 public class Create extends Command {
 
     private final String[] validTypes = {
@@ -197,26 +191,41 @@ public class Create extends Command {
                 res.getTile().addEntity(assignId(new SpeedUpSpore()));
                 break;
             }
-            case "fungusbody":
-            {
+            case "fungusbody": {
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
 
                 Integer health = promptForPositiveInteger("Health");
-                if(health == null) break;
+                if (health == null)
+                    break;
 
                 Integer initialSporeCharge = promptForPositiveInteger("Initial spore charge");
-                if(initialSporeCharge == null) break;
+                if (initialSporeCharge == null)
+                    break;
 
                 FungusBody fb = new FungusBody(health, initialSporeCharge, res.getTile());
-                res.getTile().addEntity(fb);
+                res.getTile().addEntity(assignId(fb));
                 break;
             }
-            case "insect":
+            case "insect": {
+                TektonAndTile res = promptForTektonAndTile();
+                if (res == null)
+                    break;
+
+                Insect insect = new Insect(askForId(), res.getTile(), app.getInsectPlayer());
+                announceIdAssign(insect);
+                res.getTile().addEntity(insect);
                 break;
-            case "mycelium":
+            }
+            case "mycelium": {
+                TektonAndTile res = promptForTektonAndTile();
+                if (res == null)
+                    break;
+                Mycelium mycelium = new Mycelium();
+                res.getTile().addEntity(assignId(mycelium));
                 break;
+            }
             case "tekton": {
                 if (isMapUninitialized())
                     break;

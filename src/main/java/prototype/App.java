@@ -3,15 +3,23 @@ package prototype;
 import java.util.Scanner;
 
 import map.Map;
+import player.*;
 
 public class App {
     boolean running = true;
 	CommandList commands;
     Map map;
 
-    public App(){
+    InsectPlayer insectPlayer = new InsectPlayer();
+    FungusPlayer fungusPlayer = new FungusPlayer();
+    
+    public InsectPlayer getInsectPlayer() {
+		return insectPlayer;
+	}
 
-    }
+	public FungusPlayer getFungusPlayer() {
+		return fungusPlayer;
+	}
 
     public Map getMap() {
 		return map;

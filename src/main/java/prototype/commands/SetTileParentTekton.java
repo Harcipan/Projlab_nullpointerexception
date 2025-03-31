@@ -8,6 +8,7 @@ public class SetTileParentTekton extends Command {
 
     @Override
     public boolean execute(String[] args) {
+        //This command is moot
         throw new UnsupportedOperationException("not implemented");
     }
 }

@@ -63,6 +63,14 @@ public class Tile {
     public Tekton getParentTekton() {
         return parentTekton;
     }
+    
+	public int getGrowthRate() {
+		return growthRate;
+	}
+
+	public int getMaxMycelium() {
+		return maxMycelium;
+	}
 
     public void setParentTekton(Tekton parentTekton) {
         printWrapper(UseCase.logger.get(this)+".setParentTekton(" + UseCase.logger.get(parentTekton)+")", ArrowDirection.RIGHT, Indent.KEEP);
@@ -95,5 +103,6 @@ public class Tile {
     }
 
 
+    
     
 }

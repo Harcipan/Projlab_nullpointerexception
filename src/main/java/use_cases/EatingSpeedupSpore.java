@@ -37,7 +37,7 @@ public class EatingSpeedupSpore extends UseCase {
 
         //Speedupspore create
         UseCase.logger.put(null, "s");
-        Spore s=new SpeedUpSpore();
+        Spore s=new SpeedUpSpore(200);
 
         //add insect to insectplayer
         ip.addControlledInsect(i);

@@ -13,7 +13,7 @@ import player.InsectPlayer;
 public class InsectFreezeTimesOut extends UseCase {
     public InsectFreezeTimesOut()
     {
-        super(7, "Insect freeze times out");
+        super(8, "Insect freeze times out");
     }
 
     @Override

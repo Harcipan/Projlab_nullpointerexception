@@ -9,7 +9,7 @@ import player.FungusPlayer;
 public class FungusBodyDies extends UseCase {
 
     public FungusBodyDies() {
-        super(13, "Fungus Body Dies");
+        super(14, "Fungus Body Dies");
     }
 
     @Override

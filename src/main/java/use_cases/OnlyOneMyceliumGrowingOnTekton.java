@@ -8,7 +8,7 @@ import player.FungusPlayer;
 public class OnlyOneMyceliumGrowingOnTekton extends UseCase {
 
     public OnlyOneMyceliumGrowingOnTekton() {
-        super(16, "Only One Mycelium Growing on Tekton");
+        super(17, "Only One Mycelium Growing on Tekton");
     }
 
     @Override

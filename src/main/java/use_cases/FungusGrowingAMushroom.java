@@ -4,6 +4,10 @@ import player.FungusPlayer;
 
 public class FungusGrowingAMushroom extends UseCase {
 
+    FungusGrowingAMushroom() {
+        super(12, "Fungus Growing a Mushroom");
+    }
+
     @Override
     public void execute() {
         // initializing scene
@@ -33,9 +37,5 @@ public class FungusGrowingAMushroom extends UseCase {
 
         // player trying to grow a mushroom
         fp.growBody(t);
-    }
-
-    FungusGrowingAMushroom() {
-        super(11, "Fungus Growing a Mushroom");
     }
 }

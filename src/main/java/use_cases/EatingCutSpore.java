@@ -10,7 +10,7 @@ import map.Tile;
 
 public class EatingCutSpore extends UseCase {
     public EatingCutSpore() {
-        super(6, "Cut spore affecting insect");
+        super(7, "Cut spore affecting insect");
     }
 
     @Override
@@ -18,27 +18,26 @@ public class EatingCutSpore extends UseCase {
         printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
         //insect player is created
         UseCase.logger.put(null, "ip");
-        InsectPlayer ip=new InsectPlayer();
+        InsectPlayer ip = new InsectPlayer();
 
         //tekton of tiles
         UseCase.logger.put(null, "tek");
-        Tekton tek=new Tekton(1,1);
+        Tekton tek = new Tekton(1,1);
         //printWrapper("Tekton: tek",Direction.LEFT);
 
 
         //current tile cration
         UseCase.logger.put(null, "t");
-        Tile t=new Tile();
+        Tile t = new Tile();
         //printWrapper("Tile: currentTile",Direction.LEFT);
         
         //insect create
         UseCase.logger.put(null, "i");
-        Insect i=new Insect(1, t, ip);
-
+        Insect i = new Insect(1, t, ip);
 
         //Cutspore create
         UseCase.logger.put(null, "s");
-        Spore s=new CutSpore();
+        Spore s = new CutSpore();
 
         //add insect to insectplayer
         ip.addControlledInsect(i);

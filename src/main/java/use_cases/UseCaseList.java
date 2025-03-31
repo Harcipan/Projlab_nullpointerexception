@@ -12,24 +12,26 @@ public class UseCaseList {
     public UseCaseList() {
         useCases.add(new InsectMove()); // 1
         useCases.add(new InsectCutMycelium()); // 2
-        useCases.add(new EatingSpeedupSpore()); // 3
-        useCases.add(new EatingSlowSpore()); // 4
-        useCases.add(new EatingFreezingSpore()); // 5
-        useCases.add(new EatingCutSpore()); // 6
-        useCases.add(new InsectFreezeTimesOut()); //7
-        useCases.add(new MyceliumGrowing()); // 8
-        useCases.add(new MyceliumGrowingWithSpore()); // 9
-        useCases.add(new DetachedMyceliumDies()); // 10
-        useCases.add(new FungusGrowingAMushroom()); // 11
-        useCases.add(new FungusSpreadingSpores()); // 12
-        useCases.add(new FungusBodyDies()); // 13
-        useCases.add(new TektonBreaking()); // 14
-        useCases.add(new CannotGrowBodyOnTekton()); // 15
-        useCases.add(new OnlyOneMyceliumGrowingOnTekton()); // 16
-        useCases.add(new MultipleMyceliumGrowingOnTekton()); // 17
-        useCases.add(new TektonBreakingMycelium()); // 18
-
+        useCases.add(new EatingSpore()); // 3
+        useCases.add(new EatingSpeedupSpore()); // 4
+        useCases.add(new EatingSlowSpore()); // 5
+        useCases.add(new EatingFreezingSpore()); // 6
+        useCases.add(new EatingCutSpore()); // 7
+        useCases.add(new InsectFreezeTimesOut()); // 8
+        useCases.add(new MyceliumGrowing()); // 9
+        useCases.add(new MyceliumGrowingWithSpore()); // 10
+        useCases.add(new DetachedMyceliumDies()); // 11
+        useCases.add(new FungusGrowingAMushroom()); // 12
+        useCases.add(new FungusSpreadingSpores()); // 13
+        useCases.add(new FungusBodyDies()); // 14
+        useCases.add(new TektonBreaking()); // 15
+        useCases.add(new CannotGrowBodyOnTekton()); // 16
+        useCases.add(new OnlyOneMyceliumGrowingOnTekton()); // 17
+        useCases.add(new MultipleMyceliumGrowingOnTekton()); // 18
+        useCases.add(new TektonBreakingMycelium()); // 19
         useCases.add(new InsectSplitSpore()); // 20
+        useCases.add(new HealTileKeepsAlive()); // 21
+        useCases.add(new FungusEatsInsect()); // 22
     }
 
     public List<UseCase> getUseCases() {

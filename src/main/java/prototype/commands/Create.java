@@ -32,25 +32,7 @@ public class Create extends Command {
         super("create", "Creates a new entity or map element", "create <type>");
     }
 
-    final class TektonAndTile {
-        private final Tekton first;
-        private final Tile second;
-
-        public TektonAndTile(Tekton first, Tile second) {
-            this.first = first;
-            this.second = second;
-        }
-
-        public Tekton getTekton() {
-            return first;
-        }
-
-        public Tile getTile() {
-            return second;
-        }
-    }
-
-    final class TileData {
+    public final class TileData {
         private final int growthRate;
         private final int maxMycelium;
         private final Tekton parentTekton;

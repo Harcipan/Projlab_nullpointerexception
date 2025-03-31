@@ -2,6 +2,7 @@ package prototype;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,9 @@ public class CommandList {
         add(new TektonMultipleMycelium());
         add(new TektonOneMycelium());
         add(new Tick());
+        add(new Quit());
+        add(new Exit());
+        add(new ListCmd());
 
         for (Command cmd : commands.values()) {
             cmd.setApp(app);
@@ -54,4 +58,8 @@ public class CommandList {
     public Command get(String command) {
         return commands.get(command);
     }
+
+	public Collection<Command> getCommands() {
+		return commands.values();
+	}
 }

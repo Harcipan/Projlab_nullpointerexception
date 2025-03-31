@@ -13,6 +13,7 @@ public class InsectFreeze extends Command {
     @Override
     public boolean execute(String[] args) {
         if(isWrongNumberOfArgs(2, args.length)) return false;
+        if(isMapUninitialized()) return false;
         Insect insect = parseEntityId(args[1], "Insect");
         if(insect == null) return false;
 

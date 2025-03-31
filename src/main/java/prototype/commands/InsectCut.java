@@ -10,6 +10,7 @@ public class InsectCut extends Command {
     @Override
     public boolean execute(String[] args) {
         if(isWrongNumberOfArgs(3, args.length)) return false;
+        if(isMapUninitialized()) return false;
         Insect insect = parseEntityId(args[1], "Insect");
         if(insect == null) return false;
         Mycelium mycelium = parseEntityId(args[2], "Mycelium");

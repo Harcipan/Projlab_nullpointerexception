@@ -10,6 +10,7 @@ public class FungusBodyReleaseSporeCloud extends Command {
     @Override
     public boolean execute(String[] args) {
         if(isWrongNumberOfArgs(2, args.length)) return false;
+        if(isMapUninitialized()) return false;
         FungusBody fb = parseEntityId(args[1], "Fungus body");
         if(fb == null) return false;
         

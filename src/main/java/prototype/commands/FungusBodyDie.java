@@ -1,5 +1,6 @@
 package prototype.commands;
 
+import entities.FungusBody;
 import prototype.Command;
 
 public class FungusBodyDie extends Command {
@@ -9,7 +10,12 @@ public class FungusBodyDie extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'execute'");
+        if(isWrongNumberOfArgs(2, args.length)) return false;
+        FungusBody fb = parseEntityId(args[1], "Fungus body");
+        if(fb == null) return false;
+        app.getFungusPlayer().sporeCloud(fb, 1);
+        app.getFungusPlayer().sporeCloud(fb, 1);
+        app.getFungusPlayer().sporeCloud(fb, 1);
+        return false;
     }
 }

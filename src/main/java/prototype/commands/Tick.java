@@ -17,5 +17,6 @@ public class Tick extends Command {
         for(int i = 0; i < rounds; i++){
             app.getMap().tick();
         }
+        return false;
     }
 }

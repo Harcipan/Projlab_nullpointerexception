@@ -1,5 +1,6 @@
 package prototype;
 
+import java.util.Random;
 import java.util.Scanner;
 
 import map.Map;
@@ -52,6 +53,32 @@ public class App {
                 break;
             }
         }
-        System.out.println("Goodbye");
+
+        //A nagyrészét Claude AI adta nekem... additions are welcome :)
+        String[] haha = {
+            "Goodbye!",
+            "バイバイ!",
+            "さよなら",
+            "Good riddance.",
+            "Holnap után kiskedden!",
+            "Sporing off now, see you later!",
+            "Time to hibernate until the next mycelial network connection...",
+            "Your session has been decomposed by friendly fungi.",
+            "The tectonic plates are shifting... logging you out!",
+            "Insects have eaten your session. Come back after they digest!",
+            "Your connection has split in two, just like a spore-affected insect!",
+            "Mycelium network disconnected. Have a fungi-tastic day!",
+            "Command terminated: Too many spores in the system.",
+            "Program execution has slowed down after consuming questionable spores...",
+            "This session has been composted. Goodbye!",
+            "Error 404: Fungi went underground. Please try again later.",
+            "Your connection has drifted to another tectonic plate. Farewell!",
+            "System hibernating like a bear in the Bükk Mountains. Logging off...",
+            "Your tectonic plates shifted all the way to the Hungarian Great Plain. Bye-bye!",
+            "Tectonic activity detected near Tokaj wine region - fungi taking shelter!"
+        };
+
+        Random rand = new Random();
+        System.out.println(haha[rand.nextInt(0, haha.length)]);
     }
 }

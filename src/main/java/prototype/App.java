@@ -56,10 +56,12 @@ public class App {
             System.out.print("Pr> ");
             String[] cmdArgs = scanner.nextLine().trim().split("\\s+");
             String command = cmdArgs[0];
-            boolean shouldStop = commands.get(command).execute(cmdArgs);
-            if (shouldStop) {
-                running = false;
-                break;
+            if(commands.get(command)!=null) { //protects against execption when comment doesnt exist
+                boolean shouldStop = commands.get(command).execute(cmdArgs);
+                if (shouldStop) {
+                    running = false;
+                    break;
+                }
             }
         }
 

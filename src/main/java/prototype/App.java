@@ -25,13 +25,18 @@ public class App {
         return map;
     }
 
-    public void setMap(Map map) {
+    public CommandList getCommands() {
+		return commands;
+	}
+
+	public void setMap(Map map) {
         this.map = map;
     }
 
     public void run() {
         System.out.println("Fungorium prototype");
         System.out.println(" - By (NullPointerException)");
+        System.out.println("To get a list of all available commands, type in \"list\"");
 
         Scanner scanner = new Scanner(System.in);
 

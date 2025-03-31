@@ -90,7 +90,7 @@ public abstract class Command {
                         } catch (ClassCastException ex) {
                             // Valamiert itt az Intellisense nem akar bedugulni. Azt hiszi, hogy az entity
                             // nem elerheto itt.
-                            System.out.println("Unexpected \"" + entity.class.getSimpleName()
+                            System.out.println("Unexpected \"" + entity.getClass().getSimpleName()
                                     + "\" type entity with ID " + id + ", expected a " + forWhat.toLowerCase());
                         }
                     }

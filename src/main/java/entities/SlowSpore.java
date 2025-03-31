@@ -13,8 +13,9 @@ public class SlowSpore extends Spore {
     /*public SlowSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
     }*/
-    public SlowSpore(){
+    public SlowSpore(int effectValue){
         super();
+        this.effectValue = effectValue;
         UseCase.replace(this);
         UseCase.printWrapper("Initializing SlowSpore as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
         UseCase.printWrapper("SlowSpore: "+UseCase.logger.get(this), ArrowDirection.LEFT);

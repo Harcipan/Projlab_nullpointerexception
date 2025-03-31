@@ -1,4 +1,5 @@
 package prototype.commands;
+import entities.FungusBody;
 import prototype.*;
 
 public class FungusBodyReleaseSporeCloud extends Command {
@@ -8,6 +9,11 @@ public class FungusBodyReleaseSporeCloud extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        throw new UnsupportedOperationException("not implemented");
+        if(isWrongNumberOfArgs(2, args.length)) return false;
+        FungusBody fb = parseEntityId(args[1], "Fungus body");
+        if(fb == null) return false;
+        
+        app.getFungusPlayer().sporeCloud(fb, 5);
+        return false;
     }
 }

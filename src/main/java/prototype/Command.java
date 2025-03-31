@@ -108,7 +108,7 @@ public abstract class Command {
         return findEntityWithId(id, forWhat);
     }
 
-    private Tekton parseTekton(String input, String forWhat) {
+    protected Tekton parseTekton(String input, String forWhat) {
         Integer targetPlateId = parsePositiveNumber(input, forWhat + " ID");
         if (targetPlateId == null)
             return null;

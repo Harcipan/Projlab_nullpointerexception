@@ -8,7 +8,7 @@ public class InsectCantCut extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        //O_O No clue
+        //There isn't any way yet to do this.
         throw new UnsupportedOperationException("not implemented");
     }
 }

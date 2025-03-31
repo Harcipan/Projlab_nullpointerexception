@@ -1,4 +1,10 @@
 package prototype.commands;
+import java.util.ArrayList;
+
+import entities.GameEntity;
+import entities.Mycelium;
+import map.Tekton;
+import map.Tile;
 import prototype.*;
 
 public class TektonBreaks extends Command {
@@ -8,6 +14,32 @@ public class TektonBreaks extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        throw new UnsupportedOperationException("not implemented");
+        if (isWrongNumberOfArgs(2, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+
+        Tekton tek = parseTekton(args[1], "Tectonic plate");
+        if (tek == null)
+            return false;
+
+        ArrayList<Tekton> tl = tek.breakTekton();
+        ArrayList<Mycelium> removableMycelia = new ArrayList<>();
+        for (Tile t : tek.getTiles()) {
+            for (GameEntity e : t.getEntities()) {
+                if (e instanceof Mycelium) {
+                    removableMycelia.add((Mycelium) e);
+                }
+            }
+        }
+        for (Mycelium mycelium : removableMycelia) {
+            mycelium.die();
+        }
+        app.getMap().removeTekton(tek);
+        for(Tekton newTek : tl){
+            app.getMap().addTekton(newTek);
+        }
+
+        return false;
     }
 }

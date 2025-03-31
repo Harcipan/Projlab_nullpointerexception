@@ -8,6 +8,7 @@ public class Load extends Command {
 
     @Override
     public boolean execute(String[] args) {
+        //There isn't any way yet to do this.
         throw new UnsupportedOperationException("not implemented");
     }
 }

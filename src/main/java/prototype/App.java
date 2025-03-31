@@ -5,14 +5,23 @@ import java.util.Scanner;
 
 import map.Map;
 import player.*;
+import use_cases.UseCase;
 
 public class App {
     boolean running = true;
     CommandList commands;
     Map map;
 
-    InsectPlayer insectPlayer = new InsectPlayer();
-    FungusPlayer fungusPlayer = new FungusPlayer();
+    InsectPlayer insectPlayer;
+    FungusPlayer fungusPlayer;
+
+    public App() { //app inicialization so loggers work
+        UseCase.logger.put(null, "insectPlayer");
+        insectPlayer = new InsectPlayer();
+
+        UseCase.logger.put(null, "fungusPlayer");
+        fungusPlayer = new FungusPlayer();
+    }
 
     public InsectPlayer getInsectPlayer() {
         return insectPlayer;

@@ -1,4 +1,5 @@
 package prototype.commands;
+import entities.*;
 import prototype.*;
 
 public class InsectCut extends Command {
@@ -8,6 +9,14 @@ public class InsectCut extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        throw new UnsupportedOperationException("not implemented");
+        if(isWrongNumberOfArgs(3, args.length)) return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if(insect == null) return false;
+        Mycelium mycelium = parseEntityId(args[2], "Mycelium");
+        if(mycelium == null) return false;
+
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().cut(mycelium.getCurrentTile(), insect); //Nonsense. Why would I ask for the mycelium id then? The tile & tekton id would be good enough.
+        return false;
     }
 }

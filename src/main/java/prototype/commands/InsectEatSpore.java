@@ -1,4 +1,5 @@
 package prototype.commands;
+import entities.*;
 import prototype.*;
 
 public class InsectEatSpore extends Command {
@@ -8,6 +9,15 @@ public class InsectEatSpore extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        throw new UnsupportedOperationException("not implemented");
+        if(isWrongNumberOfArgs(3, args.length)) return false;
+        if(isMapUninitialized()) return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if(insect == null) return false;
+        Spore spore = parseEntityId(args[2], "Spore");
+        if(spore == null) return false;
+
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().eat(spore, insect);
+        return false;
     }
 }

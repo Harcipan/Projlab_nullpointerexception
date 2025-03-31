@@ -25,13 +25,20 @@ public class SetTileType extends Command {
         // This command is a cookie...
         switch (args[3].toLowerCase()) {
             case "mono":
-                tek.getTiles().add(tileId, new MonoTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton()));
+                tek.getTiles().add(tileId,
+                        new MonoTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton()));
                 break;
             case "heal":
-                tek.getTiles().add(tileId, new HealTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton()));
+                tek.getTiles().add(tileId,
+                        new HealTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton()));
                 break;
             case "acid":
-                tek.getTiles().add(tileId, new AcidTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(), 5)); //TODO: Ask for damage rate
+                tek.getTiles().add(tileId,
+                        new AcidTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(), 5)); // TODO:
+                                                                                                               // Ask
+                                                                                                               // for
+                                                                                                               // damage
+                                                                                                               // rate
                 break;
             default:
                 System.out.println(

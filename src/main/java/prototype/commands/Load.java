@@ -1,4 +1,5 @@
 package prototype.commands;
+
 import prototype.*;
 
 public class Load extends Command {
@@ -8,7 +9,7 @@ public class Load extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        //There isn't any way yet to do this.
+        // There isn't any way yet to do this.
         throw new UnsupportedOperationException("not implemented");
     }
 }

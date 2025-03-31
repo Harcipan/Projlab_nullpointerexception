@@ -12,13 +12,13 @@ import prototype.commands.*;
 public class CommandList {
     Map<String, Command> commands = new HashMap<>();
 
-    private void add(Command cmd){
+    private void add(Command cmd) {
         commands.put(cmd.getName(), cmd);
     }
 
     /*
-     *       ADD YOUR COMMANDS HERE
-     *  */
+     * ADD YOUR COMMANDS HERE
+     */
     public CommandList(App app, Scanner scanner) {
         add(new Create());
         add(new Destroy());
@@ -45,13 +45,13 @@ public class CommandList {
         add(new TektonOneMycelium());
         add(new Tick());
 
-        for(Command cmd : commands.values()){
+        for (Command cmd : commands.values()) {
             cmd.setApp(app);
             cmd.setScanner(scanner);
         }
     }
 
-    public Command get(String command){
+    public Command get(String command) {
         return commands.get(command);
     }
 }

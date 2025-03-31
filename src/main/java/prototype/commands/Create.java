@@ -149,7 +149,7 @@ public class Create extends Command {
                 if (res == null)
                     break;
 
-                res.getTile().addEntity(assignId(new SlowSpore()));
+                res.getTile().addEntity(assignId(new SlowSpore(50)));
                 break;
             }
             case "speedupspore": {
@@ -157,7 +157,7 @@ public class Create extends Command {
                 if (res == null)
                     break;
 
-                res.getTile().addEntity(assignId(new SpeedUpSpore()));
+                res.getTile().addEntity(assignId(new SpeedUpSpore(200)));
                 break;
             }
             case "fungusbody": {

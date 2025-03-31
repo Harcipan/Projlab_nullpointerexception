@@ -1,4 +1,5 @@
 package prototype.commands;
+
 import java.util.ArrayList;
 
 import entities.GameEntity;
@@ -9,7 +10,8 @@ import prototype.*;
 
 public class TektonBreaks extends Command {
     public TektonBreaks() {
-        super("tekton_breaks", "Break the tectonic plate and cut all mycelium on it", "tekton_breaks <tectonic plate id>");
+        super("tekton_breaks", "Break the tectonic plate and cut all mycelium on it",
+                "tekton_breaks <tectonic plate id>");
     }
 
     @Override
@@ -36,7 +38,7 @@ public class TektonBreaks extends Command {
             mycelium.die();
         }
         app.getMap().removeTekton(tek);
-        for(Tekton newTek : tl){
+        for (Tekton newTek : tl) {
             app.getMap().addTekton(newTek);
         }
 

@@ -1,14 +1,16 @@
 package prototype.commands;
+
 import prototype.*;
 
 public class TektonCantGrowFungus extends Command {
     public TektonCantGrowFungus() {
-        super("tekton_cant_grow_fungus", "Block any fungus bodies from growing on this tectonic plate", "tekton_cant_grow_fungus <tectonic plate id>");
+        super("tekton_cant_grow_fungus", "Block any fungus bodies from growing on this tectonic plate",
+                "tekton_cant_grow_fungus <tectonic plate id>");
     }
 
     @Override
     public boolean execute(String[] args) {
-        //There isn't any way yet to do this.
+        // There isn't any way yet to do this.
         throw new UnsupportedOperationException("not implemented");
     }
 }

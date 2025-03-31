@@ -12,6 +12,7 @@ public class FungusBodyGrow extends Command{
     @Override
     public boolean execute(String[] args) {
         if(isWrongNumberOfArgs(4, args.length)) return false;
+        if(isMapUninitialized()) return false;
         FungusBody fb = parseEntityId(args[1], "Fungus body");
         if(fb == null) return false;
         TektonAndTile tektonTile = parseTektonAndTile(args[2], args[3]);

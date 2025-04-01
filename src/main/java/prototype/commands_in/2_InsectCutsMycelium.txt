@@ -1,0 +1,15 @@
+create Map
+create Tekton
+1
+1
+create Tile
+0
+1
+2
+create Insect
+0
+0
+create Mycelium
+0
+0
+insect_cut 0 1

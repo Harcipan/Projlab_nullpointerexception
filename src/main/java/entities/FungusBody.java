@@ -16,7 +16,6 @@ public class FungusBody extends Fungus{
         replace(this);
         UseCase.printWrapper("Initializing FungusBody as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
         this.sporeCharge = initialSporeCharge;
-        UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     public void decrementSporeCharge() {

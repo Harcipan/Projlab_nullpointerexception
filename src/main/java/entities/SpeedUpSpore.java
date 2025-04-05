@@ -19,7 +19,6 @@ public class SpeedUpSpore extends Spore {
         this.effectValue = effectValue;
         UseCase.replace(this);
         UseCase.printWrapper("Initializing SpeedUpSpore as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
-        UseCase.printWrapper("SpeedUpSpore: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     /*
@@ -27,12 +26,10 @@ public class SpeedUpSpore extends Spore {
      */
     @Override
     public void getEaten(Insect i) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten(" + UseCase.logger.get(i)+")", ArrowDirection.RIGHT, Indent.INDENT);
         isConsumed = true;
         i.setSpeedPercent(effectValue);
         i.addSpore(this);
         currentTile.removeEntity(this);
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*

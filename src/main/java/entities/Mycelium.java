@@ -23,13 +23,11 @@ public class Mycelium extends Fungus{
         super();
         replace(this);
         printWrapper("Initializing Mycelium as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
-        printWrapper("Mycelium: "+UseCase.logger.get(this),ArrowDirection.LEFT);
     }
 
     @Override
     public void update() {
 
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".update()", ArrowDirection.RIGHT, Indent.INDENT);
         searchConnection();
         // if it has at least one body, reset health
         if(!connectedBodies.isEmpty()) {
@@ -40,7 +38,6 @@ public class Mycelium extends Fungus{
         else {
             health--;
         }
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".update()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     // Reconnect with the mycelium network, recover health
@@ -62,22 +59,18 @@ public class Mycelium extends Fungus{
 
     @Override
     public void damage() {
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".damage()", ArrowDirection.RIGHT, Indent.INDENT);
         health--;
         if(health <= 0) {
             detach();
             // remove from tile
             currentTile.removeEntity(this);
         }
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".damage()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     @Override
     public void heal() {
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.RIGHT, Indent.INDENT);
         if (health < maxHealth) {
             health++;
         }
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 }

@@ -46,7 +46,6 @@ public class Map {
 
     public void tick() {
         // for every tekton
-        UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.RIGHT, Indent.INDENT);
         for (Tekton tek : tektons) {
             // for every tile
             for (Tile t : tek.tiles) {
@@ -54,6 +53,5 @@ public class Map {
                 //TODO
             }
         }
-        UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 }

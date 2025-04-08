@@ -3,27 +3,26 @@ package map;
 import entities.GameEntity;
 
 public class AcidTile extends Tile{
-    int damageRate; // The rate at which the acid damages entities
+    int damageRate; // The rate at which the acid damages entities (damage per tick)
 
     public AcidTile(int growthRate, int maxMycelium, Tekton parentTekton, int damageRate) {
-        //super(growthRate, maxMycelium, parentTekton);
-        super();
+        super(growthRate, maxMycelium, parentTekton);
         this.damageRate = damageRate;
     }
 
-    @Override
-    public void addEntity(GameEntity entity) {
-        // TODO Auto-generated method stub
-        super.addEntity(entity);
-    }
 
-    public void damageEntities() {
-        // Will implement later
+    private void damageEntities() {
+        for (GameEntity ge : entities){
+            for (int i = 0; i < damageRate; i++) {
+                ge.damage(); // Call the damage method on each entity in the tile
+            }
+        }
     }
 
     @Override
     public void update() {
-        // Will implement later
+        damageEntities(); // Call the damageEntities method to apply damage to entities
+        super.update(); // Call the parent class's update method to handle other updates
     }
 
 }

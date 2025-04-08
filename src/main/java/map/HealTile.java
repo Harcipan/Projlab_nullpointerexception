@@ -7,9 +7,16 @@ public class HealTile extends Tile{
         super(growthRate, maxMycelium, parentTekton);
     }
 
+    private void healEntities() {
+        for (GameEntity ge : entities) {
+            ge.heal(); // Call the heal method on each entity in the tile
+        }
+    }
+
     @Override
     public void update() {
-        // Will implement later
+        healEntities(); // Call the healEntities method to apply healing to entities
+        super.update(); // Call the parent class's update method to handle other updates
     }
 
 

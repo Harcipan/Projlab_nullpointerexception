@@ -97,9 +97,7 @@ public class Mycelium extends Fungus{
     @Override
     public void heal() {
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.RIGHT, Indent.INDENT);
-        if (health < maxHealth) {
-            health++;
-        }
+        health = maxHealth;
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 }

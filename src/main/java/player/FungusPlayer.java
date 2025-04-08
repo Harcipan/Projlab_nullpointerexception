@@ -166,4 +166,17 @@ public class FungusPlayer extends Player {
             return;
         }
     }
+
+    public void addFungusBody(FungusBody fb) {
+        fungusBodies.add(fb);
+    }
+    public void removeFungusBody(FungusBody fb) {
+        fungusBodies.remove(fb);
+    }
+    public void addMycelium(Mycelium myc) {
+        mycelia.add(myc);
+    }
+    public void removeMycelium(Mycelium myc) {
+        mycelia.remove(myc);
+    }
 }

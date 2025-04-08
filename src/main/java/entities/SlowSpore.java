@@ -10,9 +10,9 @@ import use_cases.UseCase.Indent;
  * effectValue must be less than 100 (its a percentage)
  */
 public class SlowSpore extends Spore {
-    /*public SlowSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+    public SlowSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
-    }*/
+    }
     public SlowSpore(){
         super();
         UseCase.replace(this);

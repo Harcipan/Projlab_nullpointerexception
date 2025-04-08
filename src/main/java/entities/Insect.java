@@ -9,21 +9,21 @@ import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 import use_cases.UseCase.Indent;
 
+/*
+ * Insect is a class that represents an insect in the game.
+ */
 public class Insect extends GameEntity {
-    int speed;  // The speed of the insect
-    boolean canCut; // Whether the insect can cut through mycelium
-    InsectPlayer controlledBy; // The player that controls the insect
-    List<Spore> underInfluence; //The spores that are affecting the insect
+    int speed;                  // The speed of the insect
+    boolean canCut;             // Whether the insect can cut through mycelium
+    InsectPlayer controlledBy;  // The player that controls the insect
+    List<Spore> underInfluence; //The spores that are currently affecting the insect
 
     public Insect(int id, Tile currentTile, InsectPlayer player) {
         super(id, currentTile);
         speed = 100;
         canCut = true;
         controlledBy = player;
-        // SHOULD BE DEPRECATED: check if this insect is already controlled by the player
-        if (!player.getControlledInsects().contains(this)) {
-            player.addControlledInsect(this);
-        }
+        controlledBy.addControlledInsect(this);
         underInfluence = new ArrayList<Spore>();
     }
 
@@ -36,7 +36,6 @@ public class Insect extends GameEntity {
         UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.RIGHT, Indent.INDENT);
         Insect newInsect = new Insect(100+id, getCurrentTile(), controlledBy);
         UseCase.logger.put(newInsect, "cloned_insect");
-        controlledBy.addControlledInsect(newInsect);
         UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.LEFT, Indent.UNINDENT);
         return newInsect;
     }
@@ -73,23 +72,21 @@ public class Insect extends GameEntity {
     /*
      * Eat the spore and update the score of the player
      * Adds spore to affecting list
+     * @param target the spore to eat
      */
     public void eat(Spore target) {
-        //controlledBy.updateScore(target.getNutrientValue());
+        controlledBy.updateScore(target.getNutrientValue());
         UseCase.printWrapper(UseCase.logger.get(this)+".eat(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         target.getEaten(this);
-        if (target instanceof SplitSpore) {
-            split();
-        }
         UseCase.printWrapper(UseCase.logger.get(this)+".eat()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*
      * Move the insect to the target tile
-     * If the target tile is not adjacent, the insect will not move
+     * Assumes the target tile is valid
+     * @param target the tile to move to
      */
     public void step(Tile target) {
-        // Will implement later
         UseCase.printWrapper(UseCase.logger.get(this)+".step(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         currentTile.removeEntity(this);
         target.addEntity(this);
@@ -98,13 +95,18 @@ public class Insect extends GameEntity {
 
     /*
      * Remove the mycelium in the target tile
+     * Assumes the target tile is valid
+     * @param target the tile to cut
      */
     public void cut(Tile target) {
         // Will implement later
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
+        if (!canCut) {
+            return;
+        }
         target.getEntities();
         for (GameEntity ge : target.getEntities()) {
-            //if()
+            ge.getCut();
         }
         UseCase.printWrapper(UseCase.logger.get(this)+".cut())", ArrowDirection.LEFT, Indent.UNINDENT);
     }

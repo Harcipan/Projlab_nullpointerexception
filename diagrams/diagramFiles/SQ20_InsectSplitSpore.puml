@@ -20,13 +20,6 @@ activate I2
 I2 --> I
 I --> Sp
 
-@enduml
-
-
-
-
-
-
 
 Sp -> T : removeEntity(ss)
 T --> Sp

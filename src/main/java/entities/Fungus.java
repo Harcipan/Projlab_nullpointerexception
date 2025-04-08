@@ -6,10 +6,10 @@ import static use_cases.UseCase.*;
 public abstract class Fungus extends GameEntity {
     int health;
 
-    /*protected Fungus(int health, Tile currentTile) {
+    protected Fungus(int health, Tile currentTile) {
         super(1, currentTile);
         this.health = health;
-    }*/
+    }
 
     protected Fungus()
     {
@@ -18,13 +18,13 @@ public abstract class Fungus extends GameEntity {
 
     public void growMycelium(Tile neighbor) {
 
-        // Will implement later
+        // implemented in subclasses
         
     }
 
     public void growBody(Tile neighbor) {
 
-        // Will implement later
+        // implemented in subclasses
 
     }
 
@@ -37,8 +37,4 @@ public abstract class Fungus extends GameEntity {
         return health;
     }
 
-    // private boolean checkNeighbor(Tile neighbor) {
-    //     // Will implement later
-    //     return false;
-    // }
 }

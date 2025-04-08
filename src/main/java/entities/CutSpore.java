@@ -5,10 +5,23 @@ import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 import use_cases.UseCase.Indent;
 
+/*
+ * CutSpore is a spore that disables the cutting ability of an insect when eaten.
+ * It is a subclass of Spore and inherits its properties and methods.
+ */
 public class CutSpore extends Spore {
-    /*public CutSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
-        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
-    }*/
+    /*
+     * Constructor for CutSpore
+     * @param id the id of the spore
+     * @param currentTile the tile where the spore is located
+     * @param nutrientValue the nutrient value of the spore
+     * @param lifetime the lifetime of the spore
+     * @param effectTime the time the spore will have an effect on the insect
+     * 
+     */
+    public CutSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, 0);
+    }
 
     public CutSpore() {
         super();

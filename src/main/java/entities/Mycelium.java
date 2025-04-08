@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import map.HealTile;
+import map.Tile;
+import player.FungusPlayer;
 import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 import use_cases.UseCase.Indent;
@@ -12,11 +14,16 @@ import static use_cases.UseCase.*;
 
 public class Mycelium extends Fungus{
     int maxHealth = 5; 
+    FungusPlayer player = null; // The player that owns this mycelium
     List<FungusBody> connectedBodies = new ArrayList<FungusBody>();
 
-    /*public Mycelium(int health, Tile currentTile) {
+    public Mycelium(int health, Tile currentTile, FungusPlayer player) {
         super(health, currentTile);
-    }*/
+        this.player = player;
+        this.player.addMycelium(this);
+        this.currentTile.addEntity(this);
+        this.health = health;
+    }
 
     public Mycelium()
     {
@@ -58,6 +65,21 @@ public class Mycelium extends Fungus{
     private boolean searchConnection(){
         // Will implement later
         return false;
+    }
+
+    @Override
+    public void die() {
+        printWrapper("Mycelium: "+UseCase.logger.get(this)+".die()", ArrowDirection.RIGHT, Indent.INDENT);
+        player.removeMycelium(this);
+        currentTile.removeEntity(this);
+        printWrapper("Mycelium: "+UseCase.logger.get(this)+".die()", ArrowDirection.LEFT, Indent.UNINDENT);
+    }
+
+    @Override
+    public void getCut() {
+        printWrapper("Mycelium: "+UseCase.logger.get(this)+".getCut()", ArrowDirection.RIGHT, Indent.INDENT);
+        die();
+        printWrapper("Mycelium: "+UseCase.logger.get(this)+".getCut()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     @Override

@@ -37,6 +37,13 @@ public class FungusBody extends Fungus{
         UseCase.printWrapper("Initializing FungusBody as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
         UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
+    /*
+     * Constructor for FungusBody used in the game
+     * @param id The id of the fungus body
+     * @param health The health of the fungus body
+     * @param currentTile The tile where the fungus body is located
+     * @param player The player that owns this fungus body
+     */
     public FungusBody(int id, int health,  Tile currentTile, FungusPlayer player) {
         super(id, health, currentTile);
         this.player = player;
@@ -64,6 +71,14 @@ public class FungusBody extends Fungus{
         return this.sporeCharge;
     }
 
+    @Override
+    public void damage() {
+        this.health--;
+        if (this.health <= 0) {
+            this.die();
+        }
+    }
+
     /*
      * Creates a spore cloud of the given size: places random spores in the surrounding area.
      * The spore cloud will cost size * SPORECLOUD_COST spore charge.
@@ -75,8 +90,7 @@ public class FungusBody extends Fungus{
         int radius = size * SPORECLOUD_RADIUS_MULTIPLIER;
         int percentage = size * SPOERCLOUD_PERCENTAGE;
         int sporeChargeCost = size * SPORECLOUD_COST_MULTIPLIER;
-        decrementSporeCharge(sporeChargeCost);
-
+        
         // Get the coordinates of the tiles in the spore cloud
         int x = this.getCurrentTile().getX();
         int y = this.getCurrentTile().getY();
@@ -117,30 +131,32 @@ public class FungusBody extends Fungus{
             // 0 = CutSpore, 1 = FreezeSpore, 2 = SlowSpore, 3 = SpeedUpSpore, 4 = SplitSpore
             switch (randomSporeType) {
                 case 0:
-                    new CutSpore(0, tile, randomNutrientValue, randomLifetime, randomEffectTime);
+                    new CutSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime);
                     break;
                 case 1:
-                    new FreezeSpore(0, tile, randomNutrientValue, randomLifetime, randomEffectTime);
+                    new FreezeSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime);
                     break;
                 case 2:
-                    new SlowSpore(0, tile, randomNutrientValue, randomLifetime, randomEffectTime, randomEffectValue);
+                    new SlowSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime, randomEffectValue);
                     break;
                 case 3:
-                    new SpeedUpSpore(0, tile, randomNutrientValue, randomLifetime, randomEffectTime, randomEffectValue);
+                    new SpeedUpSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime, randomEffectValue);
                     break;
                 case 4:
-                    new SplitSpore(0, tile, randomNutrientValue, randomLifetime);
+                    new SplitSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime);
                     break;
                 default:
                     break;
             }
-
+            
         }
-
+        // Remove the spore charge cost and inflict damage
+        decrementSporeCharge(sporeChargeCost);
+        damage();
     }
-
     
-
+    
+    
     
 
 

@@ -63,56 +63,7 @@ public class FungusPlayer extends Player {
         printWrapper("Finished consuming insect " + System.identityHashCode(insect), UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
     }
 
-    public FungusBody growBody(Tile tile) {
-        printWrapper("Player " + System.identityHashCode(this) + " trying to grow a mushroom...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
-        // neighbor testing happens here
-        // (agreed on handling game logic as soon as possible to prevent chained function calls and constant dispatching)
-        printWrapper("Checking if the tile " + System.identityHashCode(tile) + " is a neighbor of a living mycelium");
-
-        // presuming that the tile is a neighbor of a living mycelium
-        printWrapper("The tile " + System.identityHashCode(tile) +  "is a neighbor of a living mycelium/fungus body", UseCase.ArrowDirection.RIGHT);
-
-        // start checking if there is a body already on the tekton
-        FungusBody fb = null;
-
-        // validate if the tile has a parent tekton
-        if (tile.getParentTekton() == null) {
-            printWrapper("Tile " + System.identityHashCode(tile) + " has no parent tekton", UseCase.ArrowDirection.RIGHT);
-            return null;
-        }
-
-        // check for existing tiles next to the tile
-        for (Tile t : tile.getParentTekton().getTiles()) {
-            for (GameEntity e : t.getEntities()) {
-                if (e instanceof FungusBody) {
-                    fb = (FungusBody) e;
-                    break;
-                }
-            }
-        }
-        if (fb != null) {
-            printWrapper("Body " + System.identityHashCode(fb) + " on tekton "
-                    + System.identityHashCode(tile.getParentTekton()) + " already exists", UseCase.ArrowDirection.RIGHT);
-            return null;
-        }
-        System.out.println("Does the player have enough action points to grow a body? Y/N");
-        String answer = System.console().readLine();
-        if (answer.equalsIgnoreCase("N")) {
-            printWrapper("Player does not have enough points to grow a body, end of use-case", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
-            return null;
-        }
-        // checking complete, create the body
-        logger.put(null,"new_fb");
-        FungusBody new_fb = new FungusBody(1, 1, tile);
-
-        // adding the fungus body to the tile
-        printWrapper("Adding the fungus body " + System.identityHashCode(new_fb) + " to tile " + System.identityHashCode(tile));
-        tile.addEntity(new_fb);
-
-        // increment forwards
-        printWrapper("Finished growing a fungus body.", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
-        return fb;
-    }
+    
 
     public Mycelium growMycelium(Tile tile) {
         printWrapper("Player " + System.identityHashCode(this) + " trying to grow a mycelium...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
@@ -120,38 +71,46 @@ public class FungusPlayer extends Player {
         // (agreed on handling game logic as soon as possible to prevent chained function calls and constant dispatching)
         printWrapper("Checking if the tile " + System.identityHashCode(tile) + " is a neighbor of a living mycelium/fungus body");
 
-        // TODO presuming that the tile is a neighbor of a living mycelium
-        printWrapper("The tile " + System.identityHashCode(tile) +  "is a neighbor of a living mycelium/fungus body", UseCase.ArrowDirection.RIGHT);
-
-        // validate if the tile has a parent tekton
-        if (tile.getParentTekton() == null) {
-            printWrapper("Tile " + System.identityHashCode(tile) + " has no parent tekton", UseCase.ArrowDirection.RIGHT);
-            return null;
-        }
-
-        // check if there is a mycelium already on the tile
-        Mycelium myc = null;
-        for (GameEntity e : tile.getEntities()) {
-            if (e instanceof Mycelium) {
-                myc = (Mycelium) e;
-                break;
+        // check if the tile is a neighbor of a mycelium
+        for (Mycelium myc: mycelia){
+            if (myc.getCurrentTile().isNeighbor(tile)) {
+                return tile.growMycelium(this);
             }
         }
-        if (myc != null) {
-            printWrapper("Mycelium " + System.identityHashCode(myc) + " on tile " + System.identityHashCode(tile) + " already exists", UseCase.ArrowDirection.RIGHT);
-            return null;
+
+        // check if the tile is a neighbor of a fungus body (if this runs, it means that the tile is not a neighbor of a mycelium)
+        for (FungusBody fb: fungusBodies){
+            if (fb.getCurrentTile().isNeighbor(tile)) {
+                return tile.growMycelium(this);
+            }
         }
 
-        logger.put(null, "new_myc");
-        Mycelium new_myc = new Mycelium();
+        // if the tile is not a neighbor of a fungus body or mycelium, return null
+        printWrapper("The tile " + System.identityHashCode(tile) + " is not a neighbor of a fungus body or mycelium", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+        return null;
+    }
 
-        // adding the mycelium to the tile
-        printWrapper("Adding the mycelium " + System.identityHashCode(new_myc) + " to tile " + System.identityHashCode(tile));
-        tile.addEntity(new_myc);
+    public FungusBody growBody(Tile tile) {
+        printWrapper("Player " + System.identityHashCode(this) + " trying to grow a mushroom body...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
+        // neighbor testing happens here
+        // (agreed on handling game logic as soon as possible to prevent chained function calls and constant dispatching)
+        printWrapper("Checking if the tile " + System.identityHashCode(tile) + " is a neighbor of a living mycelium/fungus body");
 
-        // increment forwards
-        printWrapper("Finished growing a mycelium.", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
-        return myc;
+        // check if this tekton already has a fungus body
+        if (tile.getParentTekton().hasFungusBody()) {
+            printWrapper("The tile " + System.identityHashCode(tile) + " already has a fungus body", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+            return null;
+        }
+        // check if the tile is a neighbor of a mycelium
+        for (Mycelium myc: mycelia){
+            if (myc.getCurrentTile().isNeighbor(tile)) {
+                return tile.growBody(this);
+            }
+        }
+
+        // if the tile is not a neighbor of a fungus body or mycelium, return null
+        printWrapper("The tile " + System.identityHashCode(tile) + " is not a neighbor of a fungus body or mycelium", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+        return null;
     }
 
     public void sporeCloud(FungusBody target, int size) {
@@ -175,10 +134,16 @@ public class FungusPlayer extends Player {
     public void removeFungusBody(FungusBody fb) {
         fungusBodies.remove(fb);
     }
+    public List<FungusBody> getFungusBodies() {
+        return fungusBodies;
+    }
     public void addMycelium(Mycelium myc) {
         mycelia.add(myc);
     }
     public void removeMycelium(Mycelium myc) {
         mycelia.remove(myc);
+    }
+    public List<Mycelium> getMycelia() {
+        return mycelia;
     }
 }

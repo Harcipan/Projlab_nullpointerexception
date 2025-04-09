@@ -40,7 +40,10 @@ public class Tekton {
         return map;
     }
 
-    //"break" is reserved keyword
+    public boolean hasFungusBody() {
+        return fungusBody != null;
+    }
+
     // TODO this is a crude simplification of the actual process
     public ArrayList<Tekton> breakTekton() {
 

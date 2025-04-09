@@ -12,14 +12,26 @@ import entities.GameEntity;
 import static use_cases.UseCase.printWrapper;
 import static use_cases.UseCase.replace;
 
+/*
+ * Map class represents the game map, which contains a list of tektons and a 2D array of tiles for quick access.
+ * It provides methods to add and remove tektons, update game entities, and tick the map for game logic.
+ */
 public class Map {
     List<Tekton> tektons;
+    Tile[][] tiles; // 2D array of tiles
+    int width; // Width of the map
+    int height; // Height of the map
 
-    public Map() {
+    public Map(int width, int height) {
         replace(this);
         UseCase.printWrapper("Initializing Map as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         tektons = new ArrayList<>();
+        tiles = new Tile[width][height]; // Example size, can be changed
         UseCase.printWrapper("Map: "+UseCase.logger.get(this), ArrowDirection.LEFT);
+    }
+
+    public Map() {
+        this(100, 100); // Default size
     }
 
     public void addTekton(Tekton tekton) {
@@ -46,24 +58,14 @@ public class Map {
     public void tick() {
         // for every tekton
         UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.RIGHT, Indent.INDENT);
-        for (Tekton tek : tektons) {
-            // for every tile
-            for (Tile t : tek.tiles) {
-                //determine if its mycelium is connected
-                //TODO
-            }
-        }
+        // TODO no clue how to implement this yet
         UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     public Tile getTile(int x, int y) {
-        for (Tekton tek : tektons) {
-            for (Tile t : tek.getTiles()) {
-                if (t.x == x && t.y == y) {
-                    return t;
-                }
-            }
+        if (x < 0 || x >= width || y < 0 || y >= height) {
+            return null; // Out of bounds
         }
-        return null;
+        return tiles[x][y];
     }
 }

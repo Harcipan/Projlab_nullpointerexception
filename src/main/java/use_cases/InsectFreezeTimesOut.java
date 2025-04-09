@@ -25,7 +25,7 @@ public class InsectFreezeTimesOut extends UseCase {
         Map m = new Map();
 
         // create tekton
-        Tekton tek = new Tekton(1, 1);
+        Tekton tek = new Tekton(1, 1, m);
 
         // create tile
         Tile t = new Tile(1, 1, tek);

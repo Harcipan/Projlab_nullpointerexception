@@ -6,8 +6,8 @@ import static use_cases.UseCase.*;
 public abstract class Fungus extends GameEntity {
     int health;
 
-    protected Fungus(int health, Tile currentTile) {
-        super(1, currentTile);
+    protected Fungus(int id, int health, Tile currentTile) {
+        super(id, currentTile);
         this.health = health;
     }
 
@@ -16,18 +16,7 @@ public abstract class Fungus extends GameEntity {
         super();
     }
 
-    public void growMycelium(Tile neighbor) {
-
-        // implemented in subclasses
-        
-    }
-
-    public void growBody(Tile neighbor) {
-
-        // implemented in subclasses
-
-    }
-
+    @Override
     public void die() {
         printWrapper("Fungus (typeof " + this.getClass().getName()
                 + ") " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, Indent.KEEP);

@@ -11,8 +11,8 @@ import use_cases.UseCase.Indent;
  * It is a subclass of Spore and inherits its properties and methods.
  */
 public class FreezeSpore extends Spore {
-    public FreezeSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
-        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
+    public FreezeSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, 0);
     }
 
     public FreezeSpore() {

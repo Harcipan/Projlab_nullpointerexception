@@ -55,4 +55,15 @@ public class Map {
         }
         UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
+
+    public Tile getTile(int x, int y) {
+        for (Tekton tek : tektons) {
+            for (Tile t : tek.getTiles()) {
+                if (t.x == x && t.y == y) {
+                    return t;
+                }
+            }
+        }
+        return null;
+    }
 }

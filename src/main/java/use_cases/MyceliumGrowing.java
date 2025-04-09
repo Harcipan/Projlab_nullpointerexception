@@ -15,7 +15,7 @@ public class MyceliumGrowing extends UseCase {
         printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
         //create tekton
         UseCase.logger.put(null, "tek");
-        Tekton tek=new Tekton(1,1, null);
+        Tekton tek=new Tekton(null);
 
         //create tile
         UseCase.logger.put(null, "t");

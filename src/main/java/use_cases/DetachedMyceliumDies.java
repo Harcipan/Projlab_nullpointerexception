@@ -22,7 +22,7 @@ public class DetachedMyceliumDies extends UseCase {
 
         // tekton creation
         UseCase.logger.put(null, "tek");
-        Tekton tek = new Tekton(1, 1, m );
+        Tekton tek = new Tekton(m );
 
         // add tekton to map
         m.addTekton(tek);

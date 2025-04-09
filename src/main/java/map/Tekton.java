@@ -1,9 +1,12 @@
 package map;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import entities.FungusBody;
+import entities.GameEntity;
+import player.FungusPlayer;
 import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 
@@ -14,6 +17,7 @@ public class Tekton {
     List<Tile> tiles;
     FungusBody fungusBody;
     Map map;
+    HashMap<FungusPlayer, Integer> playerSpores; // spores per player
 
     public Tekton( Map map) {
         UseCase.replace(this);
@@ -23,11 +27,13 @@ public class Tekton {
         map.addTekton(this);
         tiles = new ArrayList<>();
         fungusBody = null;
+        playerSpores = new HashMap<>();
         UseCase.printWrapper("Tekton: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     public void addTile(Tile tile) {
         tiles.add(tile);
+        tile.setParentTekton(this);
     }
 
     public List<Tile> getTiles() {
@@ -38,19 +44,40 @@ public class Tekton {
         return map;
     }
 
+    public int getPlayerSpores(FungusPlayer player) {
+        if (playerSpores.containsKey(player)) {
+            return playerSpores.get(player);
+        } else {
+            return 0;
+        }
+    }
+
+    public void addPlayerSpore(FungusPlayer player) {
+        if (playerSpores.containsKey(player)) {
+            playerSpores.put(player, playerSpores.get(player) + 1);
+        } else {
+            playerSpores.put(player, 1);
+        }
+    }
+
     public boolean hasFungusBody() {
         return fungusBody != null;
     }
 
-    // TODO this is a crude simplification of the actual process
+    /*
+     * Breaks the tekton into two pieces along a fault line around the middle
+     * @return the two pieces of the tekton as an ArrayList
+     */
     public ArrayList<Tekton> breakTekton() {
 
-        ArrayList<Tekton> tl = new ArrayList<>();
         printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
 
 
         int faultLine = faultLine();
         List<Tile> tilesAlongFault = new ArrayList<>();
+        Tekton t1 = new Tekton(map);
+        Tekton t2 = new Tekton(map);
+
         if(faultLine > 0) {
             List<Tile> left = new ArrayList<>();
             List<Tile> right = new ArrayList<>();
@@ -64,9 +91,15 @@ public class Tekton {
                     tilesAlongFault.add(tile);
                 }
             }
-            Tekton t1 = new Tekton(map);
-            Tekton t2 = new Tekton(map);
+            // add the tiles to the new tektons (changes parent too)
+            for (Tile tile : left) {
+                t1.addTile(tile);
+            }
+            for (Tile tile : right) {
+                t2.addTile(tile);
+            }
         } else {
+            faultLine *= -1;
             List<Tile> top = new ArrayList<>();
             List<Tile> bottom = new ArrayList<>();
             for (Tile tile : tiles) {
@@ -79,20 +112,27 @@ public class Tekton {
                     tilesAlongFault.add(tile);
                 }
             }
+            // add the tiles to the new tektons (changes parent too)
+            for (Tile tile : top) {
+                t1.addTile(tile);
+            }
+            for (Tile tile : bottom) {
+                t2.addTile(tile);
+            }
+        }
+        // trigger a cut event on all entities along the fault line
+        for (Tile tile : tilesAlongFault) {
+            for (GameEntity entity : tile.getEntities()) {
+                entity.getCut();
+            }
         }
 
-        // based on some algorithm we break it into two pieces
-        UseCase.logger.put(null, "t1");
-        tl.add(new Tekton(map));
-        UseCase.logger.put(null, "t2");
-        tl.add(new Tekton(map));
-        for (Tekton tekton : tl) {
-            // migrating elements into new tektons
-            printWrapper("New tekton " + System.identityHashCode(tekton)
-                    + " created and migrated elements based on some algorithm",
-                    UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
-        }
-
+        ArrayList<Tekton> tl = new ArrayList<>(); 
+        tl.add(t1);
+        tl.add(t2);
+        // remove the tekton from the map
+        map.removeTekton(this);
+        
         return tl;
     }
 

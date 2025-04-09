@@ -56,8 +56,8 @@ public class FungusPlayer extends Player {
                 return;
             }
             insect.die();
-            // grow fungus body in place of insect
-            growBody(insectTile);
+            // grow fungus body in place of insect, omit checks
+            insectTile.growBody(this);
 
         }
         printWrapper("Finished consuming insect " + System.identityHashCode(insect), UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
@@ -101,10 +101,17 @@ public class FungusPlayer extends Player {
             printWrapper("The tile " + System.identityHashCode(tile) + " already has a fungus body", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
             return null;
         }
+        // check if we have enough spores on the tekton to grow a fungus body
+        if (tile.getParentTekton().getPlayerSpores(this) < FungusBody.BODY_COST) {
+            printWrapper("Not enough spore on tekton to grow a fungus body", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
+            return null;
+        }
+
         // check if the tile is a neighbor of a mycelium
         for (Mycelium myc: mycelia){
             if (myc.getCurrentTile().isNeighbor(tile)) {
-                return tile.growBody(this);
+                FungusBody body = tile.growBody(this);
+                score++;
             }
         }
 

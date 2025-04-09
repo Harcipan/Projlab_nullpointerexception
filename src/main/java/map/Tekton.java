@@ -14,12 +14,15 @@ public class Tekton {
     int sporeCount;
     List<Tile> tiles;
     FungusBody fungusBody;
+    Map map;
 
-    public Tekton(int breakChance, int sporeCount) {
+    public Tekton(int breakChance, int sporeCount, Map map) {
         UseCase.replace(this);
         UseCase.printWrapper("Initializing Tekton as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         this.breakChance = breakChance;
         this.sporeCount = sporeCount;
+        this.map = map;
+        map.addTekton(this);
         tiles = new ArrayList<>();
         fungusBody = null;
         UseCase.printWrapper("Tekton: "+UseCase.logger.get(this), ArrowDirection.LEFT);
@@ -33,6 +36,10 @@ public class Tekton {
         return tiles;
     }
 
+    public Map getMap() {
+        return map;
+    }
+
     //"break" is reserved keyword
     // TODO this is a crude simplification of the actual process
     public ArrayList<Tekton> breakTekton() {
@@ -42,9 +49,9 @@ public class Tekton {
 
         // based on some algorithm we break it into two pieces
         UseCase.logger.put(null, "t1");
-        tl.add(new Tekton(breakChance, sporeCount));
+        tl.add(new Tekton(breakChance, sporeCount, map));
         UseCase.logger.put(null, "t2");
-        tl.add(new Tekton(breakChance, sporeCount));
+        tl.add(new Tekton(breakChance, sporeCount, map));
         for (Tekton tekton : tl) {
             // migrating elements into new tektons
             printWrapper("New tekton " + System.identityHashCode(tekton)

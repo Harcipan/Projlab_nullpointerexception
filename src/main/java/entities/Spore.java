@@ -26,6 +26,8 @@ public abstract class Spore extends GameEntity{
         this.lifetime = lifetime;
         this.effectTime = effectTime;
         this.effectValue = effectValue;
+        this.isConsumed = false;
+        currentTile.addEntity(this);
     }
 
     protected Spore() {

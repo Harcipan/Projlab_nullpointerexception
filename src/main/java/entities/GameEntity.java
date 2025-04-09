@@ -13,10 +13,15 @@ import use_cases.UseCase.Indent;
 public class GameEntity {
     int id;             // Unique identifier for the entity
     Tile currentTile;   // The tile the entity is currently on
+    static int idCounter = 0; // Counter for generating unique ids
 
     protected GameEntity(int id, Tile currentTile) {
         this.id = id;
         this.currentTile = currentTile;
+    }
+
+    public static int getNextId() {
+        return idCounter++;
     }
 
     protected GameEntity(){};

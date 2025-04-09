@@ -7,6 +7,7 @@ import entities.*;
 import map.Tile;
 import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
 
 import static use_cases.UseCase.logger;
 import static use_cases.UseCase.printWrapper;
@@ -158,12 +159,13 @@ public class FungusPlayer extends Player {
             printWrapper("No target selected", UseCase.ArrowDirection.RIGHT);
             return;
         }
-        printWrapper("Player " + System.identityHashCode(this) + " releasing spore cloud", UseCase.ArrowDirection.RIGHT);
-        target.decrementSporeCharge();
-        if (target.getSporeCharge() <= 0) {
-            printWrapper("Target " + System.identityHashCode(target) + " has no spore charge left", UseCase.ArrowDirection.RIGHT);
-            target.die();
-            return;
+        if(target.getSporeCharge() >= size * FungusBody.SPORECLOUD_COST_MULTIPLIER){
+            UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this)+".sporeCloud("+size+")", ArrowDirection.RIGHT, Indent.INDENT);
+            target.sporeCloud(size);
+            UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this)+".sporeCloud()", ArrowDirection.LEFT, Indent.UNINDENT);
+        } else {
+            UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this)+".sporeCloud("+size+")", ArrowDirection.RIGHT, Indent.INDENT);
+            UseCase.printWrapper("Not enough spore charge to create spore cloud", ArrowDirection.LEFT, Indent.UNINDENT);
         }
     }
 

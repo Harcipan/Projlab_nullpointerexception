@@ -22,7 +22,7 @@ public class EatingCutSpore extends UseCase {
 
         //tekton of tiles
         UseCase.logger.put(null, "tek");
-        Tekton tek = new Tekton(1,1);
+        Tekton tek = new Tekton(1,1, null);
         //printWrapper("Tekton: tek",Direction.LEFT);
 
 

@@ -32,6 +32,7 @@ public class CutSpore extends Spore {
 
     /*
      * When an insect eats this spore, cutting ability is disabled
+     * @param i the insect that eats the spore
      */
     @Override
     public void getEaten(Insect i) {
@@ -45,6 +46,7 @@ public class CutSpore extends Spore {
 
     /*
      * Restore cutting ability
+     * @param i the insect we are removing the effect from
      */
     @Override
     public void removeEffect(Insect i) {

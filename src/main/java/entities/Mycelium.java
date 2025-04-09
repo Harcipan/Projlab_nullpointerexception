@@ -17,8 +17,8 @@ public class Mycelium extends Fungus{
     FungusPlayer player = null; // The player that owns this mycelium
     List<FungusBody> connectedBodies = new ArrayList<FungusBody>();
 
-    public Mycelium(int health, Tile currentTile, FungusPlayer player) {
-        super(health, currentTile);
+    public Mycelium(int id, int health, Tile currentTile, FungusPlayer player) {
+        super(id, health, currentTile);
         this.player = player;
         this.player.addMycelium(this);
         this.currentTile.addEntity(this);
@@ -38,13 +38,10 @@ public class Mycelium extends Fungus{
 
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".update()", ArrowDirection.RIGHT, Indent.INDENT);
         searchConnection();
-        // if it has at least one body, reset health
-        if(!connectedBodies.isEmpty()) {
-            health = maxHealth;
-        } else if (this.getCurrentTile() instanceof HealTile) {
+        if (this.getCurrentTile() instanceof HealTile) {
             this.heal();
         }
-        else {
+        else if (connectedBodies.isEmpty()){
             health--;
         }
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".update()", ArrowDirection.LEFT, Indent.UNINDENT);
@@ -87,9 +84,7 @@ public class Mycelium extends Fungus{
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".damage()", ArrowDirection.RIGHT, Indent.INDENT);
         health--;
         if(health <= 0) {
-            detach();
-            // remove from tile
-            currentTile.removeEntity(this);
+            die();
         }
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".damage()", ArrowDirection.LEFT, Indent.UNINDENT);
     }

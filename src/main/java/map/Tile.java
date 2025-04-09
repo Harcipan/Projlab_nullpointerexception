@@ -19,12 +19,14 @@ public class Tile {
     int myceliumSpace;      //how many more mycelium objects can be here
     Tekton parentTekton;
     List<GameEntity> entities;
+    List<Tile> bridges;     // Bridges to tiles on other tektons
 
     public Tile(int growthRate, int maxMycelium, Tekton parentTekton, int x, int y) {
         this.growthRate = growthRate;
         this.myceliumSpace = maxMycelium;
         this.parentTekton = parentTekton;
         entities = new ArrayList<>();
+
         this.x = x;
         this.y = y;
     }
@@ -142,7 +144,6 @@ public class Tile {
         FungusBody b = null;
         b = new FungusBody(GameEntity.getNextId(), 100, this, player);
         printWrapper(UseCase.logger.get(this)+".growBody()", ArrowDirection.LEFT, Indent.KEEP);
-    
         return b;
     }
 
@@ -158,6 +159,16 @@ public class Tile {
 
     public int getY() {
         return y;
+    }
+
+    /*
+     * Check if the tile has a bridge to the given tile
+     * @param tile the tile to check
+     * @return true if bridge exists, false otherwise
+     */
+    public boolean hasBridge(Tile tile) {
+        return bridges.contains(tile);
+
     }
 
 

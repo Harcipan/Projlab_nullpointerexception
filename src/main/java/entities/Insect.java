@@ -99,12 +99,10 @@ public class Insect extends GameEntity {
      * @param target the tile to cut
      */
     public void cut(Tile target) {
-        // Will implement later
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         if (!canCut) {
             return;
         }
-        target.getEntities();
         for (GameEntity ge : target.getEntities()) {
             ge.getCut();
         }

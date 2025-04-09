@@ -17,12 +17,13 @@ import use_cases.UseCase.Indent;
  * It is responsible for growing mycelium and managing the spore charge.
  */
 public class FungusBody extends Fungus{
-    private static final int MAX_SPORE_CHARGE = 100; // Maximum spore charge
-    private static final int CHARGE_PER_TICK = 1; // Spore charge increase per tick
+    public static final int BODY_COST = 5;                  // Spore cost to grow a fungus body on a new tekton
+    private static final int MAX_SPORE_CHARGE = 100;        // Maximum spore charge
+    private static final int CHARGE_PER_TICK = 1;           // Spore charge increase per tick
     public static final int SPORECLOUD_COST_MULTIPLIER = 5; // Cost of spore cloud (per unit of size)
     private static final int SPORECLOUD_RADIUS_MULTIPLIER = 5; // Radius of spore cloud (per unit of size)
-    private static final int  SPOERCLOUD_PERCENTAGE = 10; // Percentage of Tiles that will get spores when covered by a spore cloud
-    private FungusPlayer player = null; // The player that owns this fungus body
+    private static final int  SPOERCLOUD_PERCENTAGE = 10;   // Percentage of Tiles that will get spores when covered by a spore cloud
+    private FungusPlayer player = null;                     // The player that owns this fungus body
     private int sporeCharge = 0;
 
     /*
@@ -47,6 +48,8 @@ public class FungusBody extends Fungus{
     public FungusBody(int id, int health,  Tile currentTile, FungusPlayer player) {
         super(id, health, currentTile);
         this.player = player;
+        this.player.addFungusBody(this);
+        this.currentTile.addEntity(this);
         replace(this);
         UseCase.printWrapper("Initializing FungusBody as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
         UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this), ArrowDirection.LEFT);
@@ -148,6 +151,8 @@ public class FungusBody extends Fungus{
                 default:
                     break;
             }
+            tile.getParentTekton().addPlayerSpore(player);
+
             
         }
         // Remove the spore charge cost and inflict damage

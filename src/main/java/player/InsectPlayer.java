@@ -35,8 +35,21 @@ public class InsectPlayer extends Player{
     public void moveTo(Tile tile){
         moveTo(tile, controlledInsects.get(0));
     }
+
+    /*
+     * Move the insect to the tile
+     * Check if the insect is controlled by this player
+     * Check if the insect can move
+     * Check if the tile is a neighbor of the insect
+     * Check if the tile is on the same tekton as the insect or there is a bridge to the tile
+     * If all checks pass, move the insect to the tile
+     * 
+     * currently bridges are not implemented
+     * 
+     * @param tile the tile to move to
+     * @param controlledInsect the insect to move
+     */
     public void moveTo(Tile tile, Insect controlledInsect) {
-        // Will implement later
         UseCase.printWrapper(UseCase.logger.get(this)+".moveTo(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
 
         //check if insect is ours to control
@@ -44,15 +57,32 @@ public class InsectPlayer extends Player{
             printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
-        //check if insect is paralyzed
-        System.out.println("Is the insect paralyzed? Y/N");
-        String answer = System.console().readLine();
-        if(answer.equalsIgnoreCase("Y")){
-            printWrapper("The insect is paralyzed and cannot move, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+        //check if insect can move
+        if(controlledInsect.getSpeed() == 0){
+            printWrapper("The insect cannot move", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
+        //check if tile is valid
+        // neighbors
+        if(!tile.isNeighbor(controlledInsect.getCurrentTile())){
+            printWrapper("The tile is not a neighbor of the insect", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
+        // and same parent tekton
+        if(tile.getParentTekton() == controlledInsect.getCurrentTile().getParentTekton()){
+            controlledInsect.step(tile);            
+        }
+        //or there is a mycelium bridge
+        else{
+            if(controlledInsect.getCurrentTile().hasBridge(tile)){
+                controlledInsect.step(tile);
+            }
+            else{
+                printWrapper("The insect does not have a bridge to the tile", ArrowDirection.RIGHT, Indent.UNINDENT);
+                return;
+            }
+        }
         
-        controlledInsect.step(tile);
 
         UseCase.printWrapper(UseCase.logger.get(this)+".moveTo()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
@@ -66,7 +96,6 @@ public class InsectPlayer extends Player{
             printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
-        // Will implement later
         UseCase.printWrapper(UseCase.logger.get(this)+".eat(" + UseCase.logger.get(s)+")", ArrowDirection.RIGHT, Indent.INDENT);
         controlledInsect.eat(s);
         UseCase.printWrapper(UseCase.logger.get(this)+".eat()", ArrowDirection.LEFT, Indent.UNINDENT);
@@ -81,13 +110,11 @@ public class InsectPlayer extends Player{
             printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
-        // Will implement later
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
         
-        System.out.println("Can the insect cut? Y/N");
-        String answer = System.console().readLine();
-        if(answer.equalsIgnoreCase("N")){
-            printWrapper("The insect cannot cut, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+        //check if insect is ours to control
+        if(!controlledInsects.contains(controlledInsect)){
+            printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
         controlledInsect.cut(tile);

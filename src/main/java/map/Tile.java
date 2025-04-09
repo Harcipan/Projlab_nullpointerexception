@@ -70,37 +70,80 @@ public class Tile {
         this.parentTekton = parentTekton;
         printWrapper(UseCase.logger.get(this)+".setParentTekton()", ArrowDirection.LEFT, Indent.KEEP);
     }
-    // check if the tile is a neighbor of this tile
-    // A tile is a neighbor if it is adjacent (horizontally, vertically, or diagonally)
+
+    /*
+     * Check if the tile is a neighbor of this tile
+     * A tile is a neighbor if it is adjacent (horizontally, vertically, or diagonally)
+     * @param tile the tile to check
+     * @return true if the tile is a neighbor of this tile, false otherwise
+     */
     public boolean isNeighbor(Tile tile) {
         // check if the tile is null
         if (tile == null) {
             return false;
         }
-
         // check if the tile is the same as this tile
         if (this == tile) {
-            return true;
+            return false;
         }
-
         // else compute the distance between the two tiles
         return Math.abs(this.x - tile.x) <= 1 && Math.abs(this.y - tile.y) <= 1;
     }
 
     /*
-     * Grow mycelium in this tile
+     * Get a list of all neighboring tiles
+     * @return a list of all neighboring tiles
      */
-    public void growMycelium(FungusPlayer player) {
+    public List<Tile> getNeighbors() {
+        List<Tile> neighbors = new ArrayList<>();
+        Map map = parentTekton.getMap();
+        // check all 8 possible neighbors
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                // skip the tile itself
+                if (i == 0 && j == 0) {
+                    continue;
+                }
+                // check if the neighbor is valid
+                Tile neighbor = map.getTile(x + i, y + j);
+                if (neighbor != null) {
+                    neighbors.add(neighbor);
+                }
+            }
+        }
+        return neighbors;
+    }
+
+    /*
+     * Grow mycelium in this tile
+     * Assuming tile has been verified
+     * @param player the player that owns this mycelium
+     */
+    public Mycelium growMycelium(FungusPlayer player) {
         UseCase.printWrapper(UseCase.logger.get(this)+".growMycelium("+UseCase.logger.get(player)+")", ArrowDirection.RIGHT, Indent.KEEP);
+        Mycelium m = null;
         if (myceliumSpace > 0) {
-            Mycelium m = new Mycelium(GameEntity.getNextId(), 100, this, player);
+            m = new Mycelium(GameEntity.getNextId(), 100, this, player);
             myceliumSpace--;
-            addEntity(m);
             printWrapper(UseCase.logger.get(this)+".growMycelium()", ArrowDirection.LEFT, Indent.KEEP);
         } else {
             printWrapper(UseCase.logger.get(this)+".growMycelium()", ArrowDirection.LEFT, Indent.KEEP);
         }
-        
+        return m;
+    }
+
+    /*
+     * Grow fungus body in this tile
+     * Assuming tile has been verified
+     * @param player the player that owns this fungus body
+     */
+    public FungusBody growBody(FungusPlayer player) {
+        UseCase.printWrapper(UseCase.logger.get(this)+".growBody("+UseCase.logger.get(player)+")", ArrowDirection.RIGHT, Indent.KEEP);
+        FungusBody b = null;
+        b = new FungusBody(GameEntity.getNextId(), 100, this, player);
+        printWrapper(UseCase.logger.get(this)+".growBody()", ArrowDirection.LEFT, Indent.KEEP);
+    
+        return b;
     }
 
     public void update() {

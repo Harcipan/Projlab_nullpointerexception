@@ -23,7 +23,7 @@ public class CannotGrowBodyOnTekton extends UseCase {
 
         // initializing tekton
         UseCase.logger.put(null, "tek");
-        Tekton tek = new Tekton(1, 1);
+        Tekton tek = new Tekton(m);
 
         // adding tekton to map
         m.addTekton(tek);

@@ -16,7 +16,7 @@ public class HealTileKeepsAlive extends UseCase {
         Map m = new Map();
 
         // Initializing Tekton
-        Tekton tek = new Tekton(1, 1);
+        Tekton tek = new Tekton(m);
 
         // Adding Tekton to Map
         m.addTekton(tek);

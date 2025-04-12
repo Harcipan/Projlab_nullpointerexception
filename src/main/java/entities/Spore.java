@@ -5,6 +5,11 @@ import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 import use_cases.UseCase.Indent;
 
+/*
+ * Spore is an abstract class that represents a spore in the game.
+ * It contains properties and methods that are common to all spores.
+ * The spore can be eaten by insects and can apply effects to them.
+ */
 public abstract class Spore extends GameEntity{
     int nutrientValue;  // The amount of nutrients the spore contains
     int lifetime;       // The number of turns the spore will last
@@ -12,13 +17,18 @@ public abstract class Spore extends GameEntity{
     int effectValue;   // The strength of the effect the spore will apply
     boolean isConsumed; // Whether the spore has been eaten by an insect
 
-    /*protected Spore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+    /*
+     * basic constructor for spore
+     */
+    protected Spore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile);
         this.nutrientValue = nutrientValue;
         this.lifetime = lifetime;
         this.effectTime = effectTime;
         this.effectValue = effectValue;
-    }*/
+        this.isConsumed = false;
+        currentTile.addEntity(this);
+    }
 
     protected Spore() {
         super();
@@ -40,13 +50,17 @@ public abstract class Spore extends GameEntity{
      * Decrease the lifetime of the spore when on the ground
      * Decrease the effectTime of the spore when applied to an insect
      */
+    @Override
     public void update() {
-        lifetime--;
         if(isConsumed){
             effectTime--;
         }
+        else{
+            lifetime--;
+        }
+        
     }
-
+    
     public int getLifetime() {
         return lifetime;
     }

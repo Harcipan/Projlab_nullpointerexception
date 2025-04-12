@@ -20,7 +20,7 @@ public class InsectSplitSpore extends UseCase {
         UseCase.logger.put(m, "m");
 
         // initializing tekton
-        Tekton tek = new Tekton(1, 1);
+        Tekton tek = new Tekton(m);
         UseCase.logger.put(tek, "tek");
 
         // adding tekton to map

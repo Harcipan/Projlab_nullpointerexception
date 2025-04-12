@@ -5,10 +5,15 @@ import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 import use_cases.UseCase.Indent;
 
+/*
+ * FreezeSpore is a spore that disables the movement of an insect when eaten.
+ * It achieves this by setting the insect's speed to -100 when consumed.
+ * It is a subclass of Spore and inherits its properties and methods.
+ */
 public class FreezeSpore extends Spore {
-    /*public FreezeSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
-        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
-    }*/
+    public FreezeSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, 0);
+    }
 
     public FreezeSpore() {
         super();

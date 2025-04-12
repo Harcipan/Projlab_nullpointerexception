@@ -22,7 +22,7 @@ public class EatingSlowSpore extends UseCase {
 
         //tekton of tiles
         UseCase.logger.put(null, "tek");
-        Tekton tek=new Tekton(1,1);
+        Tekton tek=new Tekton(null);
         //printWrapper("Tekton: tek",Direction.LEFT);
 
 

@@ -207,9 +207,8 @@ public class Create extends Command {
                 if (sporeCount == null)
                     break;
 
-                Tekton tek = new Tekton(breakChance, sporeCount);
-                int id = app.getMap().addTekton(tek);
-                System.out.println("Created a Tekton with the id " + id);
+                Tekton tek = new Tekton(app.getMap());
+                System.out.println("Created a Tekton " + tek);
 
                 break;
             }
@@ -219,8 +218,7 @@ public class Create extends Command {
                     break;
 
                 Tile tile = new Tile(tileData.getGrowthRate(), tileData.getMaxMycelium(), tileData.getParentTekton());
-                int id = tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a Tile with ID " + id);
+                System.out.println("Created a Tile " + tile);
 
                 break;
             }
@@ -235,8 +233,7 @@ public class Create extends Command {
 
                 Tile tile = new AcidTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton(), damageRate);
-                int id = tileData.getParentTekton().addTile(tile);
-                System.out.println("Created an AcidTile with ID " + id);
+                System.out.println("Created an AcidTile " + tile);
 
                 break;
             }
@@ -247,8 +244,7 @@ public class Create extends Command {
 
                 Tile tile = new HealTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton());
-                int id = tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a HealTile with ID " + id);
+                System.out.println("Created a HealTile " + tile);
 
                 break;
             }
@@ -257,10 +253,9 @@ public class Create extends Command {
                 if (tileData == null)
                     break;
 
-                Tile tile = new MonoTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
+                Tile tile = new MonoTile(tileData.getGrowthRate(),
                         tileData.getParentTekton());
-                int id = tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a MonoTile with ID " + id);
+                System.out.println("Created a MonoTile " + tile);
 
                 break;
             }

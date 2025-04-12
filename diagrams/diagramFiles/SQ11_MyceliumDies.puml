@@ -1,0 +1,24 @@
+@startuml 11. Detached mycelium dies
+
+title 11. Detached mycelium dies
+
+actor "Skeleton" as S
+participant "m : Mycelium" as T
+participant "t : Tile" as Tl
+
+activate T
+activate S
+activate Tl
+
+S -> T : update()
+opt health == 0
+    T -> Tl : removeEntity(m)
+    Tl --> T
+    T --> S
+
+destroy T
+
+end
+
+
+@enduml

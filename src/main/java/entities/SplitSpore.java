@@ -9,7 +9,6 @@ public class SplitSpore extends Spore {
         super();
         UseCase.replace(this);
         UseCase.printWrapper("Initializing SplitSpore as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
-        UseCase.printWrapper("SplitSpore: "+UseCase.logger.get(this), UseCase.ArrowDirection.LEFT);
     }
 
     public SplitSpore(int id, Tile currentTile, int nutrientValue, int lifetime) {
@@ -21,10 +20,8 @@ public class SplitSpore extends Spore {
      */
     @Override
     public void getEaten(Insect i) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten(" + UseCase.logger.get(i)+")", UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
         isConsumed = true;
         i.split();
         currentTile.removeEntity(this);
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten()", UseCase.ArrowDirection.LEFT, UseCase.Indent.UNINDENT);
     }
 }

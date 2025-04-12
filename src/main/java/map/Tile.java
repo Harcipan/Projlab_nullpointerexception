@@ -40,17 +40,13 @@ public class Tile {
         printWrapper("Initializing Tile as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
 
         entities = new ArrayList<>();
-        
-        printWrapper("Tile: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     public void addEntity(GameEntity entity) {
-        printWrapper(UseCase.logger.get(this)+".addEntity(" + UseCase.logger.get(entity)+")", ArrowDirection.RIGHT, Indent.INDENT);
         entities.add(entity);
 
         //add tile to entity
         entity.setTile(this);
-        printWrapper(UseCase.logger.get(this)+".addEntity()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     public List<GameEntity> getEntities() {
@@ -58,7 +54,6 @@ public class Tile {
     }
 
     public void removeEntity(GameEntity entity) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".removeEntity(" + UseCase.logger.get(entity)+")", ArrowDirection.RIGHT, Indent.KEEP);
         entities.remove(entity);
         UseCase.printWrapper(UseCase.logger.get(this)+".removeEntity()", ArrowDirection.LEFT, Indent.KEEP);
     }
@@ -66,11 +61,18 @@ public class Tile {
     public Tekton getParentTekton() {
         return parentTekton;
     }
+    
+	public int getGrowthRate() {
+		return growthRate;
+	}
+
+	public int getMaxMycelium() {
+		return myceliumSpace;
+	}
 
     public void setParentTekton(Tekton parentTekton) {
-        printWrapper(UseCase.logger.get(this)+".setParentTekton(" + UseCase.logger.get(parentTekton)+")", ArrowDirection.RIGHT, Indent.KEEP);
+        
         this.parentTekton = parentTekton;
-        printWrapper(UseCase.logger.get(this)+".setParentTekton()", ArrowDirection.LEFT, Indent.KEEP);
     }
 
     /*
@@ -172,5 +174,6 @@ public class Tile {
     }
 
 
+    
     
 }

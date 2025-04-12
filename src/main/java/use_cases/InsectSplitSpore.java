@@ -16,8 +16,8 @@ public class InsectSplitSpore extends UseCase {
         printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
 
         // initializing map
+        UseCase.logger.put(null, "m");
         Map m = new Map();
-        UseCase.logger.put(m, "m");
 
         // initializing tekton
         Tekton tek = new Tekton(m);
@@ -27,26 +27,26 @@ public class InsectSplitSpore extends UseCase {
         m.addTekton(tek);
 
         // initializing tile
+        UseCase.logger.put(null, "t");
         Tile t = new Tile();
-        UseCase.logger.put(t, "t");
 
         // adding tile to tekton
         tek.addTile(t);
 
         // initializing insectPlayer
+        UseCase.logger.put(null, "ip");
         InsectPlayer ip = new InsectPlayer();
-        UseCase.logger.put(ip, "ip");
 
         // initializing insect
+        UseCase.logger.put(null, "i");
         Insect i = new Insect(1, t, ip);
-        UseCase.logger.put(i, "i");
 
         // adding insect to insectPlayer
         ip.addControlledInsect(i);
 
         // adding a split spore
+        UseCase.logger.put(null, "ss");
         Spore ss = new SplitSpore();
-        UseCase.logger.put(ss, "ss");
 
         // adding split spore to tile
         t.addEntity(ss);

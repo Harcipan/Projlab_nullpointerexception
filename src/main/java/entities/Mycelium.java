@@ -31,13 +31,11 @@ public class Mycelium extends Fungus{
         super();
         replace(this);
         printWrapper("Initializing Mycelium as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
-        printWrapper("Mycelium: "+UseCase.logger.get(this),ArrowDirection.LEFT);
     }
 
     @Override
     public void update() {
 
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".update()", ArrowDirection.RIGHT, Indent.INDENT);
         searchConnection();
         if (this.getCurrentTile() instanceof HealTile) {
             this.heal();
@@ -45,7 +43,6 @@ public class Mycelium extends Fungus{
         else if (connectedBodies.isEmpty()){
             health--;
         }
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".update()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     // Reconnect with the mycelium network, recover health
@@ -148,18 +145,17 @@ public class Mycelium extends Fungus{
 
     @Override
     public void damage() {
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".damage()", ArrowDirection.RIGHT, Indent.INDENT);
         health--;
         if(health <= 0) {
             die();
         }
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".damage()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     @Override
     public void heal() {
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.RIGHT, Indent.INDENT);
-        health = maxHealth;
         printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
+        if (health < maxHealth) {
+            health++;
+        }
     }
 }

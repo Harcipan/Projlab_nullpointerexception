@@ -71,18 +71,15 @@ public class Insect extends GameEntity {
      * @param target the spore to eat
      */
     public void eat(Spore target) {
-<<<<<<< HEAD
         controlledBy.updateScore(target.getNutrientValue());
         UseCase.printWrapper(UseCase.logger.get(this)+".eat(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         target.getEaten(this);
         UseCase.printWrapper(UseCase.logger.get(this)+".eat()", ArrowDirection.LEFT, Indent.UNINDENT);
-=======
         //controlledBy.updateScore(target.getNutrientValue());
         target.getEaten(this);
         if (target instanceof SplitSpore) {
             split();
         }
->>>>>>> prototype
     }
 
     /*
@@ -91,11 +88,7 @@ public class Insect extends GameEntity {
      * @param target the tile to move to
      */
     public void step(Tile target) {
-<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".step(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
-=======
-        // Will implement later
->>>>>>> prototype
         currentTile.removeEntity(this);
         target.addEntity(this);
     }
@@ -106,15 +99,12 @@ public class Insect extends GameEntity {
      * @param target the tile to cut
      */
     public void cut(Tile target) {
-<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         if (!canCut) {
             return;
         }
-=======
         // Will implement later
         target.getEntities();
->>>>>>> prototype
         for (GameEntity ge : target.getEntities()) {
             ge.getCut();
         }

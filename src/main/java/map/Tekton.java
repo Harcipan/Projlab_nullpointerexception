@@ -73,7 +73,6 @@ public class Tekton {
 
         printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
 
-<<<<<<< HEAD
 
         int faultLine = faultLine();
         List<Tile> tilesAlongFault = new ArrayList<>();
@@ -127,7 +126,6 @@ public class Tekton {
             for (GameEntity entity : tile.getEntities()) {
                 entity.getCut();
             }
-=======
         // based on some algorithm we break it into two pieces
         tl.add(new Tekton(breakChance, sporeCount));
         tl.add(new Tekton(breakChance, sporeCount));
@@ -136,7 +134,6 @@ public class Tekton {
             printWrapper("New tekton " + System.identityHashCode(tekton)
                     + " created and migrated elements based on some algorithm",
                     UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
->>>>>>> prototype
         }
 
         ArrayList<Tekton> tl = new ArrayList<>(); 

@@ -92,11 +92,7 @@ public class InsectPlayer extends Player{
             printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
-<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".eat(" + UseCase.logger.get(s)+")", ArrowDirection.RIGHT, Indent.INDENT);
-=======
-        // Will implement later
->>>>>>> prototype
         controlledInsect.eat(s);
     }
 
@@ -109,11 +105,8 @@ public class InsectPlayer extends Player{
             printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
-<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
-=======
         // Will implement later
->>>>>>> prototype
         
         //check if insect is ours to control
         if(!controlledInsects.contains(controlledInsect)){

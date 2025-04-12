@@ -35,9 +35,7 @@ public abstract class Spore extends GameEntity{
     }
 
     public void getEaten(Insect i) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten(" + UseCase.logger.get(i)+")", ArrowDirection.RIGHT, Indent.INDENT);
         isConsumed = true;
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten()", ArrowDirection.LEFT, Indent.UNINDENT);
         // implemented in subclasses
         // take care to set flag in overridden method
     }

@@ -34,10 +34,11 @@ public class Map {
         this(100, 100); // Default size
     }
 
-    public void addTekton(Tekton tekton) {
+    public int addTekton(Tekton tekton) {
         UseCase.printWrapper(UseCase.logger.get(this)+".addTekton(" + UseCase.logger.get(tekton)+")", ArrowDirection.RIGHT, Indent.INDENT);
         tektons.add(tekton);
         UseCase.printWrapper(UseCase.logger.get(this)+".addTekton()", ArrowDirection.LEFT, Indent.UNINDENT);
+        return tektons.size() - 1;
     }
 
     public List<Tekton> getTektons() {
@@ -57,9 +58,19 @@ public class Map {
 
     public void tick() {
         // for every tekton
+<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.RIGHT, Indent.INDENT);
         // TODO no clue how to implement this yet
         UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.LEFT, Indent.UNINDENT);
+=======
+        for (Tekton tek : tektons) {
+            // for every tile
+            for (Tile t : tek.tiles) {
+                //determine if its mycelium is connected
+                //TODO
+            }
+        }
+>>>>>>> prototype
     }
 
     public Tile getTile(int x, int y) {

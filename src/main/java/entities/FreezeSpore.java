@@ -19,7 +19,7 @@ public class FreezeSpore extends Spore {
         super();
         UseCase.replace(this);
         UseCase.printWrapper("Initializing FreezeSpore as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
-        UseCase.printWrapper("FreezeSpore: "+UseCase.logger.get(this), ArrowDirection.LEFT);
+       
     }
 
     /*
@@ -27,12 +27,11 @@ public class FreezeSpore extends Spore {
      */
     @Override
     public void getEaten(Insect i) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten(" + UseCase.logger.get(i)+")", ArrowDirection.RIGHT, Indent.INDENT);
         isConsumed = true;
         i.setSpeedPercent(-100);
         i.addSpore(this);
         currentTile.removeEntity(this);
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten()", ArrowDirection.LEFT, Indent.UNINDENT);
+        
     }
 
     /*

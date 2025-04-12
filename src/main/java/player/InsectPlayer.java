@@ -19,13 +19,10 @@ public class InsectPlayer extends Player{
         UseCase.replace(this);
         UseCase.printWrapper("Initializing InsectPlayer as " + UseCase.logger.get(this), ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         this.controlledInsects = new ArrayList<>();
-        UseCase.printWrapper("InsectPlayer: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     public void addControlledInsect(Insect controlledInsect) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".addControlledInsect(" + UseCase.logger.get(controlledInsect)+")", ArrowDirection.RIGHT, Indent.KEEP);
         this.controlledInsects.add(controlledInsect);
-        UseCase.printWrapper(UseCase.logger.get(this)+".addControlledInsect()", ArrowDirection.LEFT, Indent.KEEP);
     }
 
     public List<Insect> getControlledInsects() {
@@ -84,7 +81,6 @@ public class InsectPlayer extends Player{
         }
         
 
-        UseCase.printWrapper(UseCase.logger.get(this)+".moveTo()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     public void eat(Spore s) {
@@ -96,9 +92,12 @@ public class InsectPlayer extends Player{
             printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
+<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".eat(" + UseCase.logger.get(s)+")", ArrowDirection.RIGHT, Indent.INDENT);
+=======
+        // Will implement later
+>>>>>>> prototype
         controlledInsect.eat(s);
-        UseCase.printWrapper(UseCase.logger.get(this)+".eat()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     public void cut(Tile tile) {
@@ -110,7 +109,11 @@ public class InsectPlayer extends Player{
             printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
             return;
         }
+<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
+=======
+        // Will implement later
+>>>>>>> prototype
         
         //check if insect is ours to control
         if(!controlledInsects.contains(controlledInsect)){
@@ -118,7 +121,6 @@ public class InsectPlayer extends Player{
             return;
         }
         controlledInsect.cut(tile);
-        UseCase.printWrapper(UseCase.logger.get(this)+".cut()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*
@@ -126,9 +128,8 @@ public class InsectPlayer extends Player{
      * This is used when the insect is no longer controlled by the player (its dead)
      */
     public void removeControlledInsect(Insect controlledInsect) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".removeControlledInsect(" + UseCase.logger.get(controlledInsect)+")", ArrowDirection.RIGHT, Indent.INDENT);
         this.controlledInsects.remove(controlledInsect);
-        UseCase.printWrapper(UseCase.logger.get(this)+".removeControlledInsect()", ArrowDirection.LEFT, Indent.KEEP);
+        
     }
 
     

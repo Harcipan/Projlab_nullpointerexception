@@ -1,0 +1,16 @@
+create Map
+create Tekton
+1
+1
+create Tile
+0
+1
+2
+create Tile
+0
+1
+2
+create Insect
+0
+0
+insect_step 0 0 1

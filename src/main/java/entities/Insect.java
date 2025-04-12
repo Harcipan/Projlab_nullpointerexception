@@ -33,10 +33,10 @@ public class Insect extends GameEntity {
      * The new insect will be placed in the same tile as the original insect
      */
     public Insect split() {
-        UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.RIGHT, Indent.INDENT);
         Insect newInsect = new Insect(100+id, getCurrentTile(), controlledBy);
         UseCase.logger.put(newInsect, "cloned_insect");
         UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.LEFT, Indent.UNINDENT);
+        controlledBy.addControlledInsect(newInsect);
         return newInsect;
     }
 
@@ -45,10 +45,8 @@ public class Insect extends GameEntity {
      * Remove the insect from the tile and the player
      */
     public void die() {
-        UseCase.printWrapper(UseCase.logger.get(this)+".die()", ArrowDirection.RIGHT, Indent.INDENT);
         controlledBy.removeControlledInsect(this);
         currentTile.removeEntity(this);
-        UseCase.printWrapper(UseCase.logger.get(this)+".die()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
     /*
      * Update the insect
@@ -64,9 +62,7 @@ public class Insect extends GameEntity {
             }
         }
 
-        UseCase.printWrapper(UseCase.logger.get(this)+".update()", ArrowDirection.RIGHT, Indent.INDENT);
         setCut(true);
-        UseCase.printWrapper(UseCase.logger.get(this)+".update()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*
@@ -75,10 +71,18 @@ public class Insect extends GameEntity {
      * @param target the spore to eat
      */
     public void eat(Spore target) {
+<<<<<<< HEAD
         controlledBy.updateScore(target.getNutrientValue());
         UseCase.printWrapper(UseCase.logger.get(this)+".eat(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         target.getEaten(this);
         UseCase.printWrapper(UseCase.logger.get(this)+".eat()", ArrowDirection.LEFT, Indent.UNINDENT);
+=======
+        //controlledBy.updateScore(target.getNutrientValue());
+        target.getEaten(this);
+        if (target instanceof SplitSpore) {
+            split();
+        }
+>>>>>>> prototype
     }
 
     /*
@@ -87,10 +91,13 @@ public class Insect extends GameEntity {
      * @param target the tile to move to
      */
     public void step(Tile target) {
+<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".step(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
+=======
+        // Will implement later
+>>>>>>> prototype
         currentTile.removeEntity(this);
         target.addEntity(this);
-        UseCase.printWrapper(UseCase.logger.get(this)+".step()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*
@@ -99,14 +106,18 @@ public class Insect extends GameEntity {
      * @param target the tile to cut
      */
     public void cut(Tile target) {
+<<<<<<< HEAD
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         if (!canCut) {
             return;
         }
+=======
+        // Will implement later
+        target.getEntities();
+>>>>>>> prototype
         for (GameEntity ge : target.getEntities()) {
             ge.getCut();
         }
-        UseCase.printWrapper(UseCase.logger.get(this)+".cut())", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*

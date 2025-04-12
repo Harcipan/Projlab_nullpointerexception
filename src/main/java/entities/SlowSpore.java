@@ -13,11 +13,11 @@ public class SlowSpore extends Spore {
     public SlowSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
     }
-    public SlowSpore(){
+    public SlowSpore(int effectValue){
         super();
+        this.effectValue = effectValue;
         UseCase.replace(this);
         UseCase.printWrapper("Initializing SlowSpore as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
-        UseCase.printWrapper("SlowSpore: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     /*
@@ -25,12 +25,10 @@ public class SlowSpore extends Spore {
      */
     @Override
     public void getEaten(Insect i) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten(" + UseCase.logger.get(i)+")", ArrowDirection.RIGHT, Indent.INDENT);
         isConsumed = true;
         i.setSpeedPercent(effectValue);
         i.addSpore(this);
         currentTile.removeEntity(this);
-        UseCase.printWrapper(UseCase.logger.get(this)+".getEaten()", ArrowDirection.LEFT, Indent.UNINDENT);
     }
 
     /*

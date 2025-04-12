@@ -1,0 +1,27 @@
+@startuml 16. Cannot Grow Body On Tecton
+title 16. Cannot Grow Body On Tecton
+
+actor "Skeleton" as Pp
+participant "FungusPlayer" as Ip
+participant "t : targetTile" as Tt
+
+
+activate Pp
+activate Ip
+activate Tt
+
+
+Pp -> Ip : growBody(targetTile)
+Ip -> Tt : growBody(targetTile)
+opt t.parentTekton.fungusBody != null
+    note right of Pp
+        Cannot grow body on tecton
+        Another body is already present
+    end note
+    
+end
+Tt --> Ip
+Ip --> Pp
+
+
+@enduml

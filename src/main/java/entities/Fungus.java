@@ -6,28 +6,17 @@ import static use_cases.UseCase.*;
 public abstract class Fungus extends GameEntity {
     int health;
 
-    /*protected Fungus(int health, Tile currentTile) {
-        super(1, currentTile);
+    protected Fungus(int id, int health, Tile currentTile) {
+        super(id, currentTile);
         this.health = health;
-    }*/
+    }
 
     protected Fungus()
     {
         super();
     }
 
-    public void growMycelium(Tile neighbor) {
-
-        // Will implement later
-        
-    }
-
-    public void growBody(Tile neighbor) {
-
-        // Will implement later
-
-    }
-
+    @Override
     public void die() {
         printWrapper("Fungus (typeof " + this.getClass().getName()
                 + ") " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, Indent.KEEP);
@@ -37,8 +26,4 @@ public abstract class Fungus extends GameEntity {
         return health;
     }
 
-    // private boolean checkNeighbor(Tile neighbor) {
-    //     // Will implement later
-    //     return false;
-    // }
 }

@@ -21,6 +21,7 @@ opt i.speed == 0 && isNeighbor
     destroy I
 end
 Fp -> Fp: growBody(t)
+Fp --> S
 
 
 @enduml

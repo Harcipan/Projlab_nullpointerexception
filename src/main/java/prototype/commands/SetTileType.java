@@ -26,7 +26,7 @@ public class SetTileType extends Command {
         switch (args[3].toLowerCase()) {
             case "mono":
                 tek.getTiles().add(tileId,
-                        new MonoTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton()));
+                        new MonoTile(tile.getGrowthRate(), tile.getParentTekton()));
                 break;
             case "heal":
                 tek.getTiles().add(tileId,

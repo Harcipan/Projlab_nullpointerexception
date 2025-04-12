@@ -1,0 +1,410 @@
+===== InsectCantCut.java =====
+package prototype.commands;
+
+import prototype.*;
+
+public class InsectCantCut extends Command {
+    public InsectCantCut() {
+        super("insect_cant_cut", "Insects won't be able to cut the mycelium connected to the supplied tectonic plate",
+                "insect_cant_cut <tectonic plate id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        // There isn't any way yet to do this.
+        throw new UnsupportedOperationException("not implemented");
+    }
+}
+
+
+===== InsectCut.java =====
+package prototype.commands;
+
+import entities.*;
+import prototype.*;
+
+public class InsectCut extends Command {
+    public InsectCut() {
+        super("insect_cut", "Have the insect cut a mycelium on a tile", "insect_cut <insect id> <mycelium id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(3, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if (insect == null)
+            return false;
+        Mycelium mycelium = parseEntityId(args[2], "Mycelium");
+        if (mycelium == null)
+            return false;
+
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().cut(mycelium.getCurrentTile(), insect); // Nonsense. Why would I ask for the mycelium id
+                                                                      // then? The tile & tekton id would be good
+                                                                      // enough.
+        return false;
+    }
+}
+
+
+===== InsectEatSpore.java =====
+package prototype.commands;
+
+import entities.*;
+import prototype.*;
+
+public class InsectEatSpore extends Command {
+    public InsectEatSpore() {
+        super("insect_eat_spore", "Have the insect eat the specified spore", "insect_eat_spore <insect id> <spore id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(3, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if (insect == null)
+            return false;
+        Spore spore = parseEntityId(args[2], "Spore");
+        if (spore == null)
+            return false;
+
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().eat(spore, insect);
+        return false;
+    }
+}
+
+
+===== InsectFreeze.java =====
+package prototype.commands;
+
+import entities.FreezeSpore;
+import entities.Insect;
+import entities.SlowSpore;
+import entities.Spore;
+import prototype.*;
+
+public class InsectFreeze extends Command {
+    public InsectFreeze() {
+        super("insect_freeze", "Paralyze the specified insect", "insect_freeze <insect id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(2, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if (insect == null)
+            return false;
+
+        Spore s = new FreezeSpore();
+        insect.getCurrentTile().addEntity(s);
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().eat(s, insect);
+        return false;
+    }
+}
+
+
+===== InsectSlowDown.java =====
+package prototype.commands;
+
+import entities.Insect;
+import entities.SlowSpore;
+import entities.Spore;
+import prototype.*;
+
+public class InsectSlowDown extends Command {
+    public InsectSlowDown() {
+        super("insect_slow_down",
+                "Apply a slowdown effect on the specified insect so that it slows down to the specified percentage of its normal speed",
+                "insect_slow_down <insect id> <speed percentage>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(3, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if (insect == null)
+            return false;
+        Integer speed = parsePositiveNumber(args[2], "Speed percentage");
+        if (speed == null)
+            return false;
+
+        Spore s = new SlowSpore(speed);
+        insect.getCurrentTile().addEntity(s);
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().eat(s, insect);
+        return false;
+    }
+}
+
+
+===== InsectSpeedUp.java =====
+package prototype.commands;
+
+import entities.Insect;
+import entities.SlowSpore;
+import entities.SpeedUpSpore;
+import entities.Spore;
+import prototype.*;
+
+public class InsectSpeedUp extends Command {
+    public InsectSpeedUp() {
+        super("insect_speed_up",
+                "Apply a speedup effect on the specified insect so that its speed is now the specified percentage of its normal speed",
+                "insect_speed_up <insect id> <speed percentage>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(3, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if (insect == null)
+            return false;
+        Integer speed = parsePositiveNumber(args[2], "Speed percentage");
+        if (speed == null)
+            return false;
+
+        Spore s = new SpeedUpSpore(speed);
+        insect.getCurrentTile().addEntity(s);
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().eat(s, insect);
+        return false;
+    }
+}
+
+
+===== InsectStep.java =====
+package prototype.commands;
+
+import entities.Insect;
+import prototype.*;
+
+public class InsectStep extends Command {
+    public InsectStep() {
+        super("insect_step", "Have the specified insect go to destination tile",
+                "insect_step <insect id> <destination tectonic plate> <destination tile>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(4, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if (insect == null)
+            return false;
+        TektonAndTile tektonTile = parseTektonAndTile(args[2], args[3]);
+        if (tektonTile == null)
+            return false;
+
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().moveTo(tektonTile.getTile(), insect);
+        return false;
+    }
+}
+
+
+===== InsectUnfreeze.java =====
+package prototype.commands;
+
+import entities.FreezeSpore;
+import entities.Insect;
+import entities.SpeedUpSpore;
+import entities.Spore;
+import prototype.*;
+
+public class InsectUnfreeze extends Command {
+    public InsectUnfreeze() {
+        super("insect_unfreeze", "Unparalyze an insect", "insect_unfreeze <insect id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(2, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Insect insect = parseEntityId(args[1], "Insect");
+        if (insect == null)
+            return false;
+
+        Spore s = new SpeedUpSpore(0);
+        insect.getCurrentTile().addEntity(s);
+        app.getInsectPlayer().addControlledInsect(insect);
+        app.getInsectPlayer().eat(s, insect);
+        return false;
+    }
+}
+
+
+===== ListCmd.java =====
+package prototype.commands;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+import prototype.Command;
+
+public class ListCmd extends Command {
+
+    public ListCmd(){
+        super("list", "List all commands available");
+    }
+
+	@Override
+	public boolean execute(String[] args) {
+        System.out.printf("%-100s%s\n", "Command", "Description");
+        System.out.println("-".repeat(200));
+        List<Command> list = new ArrayList<>(app.getCommands().getCommands());
+        Collections.sort(list, new Comparator<Command>(){
+			@Override
+			public int compare(Command o1, Command o2) {
+				return o1.getName().compareTo(o2.getName());
+			}
+            
+        });
+        for(Command cmd : list){
+            System.out.printf("%-100s%s\n", cmd.getUsage(), cmd.getDescription());
+        }
+        return false;
+	}
+    
+}
+
+
+===== Load.java =====
+package prototype.commands;
+
+import prototype.*;
+
+public class Load extends Command {
+    public Load() {
+        super("load", "Load the game state from the specified file", "load <filename>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        // There isn't any way yet to do this.
+        throw new UnsupportedOperationException("not implemented");
+    }
+}
+
+
+===== MyceliumDie.java =====
+package prototype.commands;
+
+import entities.Mycelium;
+import prototype.*;
+
+public class MyceliumDie extends Command {
+    public MyceliumDie() {
+        super("mycelium_die", "Kill the specified mycelium", "mycelium_die <mycelium id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(2, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Mycelium mycelium = parseEntityId(args[1], "Mycelium");
+        if (mycelium == null)
+            return false;
+
+        mycelium.die();
+        mycelium.getCurrentTile().removeEntity(mycelium);
+        return false;
+    }
+}
+
+
+===== MyceliumGrow.java =====
+package prototype.commands;
+
+import entities.Insect;
+import entities.Mycelium;
+import prototype.*;
+
+public class MyceliumGrow extends Command {
+    public MyceliumGrow() {
+        super("mycelium_grow", "Expand the mycelium to the specified tile",
+                "mycelium_grow <mycelium id> <destination tectonic plate> <destination tile>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(4, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        Mycelium mycelium = parseEntityId(args[1], "Mycelium");
+        if (mycelium == null)
+            return false;
+        TektonAndTile tektonTile = parseTektonAndTile(args[2], args[3]);
+        if (tektonTile == null)
+            return false;
+
+        app.getFungusPlayer().growMycelium(tektonTile.getTile());
+        return false;
+    }
+}
+
+
+===== Quit.java =====
+package prototype.commands;
+
+import java.util.jar.JarInputStream;
+
+import prototype.Command;
+
+public class Quit extends Command{
+
+    public Quit(){
+        super("quit", "Exits the program");
+    }
+
+	@Override
+	public boolean execute(String[] args) {
+        return true;
+	}
+    
+}
+
+===== Save.java =====
+package prototype.commands;
+
+import prototype.*;
+
+public class Save extends Command {
+    public Save() {
+        super("save", "Write the game state to the specified file", "save <filename>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        // There isn't any way yet to do this.
+        throw new UnsupportedOperationException("not implemented");
+    }
+}
+
+

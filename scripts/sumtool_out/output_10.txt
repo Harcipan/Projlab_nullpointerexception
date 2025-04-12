@@ -1,0 +1,440 @@
+===== EatingFreezingSpore.java =====
+package use_cases;
+
+import player.InsectPlayer;
+import entities.FreezeSpore;
+import entities.Insect;
+import entities.SpeedUpSpore;
+import entities.Spore;
+import map.Tekton;
+import map.Tile;
+
+public class EatingFreezingSpore extends UseCase {
+    public EatingFreezingSpore() {
+        super(6, "Freezing spore affecting insect");
+    }
+
+    @Override
+    public void execute() {
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+       //insect player is created
+       UseCase.logger.put(null, "ip");
+       InsectPlayer ip=new InsectPlayer();
+
+       //tekton of tiles
+       UseCase.logger.put(null, "tek");
+       Tekton tek=new Tekton(1,1);
+       //printWrapper("Tekton: tek",Direction.LEFT);
+
+
+       //current tile cration
+       UseCase.logger.put(null, "t");
+       Tile t=new Tile();
+       //printWrapper("Tile: currentTile",Direction.LEFT);
+       
+       //insect create
+       UseCase.logger.put(null, "i");
+       Insect i=new Insect(1, t, ip);
+
+
+       //Freezespore create
+       UseCase.logger.put(null, "s");
+       Spore s=new FreezeSpore();
+
+       //add insect to insectplayer
+       ip.addControlledInsect(i);
+
+       //add tiles to tekton
+       t.setParentTekton(tek);
+
+       //add insect and spore to tile
+       t.addEntity(s);
+       t.addEntity(i);
+
+       //insect eat spore
+       ip.eat(s);
+    }
+}
+
+
+===== EatingSlowSpore.java =====
+package use_cases;
+
+import player.InsectPlayer;
+import entities.Insect;
+import entities.SlowSpore;
+import entities.SpeedUpSpore;
+import entities.Spore;
+import map.Tekton;
+import map.Tile;
+
+public class EatingSlowSpore extends UseCase {
+    public EatingSlowSpore() {
+        super(5, "Slowing spore affecting insect");
+    }
+
+    @Override
+    public void execute() {
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+        //insect player is created
+        UseCase.logger.put(null, "ip");
+        InsectPlayer ip=new InsectPlayer();
+
+        //tekton of tiles
+        UseCase.logger.put(null, "tek");
+        Tekton tek=new Tekton(1,1);
+        //printWrapper("Tekton: tek",Direction.LEFT);
+
+
+        //current tile cration
+        UseCase.logger.put(null, "t");
+        Tile t=new Tile();
+        //printWrapper("Tile: currentTile",Direction.LEFT);
+        
+        //insect create
+        UseCase.logger.put(null, "i");
+        Insect i=new Insect(1, t, ip);
+
+
+        //Slowpore create
+        UseCase.logger.put(null, "s");
+        Spore s=new SlowSpore(50);
+
+        //add insect to insectplayer
+        ip.addControlledInsect(i);
+
+        //add tiles to tekton
+        t.setParentTekton(tek);
+
+        //add insect and spore to tile
+        t.addEntity(s);
+        t.addEntity(i);
+
+        //insect eat spore
+        ip.eat(s);
+    }
+}
+
+
+===== EatingSpeedupSpore.java =====
+package use_cases;
+
+import player.InsectPlayer;
+import entities.Insect;
+import entities.SpeedUpSpore;
+import entities.Spore;
+import map.Tekton;
+import map.Tile;
+
+public class EatingSpeedupSpore extends UseCase {
+    public EatingSpeedupSpore() {
+        super(4, "Speedup spore affecting insect");
+    }
+
+    @Override
+    public void execute() {
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+        //insect player is created
+        UseCase.logger.put(null, "ip");
+        InsectPlayer ip=new InsectPlayer();
+
+        //tekton of tiles
+        UseCase.logger.put(null, "tek");
+        Tekton tek=new Tekton(1,1);
+        //printWrapper("Tekton: tek",Direction.LEFT);
+
+
+        //current tile cration
+        UseCase.logger.put(null, "t");
+        Tile t=new Tile();
+        //printWrapper("Tile: currentTile",Direction.LEFT);
+        
+        //insect create
+        UseCase.logger.put(null, "i");
+        Insect i=new Insect(1, t, ip);
+
+
+        //Speedupspore create
+        UseCase.logger.put(null, "s");
+        Spore s=new SpeedUpSpore(200);
+
+        //add insect to insectplayer
+        ip.addControlledInsect(i);
+
+        //add tiles to tekton
+        t.setParentTekton(tek);
+
+        //add insect and spore to tile
+        t.addEntity(s);
+        t.addEntity(i);
+
+        //insect eat spore
+        ip.eat(s);
+    }
+}
+
+
+===== EatingSpore.java =====
+package use_cases;
+
+public class EatingSpore extends UseCase {
+    public EatingSpore() {
+        super(3, "Eating Spore");
+    }
+
+    @Override
+    public void execute() {
+        //TODO: implement
+        printWrapper("TODO: implement", ArrowDirection.RIGHT, 0);
+    }
+}
+
+
+===== FungusBodyDies.java =====
+package use_cases;
+
+import entities.FungusBody;
+import map.Map;
+import map.Tekton;
+import map.Tile;
+import player.FungusPlayer;
+
+public class FungusBodyDies extends UseCase {
+
+    public FungusBodyDies() {
+        super(14, "Fungus Body Dies");
+    }
+
+    @Override
+    public void execute() {
+        // Initializing scene
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+
+        // Initializing map
+        
+        UseCase.logger.put(null, "m");
+        Map m = new Map();
+
+        // Initializing tekton
+        UseCase.logger.put(null, "tek");
+        Tekton tek = new Tekton(1, 1);
+
+        // Adding tekton to map
+        m.addTekton(tek);
+
+        // Initializing tile
+        UseCase.logger.put(null, "t");
+        Tile t = new Tile();
+
+        t.setParentTekton(tek);
+
+        // Initializing fungusPlayer
+        UseCase.logger.put(null, "fp");
+        FungusPlayer fp = new FungusPlayer();
+
+        // Initializing a FungusBody
+
+        FungusBody fb = null;
+        if (true /* TODO: check validity via fp function */) {
+            UseCase.logger.put(null, "fb");
+            fb = new FungusBody(1, 3, t);
+            t.addEntity(fb);
+        }
+
+        // FungusPlayer spreading spores
+        fp.sporeCloud(fb, 1);
+        fp.sporeCloud(fb, 1);
+        fp.sporeCloud(fb, 1);
+    }
+}
+
+
+===== FungusEatsInsect.java =====
+package use_cases;
+
+import entities.*;
+import map.*;
+import player.*;
+
+public class FungusEatsInsect extends UseCase {
+    FungusEatsInsect() {
+        super(22, "Fungus Eats Insect");
+    }
+
+    @Override
+    public void execute() {
+        // Initializing Map
+        Map m = new Map();
+
+        // Initializing Tekton
+        Tekton tek = new Tekton(1, 1);
+
+        // Adding Tekton to Map
+        m.addTekton(tek);
+
+        // Initializing Tile
+        HealTile t = new HealTile(1, 1, tek);
+
+        // Adding Tile to Tekton and setting parent
+        tek.addTile(t);
+
+        // Adding fungusPlayer
+        FungusPlayer fp = new FungusPlayer();
+
+        // Adding FungusBody
+        FungusBody fb = fp.growBody(t);
+
+        // Adding InsectPlayer
+        InsectPlayer ip = new InsectPlayer();
+
+        // Adding Insect
+        Insect i = new Insect(1, t, ip);
+
+        // simulating a total slowdown for the insect
+        i.setSpeedPercent(-1); // who invented this abomination?
+
+        // Eating the Insect
+        fp.consumeInsect(i);
+    }
+}
+
+===== FungusGrowingAMushroom.java =====
+package use_cases;
+import map.*;
+import player.FungusPlayer;
+
+public class FungusGrowingAMushroom extends UseCase {
+
+    FungusGrowingAMushroom() {
+        super(12, "Fungus Growing a Mushroom");
+    }
+
+    @Override
+    public void execute() {
+        // initializing scene
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+
+        // initializing map
+        logger.put(null, "m");
+        Map m = new Map();
+
+        // initializing tekton
+        UseCase.logger.put(null, "tek");
+        Tekton tek = new Tekton(1, 1);
+
+        // adding tekton to map
+        m.addTekton(tek);
+
+        // initializing tile
+        UseCase.logger.put(null, "t");
+        Tile t = new Tile();
+
+        //add tile to tekton
+        t.setParentTekton(tek);
+
+        // initializing player
+        UseCase.logger.put(null, "fp");
+        FungusPlayer fp = new FungusPlayer();
+
+        // player trying to grow a mushroom
+        fp.growBody(t);
+    }
+}
+
+
+===== FungusSpreadingSpores.java =====
+package use_cases;
+
+import entities.*;
+import map.*;
+import player.*;
+
+public class FungusSpreadingSpores extends UseCase {
+
+    FungusSpreadingSpores() {
+        super(13, "Fungus Spreading Spores");
+    }
+
+    @Override
+    public void execute() {
+        // Initializing scene
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+
+        // Initializing map
+        
+        UseCase.logger.put(null, "m");
+        Map m = new Map();
+
+        // Initializing tekton
+        UseCase.logger.put(null, "tek");
+        Tekton tek = new Tekton(1, 1);
+
+        // Adding tekton to map
+        m.addTekton(tek);
+
+        // Initializing tile
+        UseCase.logger.put(null, "t");
+        Tile t = new Tile();
+
+        t.setParentTekton(tek);
+
+        // Initializing fungusPlayer
+        UseCase.logger.put(null, "fp");
+        FungusPlayer fp = new FungusPlayer();
+
+        // Initializing a FungusBody
+
+        FungusBody fb = null;
+        if (true /* TODO: check validity via fp function */) {
+            
+            UseCase.logger.put(null, "fb");
+            fb = new FungusBody(1, 1, t);
+            t.addEntity(fb);
+        }
+
+        // FungusPlayer spreading spores
+        fp.sporeCloud(fb, 5);
+
+    }
+}
+
+===== HealTileKeepsAlive.java =====
+package use_cases;
+import map.*;
+import player.*;
+import entities.*;
+
+
+public class HealTileKeepsAlive extends UseCase {
+    HealTileKeepsAlive() {
+        super(21, "Heal Tile Keeps Alive");
+    }
+
+    @Override
+    public void execute() {
+
+        // Initializing Map
+        Map m = new Map();
+
+        // Initializing Tekton
+        Tekton tek = new Tekton(1, 1);
+
+        // Adding Tekton to Map
+        m.addTekton(tek);
+
+        // Initializing Tile
+        HealTile t = new HealTile(1, 1, tek);
+
+        // Adding Tile to Tekton and setting parent
+        tek.addTile(t);
+
+        // Adding mycelium without any parent body
+        Mycelium myc = new Mycelium();
+        myc.setTile(t);
+
+        // instead of full game update, we simulate the heal
+        myc.update();
+    }
+}
+
+

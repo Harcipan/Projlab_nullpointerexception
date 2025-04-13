@@ -245,7 +245,6 @@ public class Create extends Command {
                     break;
 
                 Tekton tek = new Tekton(app.getMap());
-                app.getMap().addTekton(tek);
                 System.out.println("Created a Tekton " + tek);
 
                 break;
@@ -259,8 +258,8 @@ public class Create extends Command {
                     break;
 
                 Tile tile = new Tile(tileData.getGrowthRate(), tileData.getMaxMycelium(), tileData.getParentTekton());
-                tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a Tile " + tile);
+                int id = tileData.getParentTekton().addTile(tile);
+                System.out.println("Created a Tile " + tile + " (ID " + id + " on Tekton " + tileData.getParentTekton() + ")");
 
                 break;
             }
@@ -278,8 +277,8 @@ public class Create extends Command {
 
                 Tile tile = new AcidTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton(), damageRate);
-                tileData.getParentTekton().addTile(tile);
-                System.out.println("Created an AcidTile " + tile);
+                int id = tileData.getParentTekton().addTile(tile);
+                System.out.println("Created an AcidTile " + tile + " (ID " + id + " on Tekton " + tileData.getParentTekton() + ")");
 
                 break;
             }
@@ -293,8 +292,8 @@ public class Create extends Command {
 
                 Tile tile = new HealTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton());
-                tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a HealTile " + tile);
+                int id = tileData.getParentTekton().addTile(tile);
+                System.out.println("Created a HealTile " + tile + " (ID " + id + " on Tekton " + tileData.getParentTekton() + ")");
 
                 break;
             }
@@ -308,8 +307,8 @@ public class Create extends Command {
 
                 Tile tile = new MonoTile(tileData.getGrowthRate(),
                         tileData.getParentTekton());
-                tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a MonoTile " + tile);
+                int id = tileData.getParentTekton().addTile(tile);
+                System.out.println("Created a MonoTile " + tile + " (ID " + id + " on Tekton " + tileData.getParentTekton() + ")");
 
                 break;
             }

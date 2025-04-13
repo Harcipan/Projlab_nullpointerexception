@@ -72,12 +72,12 @@ public class Create extends Command {
         if (targetPlateId == null)
             return null;
 
-        Tekton tek = app.getMap().getTektons().get(targetPlateId);
-        if (tek == null) {
-            System.out.println("A tectonic plate with the specified ID was not found");
+        try{
+            return app.getMap().getTektons().get(targetPlateId);
+        }catch(IndexOutOfBoundsException ex){
+            System.out.println("A tekton with the specified ID was not found");
             return null;
         }
-        return tek;
     }
 
     private TektonAndTile promptForTektonAndTile() {
@@ -92,13 +92,13 @@ public class Create extends Command {
         if (targetTileId == null)
             return null;
 
-        Tile tile = tek.getTiles().get(targetTileId);
-        if (tile == null) {
-            System.out.println("A tile with the specified ID on the specified tectonic plate was not found");
+        try{
+            Tile tile = tek.getTiles().get(targetTileId);
+            return new TektonAndTile(tek, tile);
+        }catch(IndexOutOfBoundsException ex){
+            System.out.println("A tile with the specified ID on the specified tekton was not found");
             return null;
         }
-
-        return new TektonAndTile(tek, tile);
     }
 
     private TileData promptForTileData() {

@@ -29,7 +29,7 @@ public class Create extends Command {
     };
 
     public Create() {
-        super("create", "Creates a new entity or map element", "create <type>");
+        super("create", "Creates a new entity or map element", "create <type> [type specific arguments]...");
     }
 
     public final class TileData {
@@ -56,9 +56,14 @@ public class Create extends Command {
         }
     }
 
+    int currentArgId = 0;
+    String[] currentArgs;
+
     private Integer promptForPositiveInteger(String forWhat) {
-        System.out.print(forWhat + "> ");
+        /*System.out.print(forWhat + "> ");
         String rawStr = scanner.nextLine().trim();
+        return parsePositiveNumber(rawStr, forWhat);*/
+        String rawStr = currentArgs[currentArgId++];
         return parsePositiveNumber(rawStr, forWhat);
     }
 
@@ -79,7 +84,7 @@ public class Create extends Command {
         if (isMapUninitialized())
             return null;
 
-        Tekton tek = promptForTekton("Tectonic plate id");
+        Tekton tek = promptForTekton("Tekton id");
         if (tek == null)
             return null;
 
@@ -100,7 +105,7 @@ public class Create extends Command {
         if (isMapUninitialized())
             return null;
 
-        Tekton tek = promptForTekton("Parent tectonic plate id");
+        Tekton tek = promptForTekton("Parent tekton id");
         if (tek == null)
             return null;
 
@@ -117,17 +122,28 @@ public class Create extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        if (isWrongNumberOfArgs(2, args.length)) {
+        if(args.length < 2){
+            System.out.println("You must specify the type!");
+            usage();
             return false;
         }
+
+        currentArgs = args;
+        currentArgId = 2;
 
         String type = args[1];
         switch (type.toLowerCase()) {
             case "map":
+                if (isWrongNumberOfArgs(2, args.length, "create Map")) {
+                    return false;
+                }
                 app.setMap(new Map());
                 System.out.println("Created the map");
                 break;
             case "cutspore": {
+                if (isWrongNumberOfArgs(4, args.length, "create CutSpore <parent tekton id> <parent tile>")) {
+                    return false;
+                }
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
@@ -137,6 +153,9 @@ public class Create extends Command {
                 break;
             }
             case "freezespore": {
+                if (isWrongNumberOfArgs(4, args.length, "create FreezeSpore <parent tekton id> <parent tile>")) {
+                    return false;
+                }
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
@@ -145,6 +164,9 @@ public class Create extends Command {
                 break;
             }
             case "slowspore": {
+                if (isWrongNumberOfArgs(4, args.length, "create SlowSpore <parent tekton id> <parent tile>")) {
+                    return false;
+                }
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
@@ -153,6 +175,9 @@ public class Create extends Command {
                 break;
             }
             case "speedupspore": {
+                if (isWrongNumberOfArgs(4, args.length, "create SpeedupSpore <parent tekton id> <parent tile>")) {
+                    return false;
+                }
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
@@ -161,6 +186,9 @@ public class Create extends Command {
                 break;
             }
             case "fungusbody": {
+                if (isWrongNumberOfArgs(6, args.length, "create FungusBody <parent tekton id> <parent tile> <health> <initial spore charge>")) {
+                    return false;
+                }
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
@@ -178,6 +206,9 @@ public class Create extends Command {
                 break;
             }
             case "insect": {
+                if (isWrongNumberOfArgs(4, args.length, "create Insect <parent tekton id> <parent tile>")) {
+                    return false;
+                }
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
@@ -188,6 +219,9 @@ public class Create extends Command {
                 break;
             }
             case "mycelium": {
+                if (isWrongNumberOfArgs(4, args.length, "create Mycelium <parent tekton id> <parent tile>")) {
+                    return false;
+                }
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
@@ -196,6 +230,9 @@ public class Create extends Command {
                 break;
             }
             case "tekton": {
+                if (isWrongNumberOfArgs(4, args.length, "create Tekton <break chance> <max spore count>")) {
+                    return false;
+                }
                 if (isMapUninitialized())
                     break;
 
@@ -203,7 +240,7 @@ public class Create extends Command {
                 if (breakChance == null)
                     break;
 
-                Integer sporeCount = promptForPositiveInteger("Spore count");
+                Integer sporeCount = promptForPositiveInteger("Max spore count");
                 if (sporeCount == null)
                     break;
 
@@ -214,6 +251,9 @@ public class Create extends Command {
                 break;
             }
             case "tile": {
+                if (isWrongNumberOfArgs(5, args.length, "create Tile <parent tekton id> <growth rate> <max mycelium>")) {
+                    return false;
+                }
                 TileData tileData = promptForTileData();
                 if (tileData == null)
                     break;
@@ -225,6 +265,9 @@ public class Create extends Command {
                 break;
             }
             case "acidtile": {
+                if (isWrongNumberOfArgs(5, args.length, "create AcidTile <parent tekton id> <growth rate> <max mycelium>")) {
+                    return false;
+                }
                 TileData tileData = promptForTileData();
                 if (tileData == null)
                     break;
@@ -241,6 +284,9 @@ public class Create extends Command {
                 break;
             }
             case "healtile": {
+                if (isWrongNumberOfArgs(5, args.length, "create HealTile <parent tekton id> <growth rate> <max mycelium>")) {
+                    return false;
+                }
                 TileData tileData = promptForTileData();
                 if (tileData == null)
                     break;
@@ -253,6 +299,9 @@ public class Create extends Command {
                 break;
             }
             case "monotile": {
+                if (isWrongNumberOfArgs(5, args.length, "create MonoTile <parent tekton id> <growth rate> <max mycelium>")) {
+                    return false;
+                }
                 TileData tileData = promptForTileData();
                 if (tileData == null)
                     break;

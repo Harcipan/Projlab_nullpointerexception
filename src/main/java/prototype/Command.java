@@ -42,6 +42,16 @@ public abstract class Command {
         }
     }
 
+    protected boolean isWrongNumberOfArgs(int expected, int got, String usageForThis) {
+        if (expected != got) {
+            System.out.println("Wrong number of arguments (expected " + expected + ", got " + got + " arguments)");
+            System.out.println("Usage: " + usageForThis);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     protected boolean isMapUninitialized() {
         if (app.getMap() == null) {
             System.out.println("You must create a map first by running \"create Map\"!");

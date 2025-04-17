@@ -207,7 +207,7 @@ public class Create extends Command {
                 if (sporeCount == null)
                     break;
 
-                Tekton tek = new Tekton(breakChance, sporeCount);
+                Tekton tek = new Tekton(app.getMap());
                 int id = app.getMap().addTekton(tek);
                 System.out.println("Created a Tekton with the id " + id);
 
@@ -257,7 +257,7 @@ public class Create extends Command {
                 if (tileData == null)
                     break;
 
-                Tile tile = new MonoTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
+                Tile tile = new MonoTile(tileData.getGrowthRate(),
                         tileData.getParentTekton());
                 int id = tileData.getParentTekton().addTile(tile);
                 System.out.println("Created a MonoTile with ID " + id);

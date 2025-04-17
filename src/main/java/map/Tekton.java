@@ -73,8 +73,6 @@ public class Tekton {
 
         printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
 
-<<<<<<< HEAD
-
         int faultLine = faultLine();
         List<Tile> tilesAlongFault = new ArrayList<>();
         Tekton t1 = new Tekton(map);
@@ -127,24 +125,22 @@ public class Tekton {
             for (GameEntity entity : tile.getEntities()) {
                 entity.getCut();
             }
-=======
-        // based on some algorithm we break it into two pieces
-        tl.add(new Tekton(breakChance, sporeCount));
+            // based on some algorithm we break it into two pieces
+        /*tl.add(new Tekton(breakChance, sporeCount));
         tl.add(new Tekton(breakChance, sporeCount));
         for (Tekton tekton : tl) {
             // migrating elements into new tektons
             printWrapper("New tekton " + System.identityHashCode(tekton)
                     + " created and migrated elements based on some algorithm",
                     UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
->>>>>>> prototype
+        }*/
         }
-
-        ArrayList<Tekton> tl = new ArrayList<>(); 
+        ArrayList<Tekton> tl = new ArrayList<>();
         tl.add(t1);
         tl.add(t2);
         // remove the tekton from the map
         map.removeTekton(this);
-        
+
         return tl;
     }
 
@@ -205,7 +201,7 @@ public class Tekton {
                 bottommostTile = tile;
             }
         }
-        return bottommostTile;  
+        return bottommostTile;
     }
 
     /*

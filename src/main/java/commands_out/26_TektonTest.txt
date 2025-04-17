@@ -1,0 +1,18 @@
+„T0”: {
+	„Típus”: „cantgrow”,
+	„Tiles”: [],
+	„breakChance”: 1,
+	„maxSporeCount”: 1
+	},
+„T1”: {
+	„Típus”: „mono”,
+	„Tiles”: [],
+	„breakChance”: 1,
+	„maxSporeCount”: 1
+	},
+„T2”: {
+	„Típus”: „normal”,
+	„Tiles”: [],
+	„breakChance”: 1,
+	„maxSporeCount”: 1
+	}

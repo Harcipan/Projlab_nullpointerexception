@@ -1,0 +1,8 @@
+create Map
+create Tekton 1 1
+Create Tile 0 1 2
+create Insect 0 0
+create FreezeSpore 0 0
+insect_eat_spore 0 1
+insect_unfreeze 0 0 0
+save out.txt

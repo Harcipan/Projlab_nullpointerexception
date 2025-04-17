@@ -1,0 +1,4 @@
+load 1_InsectStepsAcrossMycelium.txt
+save out.txt
+load 2_InsectCutsMycelium.txt
+save out.txt

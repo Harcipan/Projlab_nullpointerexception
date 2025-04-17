@@ -1,0 +1,18 @@
+„T0”: {
+	„Típus”: „acid”,
+	„Tiles”: [],
+	„breakChance”: 1,
+	„sporeCount”: 1
+	},
+„T1”: {
+	„Típus”: „normal”,
+	„Tiles”: [t0],
+	„breakChance”: 1,
+	„sporeCount”: 1
+	},
+
+„t0”: {
+	„parentTekton”: T1,
+	„growthRate”: 1
+	„maxMycelium”: 2
+	}

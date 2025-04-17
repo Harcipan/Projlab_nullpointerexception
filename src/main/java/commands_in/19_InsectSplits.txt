@@ -1,0 +1,8 @@
+create Map
+create Tekton 1 1
+create Tile 0 1 2
+create Tile 0 1 2
+create Insect 0 0
+create SplitSpore 0 0
+intsect_eat_spore 0 1
+save out.txt

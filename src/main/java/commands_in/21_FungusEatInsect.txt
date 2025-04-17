@@ -1,0 +1,13 @@
+create Map
+create Tekton 1 1
+create Tile 0 1 2
+create Tile 0 1 2
+create Tile 0 1 2
+create FungusdBody 0 0 1 1
+create Mycelium 0 0
+create Mycelium 0 1
+create Mycelium 0 2
+create Insect 0 2
+insect_freeze 4
+consume_insect 3 4
+save out.txt

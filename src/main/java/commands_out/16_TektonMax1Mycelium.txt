@@ -1,0 +1,58 @@
+„T0”: {
+	„Típus”: „normal”,
+	„Tiles”: [t0],
+	„breakChance”: 1,
+	„maxSporeCount”: 1
+	},
+„T1”: {
+	„Típus”: „normal”,
+	„Tiles”: [t0],
+	„breakChance”: 1,
+	„maxSporeCount”: 1
+	},
+„T2”: {
+	„Típus”: „mono”,
+	„Tiles”: [t0],
+	„breakChance”: 1,
+	„maxSporeCount”: 1
+	},
+„t0”: {
+	„parentTekton”: T0,
+	„growthRate”: 1
+	„maxMycelium”: 2
+	},
+„t0”: {
+	„parentTekton”: T1,
+	„growthRate”: 1
+	„maxMycelium”: 2
+	},
+„t0”: {
+	„parentTekton”: T2
+	„growthRate”: 1
+	„maxMycelium”: 1
+	},
+„fungusbody_0”: {
+	„currentTile”: t0,
+	„health”: 1,
+	„sporecharge”: 1
+},
+„mycelium_1”: {
+	„currentTile”: t0,
+	„health”: 100,
+	„isDying”: false
+}
+„fungusbody_2”: {
+	„currentTile”: t0,
+	„health”: 1,
+	„sporecharge”: 1
+},
+„mycelium_3”: {
+	„currentTile”: t0,
+	„health”: 100,
+	„isDying”: false
+},
+„mycelium_4”: {
+	„currentTile”: t0,
+	„health”: 100,
+	„isDying”: false
+}

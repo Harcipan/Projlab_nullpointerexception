@@ -1,0 +1,388 @@
+===== Main.java =====
+import use_cases.UseCase;
+import use_cases.UseCaseList;
+
+import java.util.Scanner;
+
+import prototype.App;
+
+/*
+*   Tester program for Use-Cases derived from Sequence Diagrams.
+*   To create a test, add a new class that extends UseCase and implement the execute method.
+*   To add the new use-case to the tester program, add it to the UseCaseList constructor.
+* */
+
+public class Main {
+    public static void main(String[] args) {
+        App app = new App();
+        app.run();
+    }
+}
+
+
+===== CutSpore.java =====
+package entities;
+
+import map.Tile;
+import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
+
+public class CutSpore extends Spore {
+    /*public CutSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
+    }*/
+
+    public CutSpore() {
+        super();
+        UseCase.replace(this);
+        UseCase.printWrapper("Initializing CutSpore as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
+    }
+
+    /*
+     * When an insect eats this spore, cutting ability is disabled
+     */
+    @Override
+    public void getEaten(Insect i) {
+        isConsumed = true;
+        i.setCut(false);
+        i.addSpore(this);
+        currentTile.removeEntity(this);
+    }
+
+    /*
+     * Restore cutting ability
+     */
+    @Override
+    public void removeEffect(Insect i) {
+        i.setCut(true);
+    }
+
+}
+
+
+===== FreezeSpore.java =====
+package entities;
+
+import map.Tile;
+import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
+
+public class FreezeSpore extends Spore {
+    /*public FreezeSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
+        super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
+    }*/
+
+    public FreezeSpore() {
+        super();
+        UseCase.replace(this);
+        UseCase.printWrapper("Initializing FreezeSpore as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
+       
+    }
+
+    /*
+     * Set insect speed to -100, effectively disabling movement
+     */
+    @Override
+    public void getEaten(Insect i) {
+        isConsumed = true;
+        i.setSpeedPercent(-100);
+        i.addSpore(this);
+        currentTile.removeEntity(this);
+        
+    }
+
+    /*
+     * Restore insect speed to 0 (applies default speed)
+     */
+    @Override
+    public void removeEffect(Insect i) {
+        i.setSpeedPercent(0);
+    }
+
+
+}
+
+
+===== Fungus.java =====
+package entities;
+import map.Tile;
+
+import static use_cases.UseCase.*;
+
+public abstract class Fungus extends GameEntity {
+    int health;
+
+    /*protected Fungus(int health, Tile currentTile) {
+        super(1, currentTile);
+        this.health = health;
+    }*/
+
+    protected Fungus()
+    {
+        super();
+    }
+
+    public void growMycelium(Tile neighbor) {
+
+        // Will implement later
+        
+    }
+
+    public void growBody(Tile neighbor) {
+
+        // Will implement later
+
+    }
+
+    public void die() {
+        printWrapper("Fungus (typeof " + this.getClass().getName()
+                + ") " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, Indent.KEEP);
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    // private boolean checkNeighbor(Tile neighbor) {
+    //     // Will implement later
+    //     return false;
+    // }
+}
+
+
+===== FungusBody.java =====
+package entities;
+
+import static use_cases.UseCase.replace;
+
+import map.Tile;
+import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
+
+public class FungusBody extends Fungus{
+    private int sporeCharge = 0;
+
+    public FungusBody(int health, int initialSporeCharge, Tile currentTile) {
+        //super(health, currentTile);
+        super();
+        replace(this);
+        UseCase.printWrapper("Initializing FungusBody as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
+        this.sporeCharge = initialSporeCharge;
+    }
+
+    public void decrementSporeCharge() {
+        this.sporeCharge--;
+    }
+
+    public void decrementSporeCharge(int amount) {
+        this.sporeCharge -= amount;
+    }
+
+    public int getSporeCharge() {
+        return this.sporeCharge;
+    }
+
+    public void sporeCloud() {
+
+    }
+
+
+
+
+
+}
+
+
+===== GameEntity.java =====
+package entities;
+import map.Tile;
+import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
+
+public class GameEntity {
+    int id;             // Unique identifier for the entity
+    Tile currentTile;   // The tile the entity is currently on
+
+    protected GameEntity(int id, Tile currentTile) {
+        this.id = id;
+        this.currentTile = currentTile;
+    }
+
+    protected GameEntity(){};
+
+    public void setTile(Tile tile) {
+        
+        this.currentTile = tile;
+    }
+
+    public Tile getCurrentTile() {
+        return currentTile;
+    }
+
+    public void update() {
+        // implementations vary in subclasses
+        
+    }
+
+    public void damage() {
+        // implementations vary in subclasses
+        
+    }
+
+    public void heal() {
+        // implementations vary in subclasses
+        
+    }
+
+    public void setId(int id){
+        this.id = id;
+    }
+    public int getId(){
+        return id;
+    }
+}
+
+
+===== Insect.java =====
+package entities;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import map.*;
+import player.*;
+import use_cases.UseCase;
+import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
+
+public class Insect extends GameEntity {
+    int speed;  // The speed of the insect
+    boolean canCut; // Whether the insect can cut through mycelium
+    InsectPlayer controlledBy; // The player that controls the insect
+    List<Spore> underInfluence; //The spores that are affecting the insect
+
+    public Insect(int id, Tile currentTile, InsectPlayer player) {
+        super(id, currentTile);
+        speed = 100;
+        canCut = true;
+        controlledBy = player;
+        // SHOULD BE DEPRECATED: check if this insect is already controlled by the player
+        if (!player.getControlledInsects().contains(this)) {
+            player.addControlledInsect(this);
+        }
+        underInfluence = new ArrayList<Spore>();
+    }
+
+    /*
+     * Split the insect
+     * Creates another insect controlled by the same player
+     * The new insect will be placed in the same tile as the original insect
+     */
+    public Insect split() {
+        Insect newInsect = new Insect(100+id, getCurrentTile(), controlledBy);
+        controlledBy.addControlledInsect(newInsect);
+        return newInsect;
+    }
+
+    /*
+     * Kill the insect
+     * Remove the insect from the tile and the player
+     */
+    public void die() {
+        controlledBy.removeControlledInsect(this);
+        currentTile.removeEntity(this);
+    }
+    /*
+     * Update the insect
+     * Decrease effect times and remove expired spores
+     */
+    @Override
+    public void update() {
+        for (Spore spore : underInfluence) {
+            spore.update();
+            if(spore.getEffectTime() <= 0) {
+                spore.removeEffect(this);
+                underInfluence.remove(spore);
+            }
+        }
+
+        setCut(true);
+    }
+
+    /*
+     * Eat the spore and update the score of the player
+     * Adds spore to affecting list
+     */
+    public void eat(Spore target) {
+        //controlledBy.updateScore(target.getNutrientValue());
+        target.getEaten(this);
+        if (target instanceof SplitSpore) {
+            split();
+        }
+    }
+
+    /*
+     * Move the insect to the target tile
+     * If the target tile is not adjacent, the insect will not move
+     */
+    public void step(Tile target) {
+        // Will implement later
+        currentTile.removeEntity(this);
+        target.addEntity(this);
+    }
+
+    /*
+     * Remove the mycelium in the target tile
+     */
+    public void cut(Tile target) {
+        // Will implement later
+        target.getEntities();
+        for (GameEntity ge : target.getEntities()) {
+            //if()
+        }
+    }
+
+    /*
+     * Add a spore to the list of spores affecting the insect
+     */
+    public void addSpore(Spore spore){
+        underInfluence.add(spore);
+    }
+
+    /*
+     * Set the speed of the insect to a percentage of the original speed
+     * If the percentage is 0, the speed is reset to 100 (default speed)
+     * For freezing use negative percentage
+     */
+    public void setSpeedPercent(int percent) {
+        if(percent == 0) {
+            // Reset speed to 100
+            speed = 100;
+            return;
+        }
+        speed = speed * percent / 100;
+        if(speed < 0) {
+            speed = 0;
+        }
+    }
+
+    /*
+     * Get the speed of the insect
+     */
+    public int getSpeed() {
+        return speed;
+    }
+
+    /*
+     * set cutting ability
+     */
+    public void setCut(boolean canCut) {
+        this.canCut = canCut;
+    }
+}
+
+

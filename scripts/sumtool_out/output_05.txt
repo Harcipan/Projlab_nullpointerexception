@@ -1,0 +1,228 @@
+===== InsectPlayer.java =====
+package player;
+
+import static use_cases.UseCase.printWrapper;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import entities.Insect;
+import map.Tile;
+import use_cases.UseCase;
+import entities.Spore;
+import use_cases.UseCase.*;
+
+public class InsectPlayer extends Player{
+    List<Insect> controlledInsects;
+
+    public InsectPlayer() {
+        super();
+        UseCase.replace(this);
+        UseCase.printWrapper("Initializing InsectPlayer as " + UseCase.logger.get(this), ArrowDirection.RIGHT, UseCase.Indent.KEEP);
+        this.controlledInsects = new ArrayList<>();
+    }
+
+    public void addControlledInsect(Insect controlledInsect) {
+        this.controlledInsects.add(controlledInsect);
+    }
+
+    public List<Insect> getControlledInsects() {
+        return controlledInsects;
+    }
+
+    public void moveTo(Tile tile){
+        moveTo(tile, controlledInsects.get(0));
+    }
+    public void moveTo(Tile tile, Insect controlledInsect) {
+        // Will implement later
+        
+        //check if insect is ours to control
+        if(!controlledInsects.contains(controlledInsect)){
+            printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
+        //check if insect is paralyzed
+        System.out.println("Is the insect paralyzed? Y/N");
+        String answer = System.console().readLine();
+        if(answer.equalsIgnoreCase("Y")){
+            printWrapper("The insect is paralyzed and cannot move, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
+        
+        controlledInsect.step(tile);
+
+    }
+
+    public void eat(Spore s) {
+        eat(s, controlledInsects.get(0));
+    }
+
+    public void eat(Spore s, Insect controlledInsect) {
+        if(!controlledInsects.contains(controlledInsect)){
+            printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
+        // Will implement later
+        controlledInsect.eat(s);
+    }
+
+    public void cut(Tile tile) {
+        cut(tile, controlledInsects.get(0));
+    }
+    
+    public void cut(Tile tile, Insect controlledInsect) {
+        if(!controlledInsects.contains(controlledInsect)){
+            printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
+        // Will implement later
+        
+        System.out.println("Can the insect cut? Y/N");
+        String answer = System.console().readLine();
+        if(answer.equalsIgnoreCase("N")){
+            printWrapper("The insect cannot cut, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
+        controlledInsect.cut(tile);
+    }
+
+    /*
+     * Remove the insect from the list of controlled insects
+     * This is used when the insect is no longer controlled by the player (its dead)
+     */
+    public void removeControlledInsect(Insect controlledInsect) {
+        this.controlledInsects.remove(controlledInsect);
+        
+    }
+
+    
+}
+
+
+===== Player.java =====
+package player;
+
+import map.*;
+import entities.*;
+
+public abstract class Player {
+    int score;
+    int actionPoints;
+
+    protected Player() {
+        this.score = 0;
+        this.actionPoints = 0;
+    }
+
+    public void updateScore(int score) {
+        this.score += score;
+    }
+
+    public void pickStartingTile(Tile tile) {
+        // Will implement later
+    }
+
+    public void calculatePoints() {
+        // Will implement later
+    }
+}
+
+
+===== App.java =====
+package prototype;
+
+import java.util.Random;
+import java.util.Scanner;
+
+import map.Map;
+import player.*;
+import use_cases.UseCase;
+
+public class App {
+    boolean running = true;
+    CommandList commands;
+    Map map;
+
+    InsectPlayer insectPlayer;
+    FungusPlayer fungusPlayer;
+
+    public App() { //app inicialization so loggers work
+        UseCase.logger.put(null, "insectPlayer");
+        insectPlayer = new InsectPlayer();
+
+        UseCase.logger.put(null, "fungusPlayer");
+        fungusPlayer = new FungusPlayer();
+    }
+
+    public InsectPlayer getInsectPlayer() {
+        return insectPlayer;
+    }
+
+    public FungusPlayer getFungusPlayer() {
+        return fungusPlayer;
+    }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public CommandList getCommands() {
+		return commands;
+	}
+
+	public void setMap(Map map) {
+        this.map = map;
+    }
+
+    public void run() {
+        System.out.println("Fungorium prototype");
+        System.out.println(" - By (NullPointerException)");
+        System.out.println("To get a list of all available commands, type in \"list\"");
+
+        Scanner scanner = new Scanner(System.in);
+
+        commands = new CommandList(this, scanner);
+
+        while (running) {
+            System.out.print("Pr> ");
+            String[] cmdArgs = scanner.nextLine().trim().split("\\s+");
+            String command = cmdArgs[0];
+            if(commands.get(command)!=null) { //protects against execption when comment doesnt exist
+                boolean shouldStop = commands.get(command).execute(cmdArgs);
+                if (shouldStop) {
+                    running = false;
+                    break;
+                }
+            }
+        }
+
+        //A nagyrészét Claude AI adta nekem... additions are welcome :)
+        String[] haha = {
+            "Goodbye!",
+            "バイバイ!",
+            "さよなら",
+            "Good riddance.",
+            "Holnap után kiskedden!",
+            "Sporing off now, see you later!",
+            "Time to hibernate until the next mycelial network connection...",
+            "Your session has been decomposed by friendly fungi.",
+            "The tectonic plates are shifting... logging you out!",
+            "Insects have eaten your session. Come back after they digest!",
+            "Your connection has split in two, just like a spore-affected insect!",
+            "Mycelium network disconnected. Have a fungi-tastic day!",
+            "Command terminated: Too many spores in the system.",
+            "Program execution has slowed down after consuming questionable spores...",
+            "This session has been composted. Goodbye!",
+            "Error 404: Fungi went underground. Please try again later.",
+            "Your connection has drifted to another tectonic plate. Farewell!",
+            "System hibernating like a bear in the Bükk Mountains. Logging off...",
+            "Your tectonic plates shifted all the way to the Hungarian Great Plain. Bye-bye!",
+            "Tectonic activity detected near Tokaj wine region - fungi taking shelter!"
+        };
+
+        Random rand = new Random();
+        System.out.println(haha[rand.nextInt(0, haha.length)]);
+    }
+}
+
+

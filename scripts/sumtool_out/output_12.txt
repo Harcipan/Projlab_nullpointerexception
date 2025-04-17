@@ -1,0 +1,220 @@
+===== TektonBreakingMycelium.java =====
+package use_cases;
+
+import entities.FungusBody;
+import entities.GameEntity;
+import entities.Mycelium;
+import map.Map;
+import map.Tekton;
+import map.Tile;
+import player.FungusPlayer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class TektonBreakingMycelium extends UseCase {
+
+    public TektonBreakingMycelium() {
+        super(19, "Tekton breaking with mycelium");
+    }
+
+    @Override
+    public void execute() {
+        // Initializing scene
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+
+        // Initializing map
+        
+        UseCase.logger.put(null, "m");
+        Map m = new Map();
+
+        // Initializing tekton
+        UseCase.logger.put(null, "tek");
+        Tekton tek = new Tekton(1, 1);
+
+        // Adding tekton to map
+        m.addTekton(tek);
+
+        // Adding tile to tekton
+        UseCase.logger.put(null, "t1");
+        Tile t1 = new Tile();
+        UseCase.logger.put(null, "t2");
+        Tile t2 = new Tile();
+        t1.setParentTekton(tek);
+        t2.setParentTekton(tek);
+
+        tek.addTile(t1);
+        tek.addTile(t2);
+
+        // Adding fungusPlayer
+        UseCase.logger.put(null, "fp");
+        FungusPlayer fp = new FungusPlayer();
+
+        // Adding fungusBody
+        fp.growBody(t1);
+
+        // Adding Mycelium
+        Mycelium myc = fp.growMycelium(t2);
+
+
+        // TODO Lets say a map update happens and the tekton breaks
+        ArrayList<Tekton> tl = tek.breakTekton();
+
+        // TODO lets say based on some rules that the mycelium should be removed after the tekton breaking
+
+        // Removing mycelia from the tektons
+        ArrayList<Mycelium> removableMycelia = new ArrayList<>();
+        for (Tile t : tek.getTiles()) {
+            for (GameEntity e : t.getEntities()) {
+                if (e instanceof Mycelium) {
+                    removableMycelia.add((Mycelium) e);
+                }
+            }
+        }
+        for (Mycelium mycelium : removableMycelia) {
+            mycelium.die();
+        }
+    }
+}
+
+
+===== UseCase.java =====
+package use_cases;
+
+import java.util.HashMap;
+
+public abstract class UseCase {
+    private int id;
+    private String name;
+    private static int persistentIndentDepth = 0;
+    private static ArrowDirection persistentDir = ArrowDirection.RIGHT;
+    public enum Indent {UNINDENT, INDENT, KEEP}
+    public enum ArrowDirection {LEFT, RIGHT}
+    public static HashMap<Object,String> logger =new HashMap<Object,String>();
+
+    UseCase(int id, String name) {
+        this.id = id;
+        this.name = name;
+        logger.clear();
+    }
+
+    public static void replace(Object o) {
+        logger.put(o,logger.get(null));
+        logger.remove(null);
+    }
+
+    public int getID() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public static void printWrapper(String message, ArrowDirection dir, int indentDepth) {
+        String arrow = (dir == ArrowDirection.LEFT) ? "<-" : "->";
+        persistentDir = dir;
+        persistentIndentDepth = indentDepth;
+        String indent = "\t".repeat(indentDepth);
+        System.out.println(indent + arrow + " " + message + " ");
+    }
+
+    // Uses both persistent direction and depth
+    public static void printWrapper(String message, ArrowDirection dir) {
+        printWrapper(message, dir, persistentIndentDepth);
+    }
+
+    // Remembers the last direction used and uses the last direction by default
+    public static void printWrapper(String message) {
+        printWrapper(message, persistentDir, persistentIndentDepth);
+    }
+
+    // Relative depth of the printWrapper with stepping after execution
+    public static void printWrapper(String message, ArrowDirection dir, Indent indentDir) {
+        //unindentation happens before the message is printed so it can be used in the same function where the indentation happens
+        if (indentDir == Indent.UNINDENT) {
+            persistentIndentDepth--;
+        } 
+        
+        printWrapper(message, dir, persistentIndentDepth);
+
+        // Indentation change happens after the message is printed
+        /*if (indentDir == Indent.UNINDENT) {
+            persistentIndentDepth--;
+        } else */if (indentDir == Indent.INDENT) {
+            persistentIndentDepth++;
+        } else if (indentDir == Indent.KEEP) {
+            // Do nothing
+        }
+    }
+
+
+    public abstract void execute();
+}
+
+
+===== UseCaseList.java =====
+package use_cases;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class UseCaseList {
+    List<UseCase> useCases = new ArrayList<>();
+
+    /*
+    *       ADD YOUR USE CASES HERE
+    * */
+    public UseCaseList() {
+        useCases.add(new InsectMove()); // 1
+        useCases.add(new InsectCutMycelium()); // 2
+        useCases.add(new EatingSpore()); // 3
+        useCases.add(new EatingSpeedupSpore()); // 4
+        useCases.add(new EatingSlowSpore()); // 5
+        useCases.add(new EatingFreezingSpore()); // 6
+        useCases.add(new EatingCutSpore()); // 7
+        useCases.add(new InsectFreezeTimesOut()); // 8
+        useCases.add(new MyceliumGrowing()); // 9
+        useCases.add(new MyceliumGrowingWithSpore()); // 10
+        useCases.add(new DetachedMyceliumDies()); // 11
+        useCases.add(new FungusGrowingAMushroom()); // 12
+        useCases.add(new FungusSpreadingSpores()); // 13
+        useCases.add(new FungusBodyDies()); // 14
+        useCases.add(new TektonBreaking()); // 15
+        useCases.add(new CannotGrowBodyOnTekton()); // 16
+        useCases.add(new OnlyOneMyceliumGrowingOnTekton()); // 17
+        useCases.add(new MultipleMyceliumGrowingOnTekton()); // 18
+        useCases.add(new TektonBreakingMycelium()); // 19
+        useCases.add(new InsectSplitSpore()); // 20
+        useCases.add(new HealTileKeepsAlive()); // 21
+        useCases.add(new FungusEatsInsect()); // 22
+    }
+
+    public List<UseCase> getUseCases() {
+        return useCases;
+    }
+
+    // sort them based on id
+    public void sortUseCases() {
+        System.out.println("Sorting and verifying use cases...");
+        // checking for duplicate ids
+        for (int i = 0; i < useCases.size(); i++) {
+            for (int j = i + 1; j < useCases.size(); j++) {
+                if (useCases.get(i).getID() == useCases.get(j).getID()) {
+                    throw new IllegalArgumentException("Duplicate use case id found: " + useCases.get(i).getID());
+                }
+            }
+        }
+        // checking for duplicate names even for lowercase matches
+        for (int i = 0; i < useCases.size(); i++) {
+            for (int j = i + 1; j < useCases.size(); j++) {
+                if (useCases.get(i).getName().equalsIgnoreCase(useCases.get(j).getName())) {
+                    throw new IllegalArgumentException("Duplicate use case name found: " + useCases.get(i).getName());
+                }
+            }
+        }
+        useCases.sort((a, b) -> a.getID() - b.getID());
+    }
+}
+
+

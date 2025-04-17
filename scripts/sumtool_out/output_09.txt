@@ -1,0 +1,392 @@
+===== SetTileParentTekton.java =====
+package prototype.commands;
+
+import prototype.*;
+
+public class SetTileParentTekton extends Command {
+    public SetTileParentTekton() {
+        super("set_tile_parent_tekton", "Set the parent tectonic plate of the tile",
+                "set_tile_parent_tekton <tile id> <parent tectonic plate id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        // This command is moot
+        throw new UnsupportedOperationException("not implemented");
+    }
+}
+
+
+===== SetTileType.java =====
+package prototype.commands;
+
+import entities.Mycelium;
+import map.*;
+import prototype.*;
+
+public class SetTileType extends Command {
+    public SetTileType() {
+        super("set_tile_type", "Set the tile's type", "set_tile_type <tectonic plate id> <tile id> <Mono|Heal|Acid>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(4, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+        TektonAndTile tektonTile = parseTektonAndTile(args[1], args[2]);
+        if (tektonTile == null)
+            return false;
+        Integer tileId = parsePositiveNumber(args[2], "Tile ID");
+        Tekton tek = tektonTile.getTekton();
+        Tile tile = tektonTile.getTile();
+
+        // This command is a cookie...
+        switch (args[3].toLowerCase()) {
+            case "mono":
+                tek.getTiles().add(tileId,
+                        new MonoTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton()));
+                break;
+            case "heal":
+                tek.getTiles().add(tileId,
+                        new HealTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton()));
+                break;
+            case "acid":
+                tek.getTiles().add(tileId,
+                        new AcidTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(), 5)); // TODO:
+                                                                                                               // Ask
+                                                                                                               // for
+                                                                                                               // damage
+                                                                                                               // rate
+                break;
+            default:
+                System.out.println(
+                        "Invalid tile type \"" + args[3] + "\". Valid tile types are \"Mono\", \"Heal\", or \"Acid\"");
+        }
+        return false;
+    }
+}
+
+
+===== TektonBreaks.java =====
+package prototype.commands;
+
+import java.util.ArrayList;
+
+import entities.GameEntity;
+import entities.Mycelium;
+import map.Tekton;
+import map.Tile;
+import prototype.*;
+
+public class TektonBreaks extends Command {
+    public TektonBreaks() {
+        super("tekton_breaks", "Break the tectonic plate and cut all mycelium on it",
+                "tekton_breaks <tectonic plate id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(2, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+
+        Tekton tek = parseTekton(args[1], "Tectonic plate");
+        if (tek == null)
+            return false;
+
+        ArrayList<Tekton> tl = tek.breakTekton();
+        ArrayList<Mycelium> removableMycelia = new ArrayList<>();
+        for (Tile t : tek.getTiles()) {
+            for (GameEntity e : t.getEntities()) {
+                if (e instanceof Mycelium) {
+                    removableMycelia.add((Mycelium) e);
+                }
+            }
+        }
+        for (Mycelium mycelium : removableMycelia) {
+            mycelium.die();
+        }
+        app.getMap().removeTekton(tek);
+        for (Tekton newTek : tl) {
+            app.getMap().addTekton(newTek);
+        }
+
+        return false;
+    }
+}
+
+
+===== TektonCantGrowFungus.java =====
+package prototype.commands;
+
+import prototype.*;
+
+public class TektonCantGrowFungus extends Command {
+    public TektonCantGrowFungus() {
+        super("tekton_cant_grow_fungus", "Block any fungus bodies from growing on this tectonic plate",
+                "tekton_cant_grow_fungus <tectonic plate id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        // There isn't any way yet to do this.
+        throw new UnsupportedOperationException("not implemented");
+    }
+}
+
+
+===== TektonMultipleMycelium.java =====
+package prototype.commands;
+
+import prototype.*;
+
+public class TektonMultipleMycelium extends Command {
+    public TektonMultipleMycelium() {
+        super("tekton_multiple_mycelium", "Allow multiple mycelium to grow on the specified tectonic plate",
+                "tekton_multiple_mycelium <tectonic plate id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        // There isn't any way yet to do this.
+        throw new UnsupportedOperationException("not implemented");
+    }
+}
+
+
+===== TektonOneMycelium.java =====
+package prototype.commands;
+
+import prototype.*;
+
+public class TektonOneMycelium extends Command {
+    public TektonOneMycelium() {
+        super("tekton_one_mycelium", "Allow only one mycelium to grow on this tectonic plate",
+                "tekton_one_mycelium <tectonic plate id>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        // There isn't any way yet to do this.
+        throw new UnsupportedOperationException("not implemented");
+    }
+}
+
+
+===== Tick.java =====
+package prototype.commands;
+
+import prototype.*;
+
+public class Tick extends Command {
+    public Tick() {
+        super("tick", "Run through the specified amount of rounds", "tick <round>");
+    }
+
+    @Override
+    public boolean execute(String[] args) {
+        if (isWrongNumberOfArgs(2, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+
+        Integer rounds = parsePositiveNumber(args[1], "Number of rounds");
+        if (rounds == null)
+            return false;
+
+        for (int i = 0; i < rounds; i++) {
+            app.getMap().tick();
+        }
+        return false;
+    }
+}
+
+
+===== CannotGrowBodyOnTekton.java =====
+package use_cases;
+
+import map.Map;
+import map.Tekton;
+import map.Tile;
+import player.FungusPlayer;
+
+public class CannotGrowBodyOnTekton extends UseCase {
+
+    public CannotGrowBodyOnTekton() {
+        super(16, "Cannot Grow Body on Tekton");
+    }
+
+    @Override
+    public void execute() {
+        // initializing scene
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+
+        // initializing map
+        
+        UseCase.logger.put(null, "m");
+        Map m = new Map();
+
+        // initializing tekton
+        UseCase.logger.put(null, "tek");
+        Tekton tek = new Tekton(1, 1);
+
+        // adding tekton to map
+        m.addTekton(tek);
+
+        // initializing tile
+        UseCase.logger.put(null, "t1");
+        Tile t1 = new Tile();
+        
+        UseCase.logger.put(null, "t2");
+        Tile t2 = new Tile();
+
+        // adding tiles to tekton
+        tek.addTile(t1);
+        tek.addTile(t2);
+
+        // setting parent tekton for tiles
+        t1.setParentTekton(tek);
+        t2.setParentTekton(tek);
+
+        // initializing player
+        UseCase.logger.put(null, "fp");
+        FungusPlayer fp = new FungusPlayer();
+
+        // player trying to grow a mushroom
+        fp.growBody(t1);
+
+        // player trying to grow a mushroom on the same tekton
+        // this should not work
+        fp.growBody(t2);
+    }
+}
+
+
+===== DetachedMyceliumDies.java =====
+package use_cases;
+
+import entities.Mycelium;
+import map.*;
+
+public class DetachedMyceliumDies extends UseCase {
+
+    public DetachedMyceliumDies() {//legyen az id azonos azzal ami az usecase id-ja
+        super(11, "Detached Mycelium Dies");
+    }
+
+    @Override
+    public void execute() {
+
+        //scene initialization
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+
+        // map creation
+        
+        UseCase.logger.put(null, "m");
+        Map m = new Map();
+
+        // tekton creation
+        UseCase.logger.put(null, "tek");
+        Tekton tek = new Tekton(1, 1);
+
+        // add tekton to map
+        m.addTekton(tek);
+
+        // tile creation and parent tekton assignment in constructor
+        UseCase.logger.put(null, "t");
+        Tile t = new Tile();
+
+
+        // mycelium creation and tile assignment in constructor
+
+        System.out.println("Creating mycelium...");
+        UseCase.logger.put(null, "myc");
+        Mycelium myc = new Mycelium();
+        //add tile to tekton
+        t.setParentTekton(tek);
+
+        // make the reference mutual
+        t.addEntity(myc);
+
+        // simulate a tick
+        // this will call the mycelium's update method (health determined here)
+        for (int i = 0; i < 5; i++) {
+            myc.update();
+        }
+
+        // action: mycelium dies
+        if (myc.getHealth() <= 0) {
+            myc.die();
+        }
+
+        // remove mycelium from tile
+        t.removeEntity(myc);
+
+        m.tick();  // this will call the mycelium's detach method (connectivity determined here)
+    }
+}
+
+
+
+===== EatingCutSpore.java =====
+package use_cases;
+
+import player.InsectPlayer;
+import entities.CutSpore;
+import entities.Insect;
+import entities.SpeedUpSpore;
+import entities.Spore;
+import map.Tekton;
+import map.Tile;
+
+public class EatingCutSpore extends UseCase {
+    public EatingCutSpore() {
+        super(7, "Cut spore affecting insect");
+    }
+
+    @Override
+    public void execute() {
+        printWrapper("Initializing scene...", ArrowDirection.RIGHT, 0);
+        //insect player is created
+        UseCase.logger.put(null, "ip");
+        InsectPlayer ip = new InsectPlayer();
+
+        //tekton of tiles
+        UseCase.logger.put(null, "tek");
+        Tekton tek = new Tekton(1,1);
+        //printWrapper("Tekton: tek",Direction.LEFT);
+
+
+        //current tile cration
+        UseCase.logger.put(null, "t");
+        Tile t = new Tile();
+        //printWrapper("Tile: currentTile",Direction.LEFT);
+        
+        //insect create
+        UseCase.logger.put(null, "i");
+        Insect i = new Insect(1, t, ip);
+
+        //Cutspore create
+        UseCase.logger.put(null, "s");
+        Spore s = new CutSpore();
+
+        //add insect to insectplayer
+        ip.addControlledInsect(i);
+
+        //add tiles to tekton
+        t.setParentTekton(tek);
+
+        //add insect and spore to tile
+        t.addEntity(s);
+        t.addEntity(i);
+
+        //insect eat spore
+        ip.eat(s);
+    }
+}
+
+
+

@@ -1,0 +1,17 @@
+"T0": {
+	"Tiles": [],
+	"breakChance": 1,
+	"maxSporeCount": 1
+},
+
+"T1": {
+	"Tiles": [t0],
+	"breakChance": 1,
+	"maxSporeCount": 1
+},
+
+"at0" : {
+	 "parentTekton" : T1, 
+	 "growthRate" : 1 
+	 "damageRate" : 5 
+}

@@ -26,7 +26,7 @@ public class FungusBody extends Fungus{
     private FungusPlayer player = null;                     // The player that owns this fungus body
     private int sporeCharge = 0;
 
-    /*
+    /**
      * Old constructor for FungusBody used in use-case simulation
      * @deprecated
      */
@@ -39,7 +39,7 @@ public class FungusBody extends Fungus{
         UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this), ArrowDirection.LEFT);
         this.sporeCharge = initialSporeCharge;
     }
-    /*
+    /**
      * Constructor for FungusBody used in the game
      * @param id The id of the fungus body
      * @param health The health of the fungus body
@@ -55,6 +55,18 @@ public class FungusBody extends Fungus{
         UseCase.printWrapper("Initializing FungusBody as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
         UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
+
+    public FungusBody(int id, int health, int initialSporeCharge,  Tile currentTile, FungusPlayer player) {
+        super(id, health, currentTile);
+        this.player = player;
+        this.sporeCharge = initialSporeCharge;
+        this.player.addFungusBody(this);
+        this.currentTile.addEntity(this);
+        replace(this);
+        UseCase.printWrapper("Initializing FungusBody as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
+        UseCase.printWrapper("FungusBody: "+UseCase.logger.get(this), ArrowDirection.LEFT);
+    }
+
     @Override
     public void update(){
         sporeCharge+= CHARGE_PER_TICK;
@@ -79,11 +91,16 @@ public class FungusBody extends Fungus{
     public void damage() {
         this.health--;
         if (this.health <= 0) {
-            this.die();
+            kill();
         }
     }
 
-    /*
+    public void kill(){
+        this.die();
+        player.removeFungusBody(this);
+    }
+
+    /**
      * Creates a spore cloud of the given size: places random spores in the surrounding area.
      * The spore cloud will cost size * SPORECLOUD_COST spore charge.
      * It is assumed that the calling player has verfied that the body has enough spore charge.
@@ -135,19 +152,19 @@ public class FungusBody extends Fungus{
             // 0 = CutSpore, 1 = FreezeSpore, 2 = SlowSpore, 3 = SpeedUpSpore, 4 = SplitSpore
             switch (randomSporeType) {
                 case 0:
-                    new CutSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime);
+                    player.addSpore(new CutSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime));
                     break;
                 case 1:
-                    new FreezeSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime);
+                    player.addSpore(new FreezeSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime));
                     break;
                 case 2:
-                    new SlowSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime, randomEffectValue);
+                    player.addSpore(new SlowSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime, randomEffectValue));
                     break;
                 case 3:
-                    new SpeedUpSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime, randomEffectValue);
+                    player.addSpore(new SpeedUpSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime, randomEffectTime, randomEffectValue));
                     break;
                 case 4:
-                    new SplitSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime);
+                    player.addSpore(new SplitSpore(GameEntity.getNextId(), tile, randomNutrientValue, randomLifetime));
                     break;
                 default:
                     break;
@@ -159,6 +176,17 @@ public class FungusBody extends Fungus{
         // Remove the spore charge cost and inflict damage
         decrementSporeCharge(sporeChargeCost);
         damage();
+    }
+    public String serialize() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"fungusbody_").append(id).append("\": {\n");
+        int tileValue = currentTile.getParentTekton().getTileId(currentTile);
+        sb.append("\t\"currentTile\": t").append(tileValue).append(",\n");
+        sb.append("\t\"health\": ").append(health).append(",\n");
+        sb.append("\t\"sporecharge\": ").append(sporeCharge).append("\n");
+        sb.append("}");
+
+        return sb.toString();
     }
     
     

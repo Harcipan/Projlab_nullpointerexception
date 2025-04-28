@@ -1,8 +1,3 @@
-import use_cases.UseCase;
-import use_cases.UseCaseList;
-
-import java.util.Scanner;
-
 import prototype.App;
 
 /*

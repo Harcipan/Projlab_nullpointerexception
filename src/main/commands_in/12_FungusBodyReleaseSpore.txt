@@ -1,0 +1,8 @@
+create Map
+create Tekton 1 2
+create Tile 1 2 0 0 0
+create Tile 1 2 0 1 0
+create FungusPlayer
+create FungusBody 0 0 0 2 25
+fungus_body_release_spore_cloud 0
+save out.txt

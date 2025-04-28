@@ -7,7 +7,10 @@ import map.Map;
 import map.MonoTile;
 import map.Tekton;
 import map.Tile;
+import player.FungusPlayer;
+import player.InsectPlayer;
 import prototype.Command;
+import prototype.App;
 
 public class Create extends Command {
 
@@ -16,6 +19,8 @@ public class Create extends Command {
             "FreezeSpore",
             "FungusBody",
             "Insect",
+            "InsectPlayer",
+            "FungusPlayer",
             "Mycelium",
             "SlowSpore",
             "SpeedUpSpore",
@@ -59,12 +64,19 @@ public class Create extends Command {
     int currentArgId = 0;
     String[] currentArgs;
 
+    private Boolean promptForBoolean(String forWhat) {
+        String rawStr = currentArgs[currentArgId++];
+        return parseBoolean(rawStr, forWhat);
+    }
+
     private Integer promptForPositiveInteger(String forWhat) {
-        /*System.out.print(forWhat + "> ");
-        String rawStr = scanner.nextLine().trim();
-        return parsePositiveNumber(rawStr, forWhat);*/
         String rawStr = currentArgs[currentArgId++];
         return parsePositiveNumber(rawStr, forWhat);
+    }
+
+    private Integer promptForInteger(String forWhat) {
+        String rawStr = currentArgs[currentArgId++];
+        return parseNumber(rawStr, forWhat);
     }
 
     private Tekton promptForTekton(String forWhat) {
@@ -80,12 +92,24 @@ public class Create extends Command {
         }
     }
 
+    private TektonWithId promptForTektonWithId(String forWhat) {
+        Integer targetPlateId = promptForPositiveInteger(forWhat);
+        if (targetPlateId == null)
+            return null;
+        try{
+            return new TektonWithId(app.getMap().getTektons().get(targetPlateId), targetPlateId);
+        }catch(IndexOutOfBoundsException ex){
+            System.out.println("A tekton with the specified ID was not found");
+            return null;
+        }
+    }
+
     private TektonAndTile promptForTektonAndTile() {
         if (isMapUninitialized())
             return null;
 
-        Tekton tek = promptForTekton("Tekton id");
-        if (tek == null)
+        TektonWithId tektonWithId = promptForTektonWithId("Tekton id");
+        if (tektonWithId == null)
             return null;
 
         Integer targetTileId = promptForPositiveInteger("Tile id");
@@ -93,8 +117,9 @@ public class Create extends Command {
             return null;
 
         try{
+            Tekton tek = tektonWithId.getTekton();
             Tile tile = tek.getTiles().get(targetTileId);
-            return new TektonAndTile(tek, tile);
+            return new TektonAndTile(tek, tektonWithId.getTektonId(), tile, targetTileId);
         }catch(IndexOutOfBoundsException ex){
             System.out.println("A tile with the specified ID on the specified tekton was not found");
             return null;
@@ -120,6 +145,11 @@ public class Create extends Command {
         return new TileData(growthRate, maxMycelium, tek);
     }
 
+    /**
+     * Creates an entity of given type.
+     *
+     * @return true if executing the command was successful, false otherwise
+     */
     @Override
     public boolean execute(String[] args) {
         if(args.length < 2){
@@ -132,6 +162,7 @@ public class Create extends Command {
         currentArgId = 2;
 
         String type = args[1];
+        System.out.println("Creating " + type + "...");
         switch (type.toLowerCase()) {
             case "map":
                 if (isWrongNumberOfArgs(2, args.length, "create Map")) {
@@ -185,10 +216,26 @@ public class Create extends Command {
                 res.getTile().addEntity(assignId(new SpeedUpSpore(200)));
                 break;
             }
-            case "fungusbody": {
-                if (isWrongNumberOfArgs(6, args.length, "create FungusBody <parent tekton id> <parent tile> <health> <initial spore charge>")) {
+            case "splitspore": {
+                if (isWrongNumberOfArgs(4, args.length, "create SplitSpore <parent tekton id> <parent tile>")) {
                     return false;
                 }
+                TektonAndTile res = promptForTektonAndTile();
+                if (res == null)
+                    break;
+
+                res.getTile().addEntity(assignId(new SplitSpore()));
+                break;
+            }
+            case "fungusbody": {
+                if (isWrongNumberOfArgs(7, args.length, "create FungusBody <player ID> <parent tekton id> <parent tile> <health> <initial spore charge>")) {
+                    return false;
+                }
+                
+                Integer playerID = promptForPositiveInteger("Player ID");
+                if(playerID == null)
+                    break;
+
                 TektonAndTile res = promptForTektonAndTile();
                 if (res == null)
                     break;
@@ -201,65 +248,126 @@ public class Create extends Command {
                 if (initialSporeCharge == null)
                     break;
 
-                FungusBody fb = new FungusBody(health, initialSporeCharge, res.getTile());
-                res.getTile().addEntity(assignId(fb));
+                new FungusBody(askForId(), health, initialSporeCharge, res.getTile(), App.getFungusPlayers().get(playerID));
                 break;
             }
             case "insect": {
-                if (isWrongNumberOfArgs(4, args.length, "create Insect <parent tekton id> <parent tile>")) {
+                if (isWrongNumberOfArgs(7, args.length, "create insect <tekton id> <tile id> <player ID> <speed> <can cut flag>")) {
                     return false;
                 }
-                TektonAndTile res = promptForTektonAndTile();
-                if (res == null)
+
+                TektonAndTile tekTile = promptForTektonAndTile();
+                if(tekTile == null)
                     break;
 
-                Insect insect = new Insect(askForId(), res.getTile(), app.getInsectPlayer());
+                Integer playerID = promptForPositiveInteger("Player ID");
+                if(playerID == null)
+                    break;
+
+                Integer speed = promptForPositiveInteger("Speed");
+                if(speed == null)
+                    break;
+
+                Boolean canCut = promptForBoolean("Can cut flag");
+                if(canCut == null)
+                    break;
+
+                Tile tile = tekTile.getTile();
+                Insect insect = new Insect(askForId(), tile, App.getInsectPlayers().get(playerID), speed, canCut);
                 announceIdAssign(insect);
-                res.getTile().addEntity(insect);
+                tile.addEntity(insect);
+                System.out.println("Created an insect with ID " + insect.getId() + " on tile " + tekTile.getTileId() + " of tekton " + tekTile.getTileId());
+                break;
+            }
+            case "insectplayer": {
+                if (isWrongNumberOfArgs(2, args.length, "create insectplayer")) {
+                    return false;
+                }
+                InsectPlayer insectPlayer = new InsectPlayer();
+                App.addInsectPlayer(insectPlayer);
+                System.out.println("Created an insect player with ID " + insectPlayer.getID());
+                break;
+            }
+            case "fungusplayer": {
+                if (isWrongNumberOfArgs(2, args.length, "create fungusplayer")) {
+                    return false;
+                }
+                FungusPlayer fungusPlayer = new FungusPlayer();
+                System.out.println("Created a fungus player");
                 break;
             }
             case "mycelium": {
-                if (isWrongNumberOfArgs(4, args.length, "create Mycelium <parent tekton id> <parent tile>")) {
+                if (isWrongNumberOfArgs(6, args.length, "create mycelium <health> <parent tekton id> <parent tile id> <player id>")) {
                     return false;
                 }
-                TektonAndTile res = promptForTektonAndTile();
-                if (res == null)
+                
+                Integer health = promptForPositiveInteger("Health");
+                if(health == null)
                     break;
-                Mycelium mycelium = new Mycelium();
-                res.getTile().addEntity(assignId(mycelium));
+
+                TektonAndTile tekAndTile = promptForTektonAndTile();
+                if(tekAndTile == null)
+                    break;
+
+                Integer playerId = promptForPositiveInteger("Player id");
+                if(playerId == null)
+                    break;
+
+                Mycelium mycelium = new Mycelium(askForId(), health, tekAndTile.getTile(), App.getFungusPlayers().get(playerId));
+                announceIdAssign(mycelium);
+                System.out.println("Created a mycelium with ID " + mycelium.getId() + " on tile " + tekAndTile.getTileId() + " of tekton " + tekAndTile.getTektonId());
                 break;
             }
             case "tekton": {
                 if (isWrongNumberOfArgs(4, args.length, "create Tekton <break chance> <max spore count>")) {
                     return false;
                 }
-                if (isMapUninitialized())
+                if (isMapUninitialized()) {
                     break;
+                }
 
                 Integer breakChance = promptForPositiveInteger("Break chance");
-                if (breakChance == null)
+                if(breakChance == null)
                     break;
 
-                Integer sporeCount = promptForPositiveInteger("Max spore count");
-                if (sporeCount == null)
+                Integer sporeCount = promptForPositiveInteger("Spore count");
+                if(sporeCount == null)
                     break;
 
-                Tekton tek = new Tekton(app.getMap());
-                System.out.println("Created a Tekton " + tek);
-
+                new Tekton(app.getMap(), breakChance, sporeCount);
+                System.out.println("Created a Tekton with the id " + (app.getMap().getTektons().size() - 1));
                 break;
             }
             case "tile": {
-                if (isWrongNumberOfArgs(5, args.length, "create Tile <parent tekton id> <growth rate> <max mycelium>")) {
+                if (isWrongNumberOfArgs(7, args.length, "create tile <growthRate> <maxMycelium> <parentTektonId> <coordX> <coordY>")){
                     return false;
                 }
-                TileData tileData = promptForTileData();
-                if (tileData == null)
+
+                Integer growthRate = promptForPositiveInteger("Growth rate");
+                if(growthRate == null)
                     break;
 
-                Tile tile = new Tile(tileData.getGrowthRate(), tileData.getMaxMycelium(), tileData.getParentTekton());
-                int id = tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a Tile " + tile + " (ID " + id + " on Tekton " + tileData.getParentTekton() + ")");
+                Integer maxMycelium = promptForPositiveInteger("Max mycelium");
+                if(maxMycelium == null)
+                    break;
+
+                TektonWithId parentTektonWithId = promptForTektonWithId("Parent tekton");
+                if(parentTektonWithId == null)
+                    break;
+
+                Integer coordX = promptForInteger("X Coordinate");
+                if(coordX == null)
+                    break;
+
+                Integer coordY = promptForInteger("X Coordinate");
+                if(coordY == null)
+                    break;
+
+                Tekton parentTekton = parentTektonWithId.getTekton();
+
+                Tile tile = new Tile(growthRate, maxMycelium, parentTekton, coordX, coordY);
+                int id = tile.getParentTekton().addTile(tile);
+                System.out.println("Created a Tile with ID " + id + " on tekton ID " + parentTektonWithId.getTektonId());
 
                 break;
             }
@@ -278,7 +386,7 @@ public class Create extends Command {
                 Tile tile = new AcidTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton(), damageRate);
                 int id = tileData.getParentTekton().addTile(tile);
-                System.out.println("Created an AcidTile " + tile + " (ID " + id + " on Tekton " + tileData.getParentTekton() + ")");
+                System.out.println("Created an AcidTile with ID " + id);
 
                 break;
             }
@@ -293,7 +401,7 @@ public class Create extends Command {
                 Tile tile = new HealTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
                         tileData.getParentTekton());
                 int id = tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a HealTile " + tile + " (ID " + id + " on Tekton " + tileData.getParentTekton() + ")");
+                System.out.println("Created a HealTile with ID " + id);
 
                 break;
             }
@@ -308,7 +416,7 @@ public class Create extends Command {
                 Tile tile = new MonoTile(tileData.getGrowthRate(),
                         tileData.getParentTekton());
                 int id = tileData.getParentTekton().addTile(tile);
-                System.out.println("Created a MonoTile " + tile + " (ID " + id + " on Tekton " + tileData.getParentTekton() + ")");
+                System.out.println("Created a MonoTile with ID " + id);
 
                 break;
             }

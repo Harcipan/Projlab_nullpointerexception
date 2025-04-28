@@ -57,7 +57,7 @@ public class TektonBreakingMycelium extends UseCase {
 
 
         // TODO Lets say a map update happens and the tekton breaks
-        ArrayList<Tekton> tl = tek.breakTekton();
+        List<Tekton> tl = tek.breakTekton();
 
         // TODO lets say based on some rules that the mycelium should be removed after the tekton breaking
 

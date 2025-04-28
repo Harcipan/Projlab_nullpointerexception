@@ -28,8 +28,7 @@ public class InsectSpeedUp extends Command {
 
         Spore s = new SpeedUpSpore(speed);
         insect.getCurrentTile().addEntity(s);
-        app.getInsectPlayer().addControlledInsect(insect);
-        app.getInsectPlayer().eat(s, insect);
+        app.getInsectPlayers().get(0).eat(s, insect);
         return false;
     }
 }

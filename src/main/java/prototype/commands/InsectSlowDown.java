@@ -27,8 +27,7 @@ public class InsectSlowDown extends Command {
 
         Spore s = new SlowSpore(speed);
         insect.getCurrentTile().addEntity(s);
-        app.getInsectPlayer().addControlledInsect(insect);
-        app.getInsectPlayer().eat(s, insect);
+        app.getInsectPlayers().get(0).eat(s, insect);
         return false;
     }
 }

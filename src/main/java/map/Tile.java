@@ -42,6 +42,10 @@ public class Tile {
         entities = new ArrayList<>();
     }
 
+    public void setTileSpace(int s) {
+        myceliumSpace=s;
+    }
+
     public void addEntity(GameEntity entity) {
         entities.add(entity);
 
@@ -55,6 +59,7 @@ public class Tile {
 
     public void removeEntity(GameEntity entity) {
         entities.remove(entity);
+        entity.setTile(null);
         UseCase.printWrapper(UseCase.logger.get(this)+".removeEntity()", ArrowDirection.LEFT, Indent.KEEP);
     }
 
@@ -70,12 +75,17 @@ public class Tile {
 		return myceliumSpace;
 	}
 
+    //Programmed into a corner... :(
+    public boolean canGrowFungus(){
+        return parentTekton.growFungusFlag;
+    }
+
     public void setParentTekton(Tekton parentTekton) {
         
         this.parentTekton = parentTekton;
     }
 
-    /*
+    /**
      * Check if the tile is a neighbor of this tile
      * A tile is a neighbor if it is adjacent (horizontally, vertically, or diagonally)
      * @param tile the tile to check
@@ -94,7 +104,7 @@ public class Tile {
         return Math.abs(this.x - tile.x) <= 1 && Math.abs(this.y - tile.y) <= 1;
     }
 
-    /*
+    /**
      * Get a list of all neighboring tiles
      * @return a list of all neighboring tiles
      */
@@ -118,7 +128,7 @@ public class Tile {
         return neighbors;
     }
 
-    /*
+    /**
      * Grow mycelium in this tile
      * Assuming tile has been verified
      * @param player the player that owns this mycelium
@@ -136,7 +146,7 @@ public class Tile {
         return m;
     }
 
-    /*
+    /**
      * Grow fungus body in this tile
      * Assuming tile has been verified
      * @param player the player that owns this fungus body
@@ -150,8 +160,11 @@ public class Tile {
     }
 
     public void update() {
-        for (GameEntity ge : entities) {
+        /*for (GameEntity ge : entities) {
             ge.update();
+        }*/
+        for(int i=0;i<entities.size();i++) {
+            entities.get(i).update();
         }
     }
 
@@ -163,7 +176,7 @@ public class Tile {
         return y;
     }
 
-    /*
+    /**
      * Check if the tile has a bridge to the given tile
      * @param tile the tile to check
      * @return true if bridge exists, false otherwise
@@ -171,6 +184,22 @@ public class Tile {
     public boolean hasBridge(Tile tile) {
         return bridges.contains(tile);
 
+    }
+
+    public String serialize() {
+        StringBuilder sb = new StringBuilder();
+        int parentIndex = parentTekton.getMap().getTektons().indexOf(parentTekton);
+        //Temp fix for serialization
+        int lineValue = parentTekton.getMap().getWidth();
+        //int value = x + lineValue * y;
+        int value=parentTekton.getTileId(this);
+        
+        sb.append("\"t").append(value).append("\"").append(": {\n");
+        sb.append("\t\"parentTekton\": T").append(parentIndex).append(",\n");
+        sb.append("\t\"growthRate\": ").append(growthRate).append(",\n");
+        sb.append("\t\"maxMycelium\": ").append(myceliumSpace).append("\n}");
+
+        return sb.toString();
     }
 
 

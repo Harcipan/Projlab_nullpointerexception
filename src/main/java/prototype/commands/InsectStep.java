@@ -22,8 +22,7 @@ public class InsectStep extends Command {
         if (tektonTile == null)
             return false;
 
-        app.getInsectPlayer().addControlledInsect(insect);
-        app.getInsectPlayer().moveTo(tektonTile.getTile(), insect);
+        App.getInsectPlayers().get(0).moveTo(tektonTile.getTile(), insect);
         return false;
     }
 }

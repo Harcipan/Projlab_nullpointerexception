@@ -1,8 +1,12 @@
 package prototype;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import entities.GameEntity;
+import entities.Insect;
 import map.Map;
 import player.*;
 import use_cases.UseCase;
@@ -10,25 +14,70 @@ import use_cases.UseCase;
 public class App {
     boolean running = true;
     CommandList commands;
+    CommandParser commandParser;
+    GameData gameData;  //data store for writing to file
     Map map;
+    int currentTurn = 0;
+    int maxTurns = 1000; //max turns for the game, if it reaches this, the game ends
 
-    InsectPlayer insectPlayer;
-    FungusPlayer fungusPlayer;
+    static List<InsectPlayer> insectPlayers;
+    static List<FungusPlayer> fungusPlayers;
 
     public App() { //app inicialization so loggers work
-        UseCase.logger.put(null, "insectPlayer");
-        insectPlayer = new InsectPlayer();
+        insectPlayers = new ArrayList<InsectPlayer>();
 
-        UseCase.logger.put(null, "fungusPlayer");
-        fungusPlayer = new FungusPlayer();
+        fungusPlayers = new ArrayList<FungusPlayer>();
     }
 
-    public InsectPlayer getInsectPlayer() {
-        return insectPlayer;
+    public void reset(){
+        currentTurn = 0;
+        maxTurns = 1000;
+
+        insectPlayers.clear();
+        fungusPlayers.clear();
+        map = null;
+        gameData = new GameData();
+
+        gameData.syncStored(this);
+
+        
+        GameEntity.reset();
     }
 
-    public FungusPlayer getFungusPlayer() {
-        return fungusPlayer;
+    public static List<InsectPlayer> getInsectPlayers() {
+        return insectPlayers;
+    }
+    public static void addInsectPlayer(InsectPlayer insectPlayer) {
+        insectPlayers.add(insectPlayer);
+    }
+    public static void setInsectPlayers(List<InsectPlayer> insectPlayers) {
+        App.insectPlayers = insectPlayers;
+    }
+
+    public static List<FungusPlayer> getFungusPlayers() {
+        return fungusPlayers;
+    }
+    public static void addFungusPlayer(FungusPlayer fungusPlayer) {
+        fungusPlayers.add(fungusPlayer);
+    }
+    public static void setFungusPlayers(List<FungusPlayer> fungusPlayers) {
+        App.fungusPlayers = fungusPlayers;
+    }
+
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void setCurrentTurn(int currentTurn) {
+        this.currentTurn = currentTurn;
+    }
+
+    public int getMaxTurns() {
+        return maxTurns;
+    }
+
+    public void setMaxTurns(int maxTurns) {
+        this.maxTurns = maxTurns;
     }
 
     public Map getMap() {
@@ -39,8 +88,24 @@ public class App {
 		return commands;
 	}
 
+    public CommandParser getCommandParser(){
+        return commandParser;
+    }
+
+    public GameData getGameData(){
+        return gameData;
+    }
+
 	public void setMap(Map map) {
         this.map = map;
+    }
+
+    public void start(){
+        running = true;
+    }
+
+    public void stop(){
+        running = false;
     }
 
     public void run() {
@@ -51,6 +116,10 @@ public class App {
         Scanner scanner = new Scanner(System.in);
 
         commands = new CommandList(this, scanner);
+        commandParser = new CommandParser(commands);
+        gameData = new GameData();
+
+        gameData.syncStored(this);
 
         while (running) {
             System.out.print("Pr> ");
@@ -92,4 +161,5 @@ public class App {
         Random rand = new Random();
         System.out.println(haha[rand.nextInt(0, haha.length)]);
     }
+    
 }

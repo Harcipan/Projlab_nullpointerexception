@@ -21,12 +21,14 @@ public class SetTileType extends Command {
         Integer tileId = parsePositiveNumber(args[2], "Tile ID");
         Tekton tek = tektonTile.getTekton();
         Tile tile = tektonTile.getTile();
+        tek.getTiles().remove(tile);
 
         // This command is a cookie...
         switch (args[3].toLowerCase()) {
             case "mono":
                 tek.getTiles().add(tileId,
                         new MonoTile(tile.getGrowthRate(), tile.getParentTekton()));
+
                 break;
             case "heal":
                 tek.getTiles().add(tileId,
@@ -41,6 +43,7 @@ public class SetTileType extends Command {
                                                                                                                // rate
                 break;
             default:
+                tek.getTiles().add(tile);
                 System.out.println(
                         "Invalid tile type \"" + args[3] + "\". Valid tile types are \"Mono\", \"Heal\", or \"Acid\"");
         }

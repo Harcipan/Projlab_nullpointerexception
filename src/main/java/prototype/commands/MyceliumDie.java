@@ -19,7 +19,6 @@ public class MyceliumDie extends Command {
             return false;
 
         mycelium.die();
-        mycelium.getCurrentTile().removeEntity(mycelium);
         return false;
     }
 }

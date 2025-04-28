@@ -44,10 +44,12 @@ public class CommandList {
         add(new TektonCantGrowFungus());
         add(new TektonMultipleMycelium());
         add(new TektonOneMycelium());
+        add(new MyceliumConsumeFrozenInsect());
         add(new Tick());
         add(new Quit());
         add(new Exit());
         add(new ListCmd());
+        add(new ExecuteTest());
 
         for (Command cmd : commands.values()) {
             cmd.setApp(app);

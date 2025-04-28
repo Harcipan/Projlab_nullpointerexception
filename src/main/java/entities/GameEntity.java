@@ -24,6 +24,10 @@ public class GameEntity {
         return idCounter++;
     }
 
+    public static void reset(){
+        idCounter = 0;
+    }
+
     protected GameEntity(){};
 
     public void setTile(Tile tile) {

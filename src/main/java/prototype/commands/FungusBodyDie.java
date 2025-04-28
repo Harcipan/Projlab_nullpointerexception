@@ -17,9 +17,7 @@ public class FungusBodyDie extends Command {
         FungusBody fb = parseEntityId(args[1], "Fungus body");
         if (fb == null)
             return false;
-        app.getFungusPlayer().sporeCloud(fb, 1);
-        app.getFungusPlayer().sporeCloud(fb, 1);
-        app.getFungusPlayer().sporeCloud(fb, 1);
+        fb.kill();
         return false;
     }
 }

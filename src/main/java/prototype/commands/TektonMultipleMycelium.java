@@ -1,5 +1,7 @@
 package prototype.commands;
 
+import map.Tekton;
+import map.Tile;
 import prototype.*;
 
 public class TektonMultipleMycelium extends Command {
@@ -10,7 +12,12 @@ public class TektonMultipleMycelium extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        // There isn't any way yet to do this.
-        throw new UnsupportedOperationException("not implemented");
+        TektonWithId tekId=parseTektonWithId(args[1], "Tectonic plate");
+        Tekton tek=tekId.getTekton();
+        for (Tile tile : tek.getTiles()) {
+            tile.setTileSpace(10);
+        }
+
+        return false;
     }
 }

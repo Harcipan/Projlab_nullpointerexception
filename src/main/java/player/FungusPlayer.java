@@ -5,6 +5,7 @@ import java.util.List;
 
 import entities.*;
 import map.Tile;
+import prototype.App;
 import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 import use_cases.UseCase.Indent;
@@ -16,19 +17,23 @@ import static use_cases.UseCase.replace;
 public class FungusPlayer extends Player {
     List<FungusBody> fungusBodies;
     List<Mycelium> mycelia;
+    List<Spore> spores;
 
     public FungusPlayer() {
         super();
         replace(this);
         fungusBodies = new ArrayList<>();
+        spores = new ArrayList<>();
         mycelia = new ArrayList<>();
+        App.getFungusPlayers().add(this);
         printWrapper("Initializing FungusPlayer as " + logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         UseCase.printWrapper("FungusPlayer: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
-    /*
+    /**
      * consume an insect if it is paralyzed and a neighbor of a fungus body or mycelium
      * grow a fungus body in place of the insect
+     * @param insect the insect to consume
      */
     public void consumeInsect(Insect insect){
         printWrapper("Player " + System.identityHashCode(this) + " trying to consume insect " + System.identityHashCode(insect), UseCase.ArrowDirection.RIGHT, UseCase.Indent.INDENT);
@@ -74,6 +79,7 @@ public class FungusPlayer extends Player {
         // check if the tile is a neighbor of a mycelium
         for (Mycelium myc: mycelia){
             if (myc.getCurrentTile().isNeighbor(tile)) {
+                printWrapper(myc.getCurrentTile() + " myc neighbor: " + tile);
                 return tile.growMycelium(this);
             }
         }
@@ -81,6 +87,7 @@ public class FungusPlayer extends Player {
         // check if the tile is a neighbor of a fungus body (if this runs, it means that the tile is not a neighbor of a mycelium)
         for (FungusBody fb: fungusBodies){
             if (fb.getCurrentTile().isNeighbor(tile)) {
+                printWrapper(fb.getCurrentTile() + " body neighbor: " + tile);
                 return tile.growMycelium(this);
             }
         }
@@ -96,11 +103,13 @@ public class FungusPlayer extends Player {
         // (agreed on handling game logic as soon as possible to prevent chained function calls and constant dispatching)
         printWrapper("Checking if the tile " + System.identityHashCode(tile) + " is a neighbor of a living mycelium/fungus body");
 
+
         // check if this tekton already has a fungus body
         if (tile.getParentTekton().hasFungusBody()) {
             printWrapper("The tile " + System.identityHashCode(tile) + " already has a fungus body", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
             return null;
         }
+
         // check if we have enough spores on the tekton to grow a fungus body
         if (tile.getParentTekton().getPlayerSpores(this) < FungusBody.BODY_COST) {
             printWrapper("Not enough spore on tekton to grow a fungus body", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
@@ -109,7 +118,7 @@ public class FungusPlayer extends Player {
 
         // check if the tile is a neighbor of a mycelium
         for (Mycelium myc: mycelia){
-            if (myc.getCurrentTile().isNeighbor(tile)) {
+            if (myc.getCurrentTile().isNeighbor(tile) && tile.canGrowFungus()) {
                 FungusBody body = tile.growBody(this);
                 score++;
             }
@@ -119,6 +128,8 @@ public class FungusPlayer extends Player {
         printWrapper("The tile " + System.identityHashCode(tile) + " is not a neighbor of a fungus body or mycelium", UseCase.ArrowDirection.RIGHT, UseCase.Indent.UNINDENT);
         return null;
     }
+
+
 
     public void sporeCloud(FungusBody target, int size) {
         if (target == null) {
@@ -152,5 +163,14 @@ public class FungusPlayer extends Player {
     }
     public List<Mycelium> getMycelia() {
         return mycelia;
+    }
+    public void addSpore(Spore spore) {
+        spores.add(spore);
+    }
+    public void removeSpore(Spore spore) {
+        spores.remove(spore);
+    }
+    public List<Spore> getSpores() {
+        return spores;
     }
 }

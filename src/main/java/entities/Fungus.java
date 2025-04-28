@@ -20,6 +20,7 @@ public abstract class Fungus extends GameEntity {
     public void die() {
         printWrapper("Fungus (typeof " + this.getClass().getName()
                 + ") " + System.identityHashCode(this) + " is dying", ArrowDirection.RIGHT, Indent.KEEP);
+        currentTile.removeEntity(this);
     }
 
     public int getHealth() {

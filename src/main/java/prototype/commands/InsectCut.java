@@ -1,30 +1,32 @@
 package prototype.commands;
 
 import entities.*;
+import player.FungusPlayer;
+import player.InsectPlayer;
 import prototype.*;
+import prototype.App;
 
 public class InsectCut extends Command {
     public InsectCut() {
-        super("insect_cut", "Have the insect cut a mycelium on a tile", "insect_cut <insect id> <mycelium id>");
+        super("insect_cut", "Have the insect cut a mycelium on a tile", "insect_cut <insect player ID> <insect id> <fungus player ID> <mycelium id>");
     }
 
     @Override
     public boolean execute(String[] args) {
-        if (isWrongNumberOfArgs(3, args.length))
+        if (isWrongNumberOfArgs(5, args.length))
             return false;
         if (isMapUninitialized())
             return false;
-        Insect insect = parseEntityId(args[1], "Insect");
+        InsectPlayer insectPlayer = App.getInsectPlayers().get(Integer.parseInt(args[1]));
+        Insect insect = insectPlayer.getControlledInsects().get(Integer.parseInt(args[2])); //parseEntityId(args[1], "Insect");
         if (insect == null)
             return false;
-        Mycelium mycelium = parseEntityId(args[2], "Mycelium");
+        FungusPlayer fungusPlayer = App.getFungusPlayers().get(Integer.parseInt(args[3]));
+        Mycelium mycelium = fungusPlayer.getMycelia().get(Integer.parseInt(args[4]));//parseEntityId(args[2], "Mycelium");
         if (mycelium == null)
             return false;
 
-        app.getInsectPlayer().addControlledInsect(insect);
-        app.getInsectPlayer().cut(mycelium.getCurrentTile(), insect); // Nonsense. Why would I ask for the mycelium id
-                                                                      // then? The tile & tekton id would be good
-                                                                      // enough.
+        insectPlayer.cut(mycelium.getCurrentTile(), insect);
         return false;
     }
 }

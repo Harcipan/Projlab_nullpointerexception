@@ -1,0 +1,6 @@
+create Map
+create Tekton 1 1
+create Tekton 1 1
+create Tile 1 2 1 0 0
+set_tile_type 1 0 Acid
+save out.txt

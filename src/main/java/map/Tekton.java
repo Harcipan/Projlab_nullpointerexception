@@ -18,8 +18,11 @@ public class Tekton {
     FungusBody fungusBody;
     Map map;
     HashMap<FungusPlayer, Integer> playerSpores; // spores per player
+    int sporeCount;
+    boolean growFungusFlag = true;
 
-    public Tekton( Map map) {
+    public Tekton(Map map)
+    {
         UseCase.replace(this);
         UseCase.printWrapper("Initializing Tekton as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         this.breakChance = 0;
@@ -31,6 +34,19 @@ public class Tekton {
         UseCase.printWrapper("Tekton: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
+    public Tekton(Map map, int breakChance, int sporeCount) {
+        UseCase.replace(this);
+        UseCase.printWrapper("Initializing Tekton as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
+        this.breakChance = breakChance;
+        this.map = map;
+        map.addTekton(this);
+        tiles = new ArrayList<>();
+        fungusBody = null;
+        playerSpores = new HashMap<>();
+        UseCase.printWrapper("Tekton: "+UseCase.logger.get(this), ArrowDirection.LEFT);
+        this.sporeCount = sporeCount;
+    }
+
     public int addTile(Tile tile) {
         tiles.add(tile);
         tile.setParentTekton(this);
@@ -39,6 +55,10 @@ public class Tekton {
 
     public List<Tile> getTiles() {
         return tiles;
+    }
+
+    public int getTileId(Tile tile) {
+        return tiles.indexOf(tile);
     }
 
     public Map getMap() {
@@ -65,19 +85,19 @@ public class Tekton {
         return fungusBody != null;
     }
 
-    /*
+
+    /**
      * Breaks the tekton into two pieces along a fault line around the middle
      * @return the two pieces of the tekton as an ArrayList
      */
-    public ArrayList<Tekton> breakTekton() {
+    public List<Tekton> breakTekton() {
 
         printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
 
-
         int faultLine = faultLine();
         List<Tile> tilesAlongFault = new ArrayList<>();
-        Tekton t1 = new Tekton(map);
-        Tekton t2 = new Tekton(map);
+        Tekton t1 = new Tekton(map, breakChance, sporeCount);
+        Tekton t2 = new Tekton(map, breakChance, sporeCount);
 
         if(faultLine > 0) {
             List<Tile> left = new ArrayList<>();
@@ -123,11 +143,11 @@ public class Tekton {
         }
         // trigger a cut event on all entities along the fault line
         for (Tile tile : tilesAlongFault) {
-            for (GameEntity entity : tile.getEntities()) {
+            for (int i = tile.getEntities().size() - 1; i >= 0; --i){
+                GameEntity entity = tile.getEntities().get(i);
                 entity.getCut();
             }
         }
-
         ArrayList<Tekton> tl = new ArrayList<>();
         tl.add(t1);
         tl.add(t2);
@@ -141,7 +161,7 @@ public class Tekton {
         breakChance += amount;
     }
 
-    /*
+    /**
      * Returns the leftmost tile of the tekton
      * @return the leftmost tile of the tekton
      */
@@ -155,7 +175,7 @@ public class Tekton {
         return leftmostTile;
     }
 
-    /*
+    /**
      * Returns the rightmost tile of the tekton
      * @return the rightmost tile of the tekton
      */
@@ -169,7 +189,7 @@ public class Tekton {
         return rightmostTile;
     }
 
-    /*
+    /**
      * Returns the topmost tile of the tekton
      * @return the topmost tile of the tekton
      */
@@ -183,7 +203,7 @@ public class Tekton {
         return topmostTile;
     }
 
-    /*
+    /**
      * Returns the bottommost tile of the tekton
      * @return the bottommost tile of the tekton
      */
@@ -197,7 +217,7 @@ public class Tekton {
         return bottommostTile;
     }
 
-    /*
+    /**
      * Finds the width of the tekton
      * @return the width of the tekton
      */
@@ -205,7 +225,7 @@ public class Tekton {
         return getRightmostTile().getX() - getLeftmostTile().getX() + 1;
     }
 
-    /*
+    /**
      * Finds the height of the tekton
      * @return the height of the tekton
      */
@@ -213,10 +233,10 @@ public class Tekton {
         return getBottommostTile().getY() - getTopmostTile().getY() + 1;
     }
 
-    /*
+    /**
      * Finds the fault line along which the tekton will break
-     * Approximate to the center of the tekton, some randomness added
-     * if positive, it will break along the y axis
+     * Approximate to the center of the tekton, some randomness added.
+     * If positive, it will break along the y axis
      * if negative, it will break along the x axis
      * @return the fault line of the tekton
      */
@@ -233,9 +253,56 @@ public class Tekton {
             faultLine *= -1;
         }
         // add some randomness to the fault line
-        faultLine += (int) (Math.random() * 2) - 1;
+        //TODO: add this back when we are ready to have randomness in our game
+        //Prototypes need deterministic behavior
+        //faultLine += (int) (Math.random() * 2) - 1;
         return faultLine;
     }
 
+    /**
+     * serializes necessary info from object
+     * 
+     * Looks like:
+     * 
+     * "T1": {
+     *       "Tipus": "normal", ???????
+     *       "Tiles": [t1,t2],
+     *       "breakChance": 3,
+     *       "sporeCount": 4
+     *   }
+     * @return the formatted string
+     */
+    public String serialize() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"T").append(map.getTektons().indexOf(this)).append("\"").append(": {\n");
+        sb.append("\t\"Tiles\": [");
+        int lineValue = map.getWidth();
+        //add first tile without ","
+        if(tiles.size()!=0) {
+            for(int i = 0; i< tiles.size(); i++){
+                Tile tile = tiles.get(i);
+                //int value = tile.getX() + tile.getY() * lineValue;
+                if(i != 0){
+                    sb.append(",");
+                }
+                sb.append("t").append(i); //temporary fix
+            }
+        }
+
+        sb.append("],\n");
+        sb.append("\t\"breakChance\": ").append(breakChance).append(",\n");
+        sb.append("\t\"maxSporeCount\": ").append(sporeCount).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    //Programmed into a corner... :(
+    public boolean canGrowFungus(){
+        return growFungusFlag;
+    }
+
+    public void setCanGrowFungus(boolean growFungusFlag){
+        this.growFungusFlag = growFungusFlag;
+    }
 }
 

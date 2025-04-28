@@ -21,7 +21,7 @@ public class FungusBodyGrow extends Command {
             return false;
         TektonAndTile tektonTile = parseTektonAndTile(args[2], args[3]);
 
-        app.getFungusPlayer().growBody(tektonTile.getTile());
+        app.getFungusPlayers().get(0).growBody(tektonTile.getTile());
         return false;
     }
 

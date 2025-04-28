@@ -32,7 +32,7 @@ public class TektonBreaking extends UseCase {
         m.addTekton(tek);
 
         // TODO Lets say a map update happens and the tekton breaks
-        ArrayList<Tekton> tl = tek.breakTekton();
+        List<Tekton> tl = tek.breakTekton();
 
     }
 }

@@ -1,0 +1,11 @@
+create Map
+create Tekton 1 1
+create Tekton 1 1
+create Tile 1 2 0 0 0
+create Tile 1 2 1 0 0
+create InsectPlayer
+create Insect 0 0 0 2 true
+create Insect 1 0 0 2 true
+insect_slow_down 0 90
+insect_speed_up 1 150
+save out.txt

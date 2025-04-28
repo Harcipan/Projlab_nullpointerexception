@@ -12,7 +12,7 @@ import entities.GameEntity;
 import static use_cases.UseCase.printWrapper;
 import static use_cases.UseCase.replace;
 
-/*
+/**
  * Map class represents the game map, which contains a list of tektons and a 2D array of tiles for quick access.
  * It provides methods to add and remove tektons, update game entities, and tick the map for game logic.
  */
@@ -58,22 +58,41 @@ public class Map {
 
     public void tick() {
         // for every tekton
-        UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.RIGHT, Indent.INDENT);
+        
         // TODO no clue how to implement this yet
-        UseCase.printWrapper(UseCase.logger.get(this)+".tick()", ArrowDirection.LEFT, Indent.UNINDENT);
         for (Tekton tek : tektons) {
             // for every tile
             for (Tile t : tek.tiles) {
-                //determine if its mycelium is connected
-                //TODO
+                t.update();
             }
         }
     }
 
+    /**
+     * Get the tile at the specified coordinates.
+     * @param x The x-coordinate of the tile.
+     * @param y The y-coordinate of the tile.
+     * @return The tile at the specified coordinates, or null if out of bounds.
+     */
     public Tile getTile(int x, int y) {
-        if (x < 0 || x >= width || y < 0 || y >= height) {
+        /*if (x < 0 || x >= width || y < 0 || y >= height) {
             return null; // Out of bounds
         }
-        return tiles[x][y];
+        return tiles[x][y];*/
+        for (Tekton tek : tektons) {
+            // for every tile
+            for (Tile t : tek.tiles) {
+                if(t.x==x && t.y==y) return t;
+            }
+        }
+        return null;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

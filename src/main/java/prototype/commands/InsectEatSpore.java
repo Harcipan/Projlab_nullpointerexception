@@ -21,8 +21,7 @@ public class InsectEatSpore extends Command {
         if (spore == null)
             return false;
 
-        app.getInsectPlayer().addControlledInsect(insect);
-        app.getInsectPlayer().eat(spore, insect);
+        app.getInsectPlayers().get(0).eat(spore, insect);
         return false;
     }
 }

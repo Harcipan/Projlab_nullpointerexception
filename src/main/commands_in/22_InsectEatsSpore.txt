@@ -1,0 +1,8 @@
+create Map
+create Tekton 1 1
+create Tile 1 2 0 0 0
+create InsectPlayer
+create Insect 0 0 0 2 true
+create SlowSpore 0 0
+insect_eat_spore 0 1
+save out.txt

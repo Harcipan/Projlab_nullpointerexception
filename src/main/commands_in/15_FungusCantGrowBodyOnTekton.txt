@@ -1,0 +1,6 @@
+create Map
+create Tekton 1 1
+tekton_cant_grow_fungus 0
+create Tile 1 2 0 0 0
+fungus_body_grow 0 0 0
+save out.txt

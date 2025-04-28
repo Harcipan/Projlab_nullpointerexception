@@ -17,13 +17,15 @@ public class Mycelium extends Fungus{
     FungusPlayer player = null; // The player that owns this mycelium
     List<FungusBody> connectedBodies = new ArrayList<FungusBody>();
     List<Mycelium> connectedMycelia = new ArrayList<Mycelium>();
+    private boolean isDying;
 
     public Mycelium(int id, int health, Tile currentTile, FungusPlayer player) {
         super(id, health, currentTile);
         this.player = player;
-        this.player.addMycelium(this);
-        this.currentTile.addEntity(this);
         this.health = health;
+        this.isDying = false;
+        currentTile.addEntity(this);
+        player.addMycelium(this);
     }
 
     public Mycelium()
@@ -37,12 +39,17 @@ public class Mycelium extends Fungus{
     public void update() {
 
         searchConnection();
-        if (this.getCurrentTile() instanceof HealTile) {
-            this.heal();
+        if (connectedBodies.isEmpty()){
+            isDying = true;
         }
-        else if (connectedBodies.isEmpty()){
-            health--;
+        else{
+            isDying = false;
         }
+
+        if(isDying){
+            damage();
+        }
+
     }
 
     // Reconnect with the mycelium network, recover health
@@ -51,11 +58,9 @@ public class Mycelium extends Fungus{
         if (searchConnection()) {
             health = maxHealth;
         }
-
-
     }
 
-    /*
+    /**
      * Detach the mycelium from the network
      */
     public void detach(){
@@ -66,7 +71,7 @@ public class Mycelium extends Fungus{
         connectedBodies.clear();
     }
 
-    /*
+    /**
      * Search for connections with other mycelium or fungus bodies
      * If a connection is found, the mycelium will be added to the list of connected mycelia
      * and the fungus body will be added to the list of connected bodies
@@ -91,7 +96,7 @@ public class Mycelium extends Fungus{
 
     }
 
-    /*
+    /**
      * Add a mycelium to the list of connected mycelia
      * go through recursively to find all connected mycelia
      * @param myc the mycelium to add
@@ -112,7 +117,7 @@ public class Mycelium extends Fungus{
         }
     }
 
-    /*
+    /**
      * Add a fungus body to the list of connected bodies
      * go through mycelia to update all connected bodies lists
      * @param fb the fungus body to add
@@ -153,9 +158,23 @@ public class Mycelium extends Fungus{
 
     @Override
     public void heal() {
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
+        ///printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
         if (health < maxHealth) {
             health++;
         }
+    }
+
+    public String serialize() {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"mycelium_").append(id).append("\": {\n");
+        //int lineValue = currentTile.getParentTekton().getMap().getWidth();
+        int tileValue = currentTile.getParentTekton().getTileId(currentTile);
+        sb.append("\t\"currentTile\": t").append(tileValue).append(",\n");
+        sb.append("\t\"health\": ").append(health).append(",\n");
+        sb.append("\t\"isDying\": ").append(isDying).append("\n");
+        sb.append("}");
+
+        return sb.toString();
     }
 }

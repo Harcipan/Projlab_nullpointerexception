@@ -19,7 +19,7 @@ public class FungusBodyReleaseSporeCloud extends Command {
         if (fb == null)
             return false;
 
-        app.getFungusPlayer().sporeCloud(fb, 5);
+        app.getFungusPlayers().get(0).sporeCloud(fb, 5);
         return false;
     }
 }

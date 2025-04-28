@@ -1,5 +1,6 @@
 package prototype.commands;
 
+import map.Tekton;
 import prototype.*;
 
 public class TektonCantGrowFungus extends Command {
@@ -10,7 +11,18 @@ public class TektonCantGrowFungus extends Command {
 
     @Override
     public boolean execute(String[] args) {
-        // There isn't any way yet to do this.
-        throw new UnsupportedOperationException("not implemented");
+        if (isWrongNumberOfArgs(2, args.length))
+            return false;
+        if (isMapUninitialized())
+            return false;
+
+        Tekton tek = parseTekton(args[1], "Tectonic plate");
+        if (tek == null)
+            return false;
+
+        //:(
+        tek.setCanGrowFungus(false);
+
+        return false;
     }
 }

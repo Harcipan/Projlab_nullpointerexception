@@ -1,7 +1,6 @@
 package player;
 
 import map.*;
-import entities.*;
 
 public abstract class Player {
     int score;

@@ -23,7 +23,7 @@ public class MyceliumGrow extends Command {
         if (tektonTile == null)
             return false;
 
-        app.getFungusPlayer().growMycelium(tektonTile.getTile());
+        app.getFungusPlayers().get(0).growMycelium(tektonTile.getTile());
         return false;
     }
 }

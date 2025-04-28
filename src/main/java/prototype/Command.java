@@ -1,5 +1,6 @@
 package prototype;
 
+import java.util.List;
 import java.util.Scanner;
 
 import entities.GameEntity;
@@ -13,8 +14,6 @@ public abstract class Command {
 
     protected App app;
     protected Scanner scanner;
-
-    private static int entityId = 0;
 
     public Command(String name, String description) {
         this.name = name;
@@ -64,17 +63,18 @@ public abstract class Command {
         System.out.println("Created a \"" + entity.getClass().getSimpleName() + "\" entity with ID " + entity.getId());
     }
 
+    
+    protected int askForId() {
+        return GameEntity.getNextId();
+    }
+
     protected GameEntity assignId(GameEntity entity) {
-        entity.setId(entityId++);
+        entity.setId(askForId());
         announceIdAssign(entity);
         return entity;
     }
 
-    protected int askForId() {
-        return entityId++;
-    }
-
-    protected Integer parsePositiveNumber(String input, String forWhat) {
+    protected Integer parseNumber(String input, String forWhat) {
         Integer ret;
         try {
             ret = Integer.parseInt(input);
@@ -82,8 +82,24 @@ public abstract class Command {
             System.out.println("This is not a number. The " + forWhat.toLowerCase() + " can only be a number.");
             return null;
         }
+        return ret;
+    }
+
+    protected Integer parsePositiveNumber(String input, String forWhat) {
+        Integer ret = parseNumber(input, forWhat);
         if (ret < 0) {
             System.out.println("The " + forWhat.toLowerCase() + " must be positive");
+            return null;
+        }
+        return ret;
+    }
+
+    protected Boolean parseBoolean(String input, String forWhat) {
+        Boolean ret;
+        try {
+            ret = Boolean.parseBoolean(input);
+        } catch (NumberFormatException e) {
+            System.out.println("This is not a boolean value. The " + forWhat.toLowerCase() + " can only be a boolean value, 'true' or 'false'.");
             return null;
         }
         return ret;
@@ -131,40 +147,85 @@ public abstract class Command {
         return tek;
     }
 
-    public final class TektonAndTile {
-        private final Tekton first;
-        private final Tile second;
+    protected final class TektonWithId{
+        private final Tekton tekton;
+        private final int tektonId;
 
-        public TektonAndTile(Tekton first, Tile second) {
+        public TektonWithId(Tekton tekton, int tektonId){
+            this.tekton = tekton;
+            this.tektonId = tektonId;
+        }
+
+        public Tekton getTekton(){
+            return tekton;
+        }
+
+        public int getTektonId(){
+            return tektonId;
+        }
+    };
+
+    protected TektonWithId parseTektonWithId(String input, String forWhat) {
+        Integer targetPlateId = parsePositiveNumber(input, forWhat + " ID");
+        if (targetPlateId == null)
+            return null;
+
+        Tekton tek = app.getMap().getTektons().get(targetPlateId);
+        if (tek == null) {
+            System.out.println("A " + forWhat + " with the specified ID was not found");
+            return null;
+        }
+        return new TektonWithId(tek, targetPlateId);
+    }
+
+    protected final class TektonAndTile {
+        private final Tekton first;
+        private final int tektonId;
+        private final Tile second;
+        private final int tileId;
+
+        public TektonAndTile(Tekton first, int tektonId, Tile second, int tileId) {
             this.first = first;
+            this.tektonId = tektonId;
             this.second = second;
+            this.tileId = tileId;
         }
 
         public Tekton getTekton() {
             return first;
         }
 
+        public int getTektonId(){
+            return tektonId;
+        }
+
         public Tile getTile() {
             return second;
+        }
+
+        public int getTileId(){
+            return tileId;
         }
     }
 
     protected TektonAndTile parseTektonAndTile(String inputTekton, String inputTile) {
-        Tekton tek = parseTekton(inputTekton, "Tectonic plate");
-        if (tek == null)
+        TektonWithId tektonAndId = parseTektonWithId(inputTekton, "Tectonic plate");
+        if (tektonAndId == null)
             return null;
 
         Integer targetTileId = parsePositiveNumber(inputTile, "Tile ID");
         if (targetTileId == null)
             return null;
 
-        Tile tile = tek.getTiles().get(targetTileId);
+        Tekton tekton = tektonAndId.getTekton();
+        List<Tile> tektonNeighbors = tekton.getTiles();
+        Tile tile = tektonNeighbors.get(targetTileId);
         if (tile == null) {
             System.out.println("A tile with the specified ID on the specified tectonic plate was not found");
             return null;
         }
 
-        return new TektonAndTile(tek, tile);
+        return new TektonAndTile(tekton, tektonAndId.getTektonId(), tile, targetTileId);
     }
 
     public void setApp(App app) {

@@ -1,0 +1,27 @@
+"T0": {
+	"Tiles": [t0],
+	"breakChance": 1,
+	"maxSporeCount": 1
+},
+
+"t0": {
+	"parentTekton": T0,
+	"growthRate": 1,
+	"maxMycelium": 2
+},
+
+"insect_0": {
+	"currentTile": "t0",
+	"speed": 100,
+	"canCut": true,
+},
+
+"freezespore_1": {
+	"currentTile": t0,
+	"isConsumed": true
+},
+
+"speedupspore_0": {
+	"currentTile": t0,
+	"isConsumed": true
+}

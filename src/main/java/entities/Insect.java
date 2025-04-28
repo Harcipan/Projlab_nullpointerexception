@@ -18,10 +18,20 @@ public class Insect extends GameEntity {
     InsectPlayer controlledBy;  // The player that controls the insect
     List<Spore> underInfluence; //The spores that are currently affecting the insect
 
+    // Temporary here, should be deleted after changing other methods
     public Insect(int id, Tile currentTile, InsectPlayer player) {
         super(id, currentTile);
-        speed = 100;
-        canCut = true;
+        this.speed = 100;
+        this.canCut = true;
+        controlledBy = player;
+        controlledBy.addControlledInsect(this);
+        underInfluence = new ArrayList<Spore>();
+    }
+
+    public Insect(int id, Tile currentTile, InsectPlayer player, int speed, boolean canCut) {
+        super(id, currentTile);
+        this.speed = speed;
+        this.canCut = canCut;
         controlledBy = player;
         controlledBy.addControlledInsect(this);
         underInfluence = new ArrayList<Spore>();
@@ -33,10 +43,8 @@ public class Insect extends GameEntity {
      * The new insect will be placed in the same tile as the original insect
      */
     public Insect split() {
-        Insect newInsect = new Insect(100+id, getCurrentTile(), controlledBy);
-        UseCase.logger.put(newInsect, "cloned_insect");
-        UseCase.printWrapper(UseCase.logger.get(this)+".split()", ArrowDirection.LEFT, Indent.UNINDENT);
-        controlledBy.addControlledInsect(newInsect);
+        Insect newInsect = new Insect(100+id, getCurrentTile(), controlledBy, speed, canCut);
+        //controlledBy.addControlledInsect(newInsect);
         return newInsect;
     }
 
@@ -76,7 +84,7 @@ public class Insect extends GameEntity {
         target.getEaten(this);
         UseCase.printWrapper(UseCase.logger.get(this)+".eat()", ArrowDirection.LEFT, Indent.UNINDENT);
         //controlledBy.updateScore(target.getNutrientValue());
-        target.getEaten(this);
+        //target.getEaten(this);
         if (target instanceof SplitSpore) {
             split();
         }
@@ -89,6 +97,7 @@ public class Insect extends GameEntity {
      */
     public void step(Tile target) {
         UseCase.printWrapper(UseCase.logger.get(this)+".step(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
+        // Will implement later
         currentTile.removeEntity(this);
         target.addEntity(this);
     }
@@ -105,8 +114,11 @@ public class Insect extends GameEntity {
         }
         // Will implement later
         target.getEntities();
-        for (GameEntity ge : target.getEntities()) {
+        /*for (GameEntity ge : target.getEntities()) {
             ge.getCut();
+        }*/
+        for(int i=0; i<target.getEntities().size();i++) {
+            target.getEntities().get(i).getCut();
         }
     }
 
@@ -115,6 +127,10 @@ public class Insect extends GameEntity {
      */
     public void addSpore(Spore spore){
         underInfluence.add(spore);
+    }
+
+    public List<Spore> getUnderInfluence(){
+        return underInfluence;
     }
 
     /*
@@ -146,5 +162,20 @@ public class Insect extends GameEntity {
      */
     public void setCut(boolean canCut) {
         this.canCut = canCut;
+    }
+
+    public String serialize() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"insect_").append(id).append("\": {\n");
+
+        //int lineValue = currentTile.getParentTekton().getMap().getWidth();
+        //int tileValue = currentTile.getX() + lineValue * currentTile.getY();
+        int tileValue = currentTile.getParentTekton().getTileId(currentTile);
+        sb.append("\t\"currentTile\": \"t").append(tileValue).append("\",\n");
+        sb.append("\t\"speed\": ").append(speed).append(",\n");
+        sb.append("\t\"canCut\": ").append(canCut).append(",\n");
+        sb.append("}");
+
+        return sb.toString();
     }
 }

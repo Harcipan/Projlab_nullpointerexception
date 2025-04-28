@@ -10,6 +10,8 @@ import use_cases.UseCase.Indent;
  * effectValue must be greater than 100 (its a percentage)
  */
 public class SpeedUpSpore extends Spore {
+    Tile formerParentTile;
+
     public SpeedUpSpore(int id, Tile currentTile, int nutrientValue, int lifetime, int effectTime, int effectValue) {
         super(id, currentTile, nutrientValue, lifetime, effectTime, effectValue);
     }
@@ -29,6 +31,7 @@ public class SpeedUpSpore extends Spore {
         isConsumed = true;
         i.setSpeedPercent(effectValue);
         i.addSpore(this);
+        formerParentTile = currentTile;
         currentTile.removeEntity(this);
     }
 
@@ -38,6 +41,23 @@ public class SpeedUpSpore extends Spore {
     @Override
     public void removeEffect(Insect i) {
         i.setSpeedPercent(0);
+    }
+
+    @Override
+    public String serialize() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("\"speedupspore_").append(id).append("\": {\n");
+        Tile parentTile = currentTile;
+        if(parentTile == null){
+            parentTile =  formerParentTile;
+        }
+        int lineValue = parentTile.getParentTekton().getMap().getWidth();
+        int tileValue = parentTile.getX() + lineValue * parentTile.getY();
+        sb.append("\t\"currentTile\": t").append(tileValue).append(",\n");
+        sb.append("\t\"isConsumed\": ").append(isConsumed).append("\n");
+        sb.append("}");
+
+        return sb.toString();    
     }
 
 }

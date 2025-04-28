@@ -1,0 +1,9 @@
+create Map
+create Tekton 1 1
+create Tile 1 2 0 0 0
+create InsectPlayer
+create Insect 0 0 0 2 true
+create FungusPlayer
+create Mycelium 10 0 0 0
+insect_cut 0 0 0 0
+save out.txt

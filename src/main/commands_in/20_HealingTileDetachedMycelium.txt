@@ -1,0 +1,7 @@
+create Map
+create Tekton 1 1
+create HealTile 0 1 2
+create FungusPlayer
+create Mycelium 1 0 0 0
+tick 1
+save out.txt

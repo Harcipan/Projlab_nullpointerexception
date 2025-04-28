@@ -35,8 +35,8 @@ echo Press any button to compile 'n' run...
 pause >nul
 cls
 
-dir /s /b ..\src\main\java\*.java > sources.txt
-javac -d target\classes -sourcepath ..\src\main\java @sources.txt
-java -cp target/classes Main
+dir /s /b src\main\java\*.java > sources.txt
+javac -d target\classes -sourcepath src\main\java @sources.txt
+java -cp target\classes Main
 
 pause

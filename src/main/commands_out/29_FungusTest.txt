@@ -1,0 +1,35 @@
+"T0": {
+	"Tiles": [t0,t1],
+	"breakChance": 1,
+	"sporeCount": 1
+},
+
+"t0": {
+	"parentTekton": T0,
+	"growthRate": 1
+	"maxMycelium": 2
+},
+
+"t1": {
+	"parentTekton": T0,
+	"growthRate": 1
+	"maxMycelium": 2
+},
+
+"fungusbody_3": {
+	"currentTile": t1,
+	"health": 1,
+	"sporecharge": 1
+},
+
+"mycelium_1": {
+	"currentTile": t0,
+	"health": 100,
+	"isDying": false
+},
+
+"mycelium_2": {
+	"currentTile": t1,
+	"health": 100,
+	"isDying": false
+}

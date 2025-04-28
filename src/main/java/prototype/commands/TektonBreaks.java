@@ -1,6 +1,7 @@
 package prototype.commands;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import entities.GameEntity;
 import entities.Mycelium;
@@ -25,7 +26,7 @@ public class TektonBreaks extends Command {
         if (tek == null)
             return false;
 
-        ArrayList<Tekton> tl = tek.breakTekton();
+        List<Tekton> tl = tek.breakTekton();
         ArrayList<Mycelium> removableMycelia = new ArrayList<>();
         for (Tile t : tek.getTiles()) {
             for (GameEntity e : t.getEntities()) {
@@ -36,10 +37,6 @@ public class TektonBreaks extends Command {
         }
         for (Mycelium mycelium : removableMycelia) {
             mycelium.die();
-        }
-        app.getMap().removeTekton(tek);
-        for (Tekton newTek : tl) {
-            app.getMap().addTekton(newTek);
         }
 
         return false;

@@ -1,5 +1,7 @@
+import graphics.GUI;
 import prototype.App;
 
+import javax.swing.*;
 /*
 *   Tester program for Use-Cases derived from Sequence Diagrams.
 *   To create a test, add a new class that extends UseCase and implement the execute method.
@@ -9,6 +11,7 @@ import prototype.App;
 public class Main {
     public static void main(String[] args) {
         App app = new App();
-        app.run();
+        SwingUtilities.invokeLater(GUI::createAndShowGUI);
+        app.run(); // Comment this out to prevent blocking the main thread
     }
 }

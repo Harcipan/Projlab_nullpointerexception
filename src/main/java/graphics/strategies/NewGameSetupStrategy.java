@@ -3,23 +3,15 @@ package graphics.strategies;
 import graphics.presenters.NewGameSetupPresenter;
 import graphics.customUIElements.CustomButton;
 import app.PlayerInfo; // Import PlayerInfo
-import app.PlayerType; // Import PlayerType
 
 import graphics.customUIElements.CustomPlayerList; // Import PlayerList renderer
 import graphics.customUIElements.CustomTextField;
-import graphics.customUIElements.Interactable;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
-public class NewGameSetupStrategy implements IRenderStrategy {
-
-    private NewGameSetupPresenter presenter;
-    private final Runnable repaintCallback;
-
-    private List<CustomButton> buttons = new ArrayList<>(); // Keep this list for common handling
-    private List<CustomTextField> textFields = new ArrayList<>(); // List to hold text fields (if needed)
+public class NewGameSetupStrategy extends AbstractRenderStrategy {
+    private NewGameSetupPresenter presenter; // Reference to the presenter for handling button actions
 
     private CustomButton addPlayerButton;
     private CustomButton mapSize32Button;
@@ -32,16 +24,13 @@ public class NewGameSetupStrategy implements IRenderStrategy {
     private static final int PLAYER_LIST_Y = 80;
     private static final int PLAYER_LIST_WIDTH = 200;
     private static final int PLAYER_LIST_HEIGHT = 200;
-    private static final int PLAYER_ITEM_HEIGHT = 25;
 
     private static final int RIGHT_PANEL_X = 300;
 
     final Rectangle playerListBounds = new Rectangle(PLAYER_LIST_X, PLAYER_LIST_Y, PLAYER_LIST_WIDTH, PLAYER_LIST_HEIGHT);
 
-
     public NewGameSetupStrategy(NewGameSetupPresenter presenter, Runnable repaintCallback) {
         this.presenter = presenter;
-        this.repaintCallback = repaintCallback;
 
         // Create buttons based on sketch
         addPlayerButton = new CustomButton("Add player...", PLAYER_LIST_X, PLAYER_LIST_Y + PLAYER_LIST_HEIGHT + 10, PLAYER_LIST_WIDTH, 30);
@@ -122,83 +111,20 @@ public class NewGameSetupStrategy implements IRenderStrategy {
         backButton.draw(g2d);
     }
 
-    // --- Input Handling ---
-
     @Override
-    public void updateHover(int mouseX, int mouseY) {
-        for (CustomButton btn : buttons) {
-            btn.setHovered(btn.contains(mouseX, mouseY));
+    protected void onButtonClicked(CustomButton btn) {
+        if (btn == mapSize32Button || btn == mapSize64Button) {
+            System.out.println("NewGameSetupStrategy: Clicked Map Size Button: " + btn.getText());
+            presenter.setMapSize(Integer.parseInt(btn.getText()));
+        } else if (btn == confirmButton) {
+            System.out.println("NewGameSetupStrategy: Clicked Button: " + btn.getText());
+            presenter.onConfirmSetupClicked();
+        } else if (btn == backButton) {
+            System.out.println("NewGameSetupStrategy: Clicked Button: " + btn.getText());
+            presenter.onBackToMainMenuClicked();
+        } else if (btn == addPlayerButton) {
+            System.out.println("NewGameSetupStrategy: Clicked Button: " + btn.getText());
+            presenter.addPlayerRequested();
         }
-        for (CustomTextField textField : textFields) {
-            textField.setHovered(textField.contains(mouseX, mouseY));
-        }
-    }
-
-    @Override
-    public void handlePress(int mouseX, int mouseY) {
-        for (CustomButton btn : buttons) {
-            if (btn.contains(mouseX, mouseY)) {
-                // Don't set map size buttons to visually pressed here,
-                // as we use that state only to show selection in render()
-                if (btn != mapSize32Button && btn != mapSize64Button) {
-                     btn.setPressed(true);
-                }
-                break; // Only press one button
-            }
-        }
-        for (CustomTextField textField : textFields) {
-            if (textField.contains(mouseX, mouseY)) {
-                textField.setFocused(true); // Set focused state for text field
-            } else {
-                textField.setFocused(false); // Reset other fields
-            }
-        }
-    }
-
-    @Override
-    public Interactable handleRelease(int mouseX, int mouseY) {
-
-        Interactable clickedInteractable = null; // Initialize to null
-        
-        for (CustomButton btn : buttons) {
-            // Check map size buttons first (they don't use the standard pressed state for click detection)
-             if ((btn == mapSize32Button || btn == mapSize64Button) && btn.contains(mouseX, mouseY)) {
-                clickedInteractable = btn;
-                 System.out.println("NewGameSetupStrategy: Clicked Map Size Button: " + btn.getText());
-                 presenter.setMapSize(Integer.parseInt(btn.getText()));
-                 break; // Found click
-             }
-             // Check other buttons using standard isPressed state
-             else if (btn.isPressed() && btn.contains(mouseX, mouseY)) {
-                clickedInteractable = btn;
-                System.out.println("NewGameSetupStrategy: Clicked Button: " + btn.getText());
-
-                // Delegate to presenter
-                if (btn == confirmButton) {
-                    presenter.onConfirmSetupClicked();
-                } else if (btn == backButton) {
-                    presenter.onBackToMainMenuClicked();
-                } else if (btn == addPlayerButton) {
-                    presenter.addPlayerRequested();
-                }
-                // Reset pressed state for non-map buttons after action
-                 btn.setPressed(false);
-                 break; // Found click
-            }
-            // Ensure non-clicked buttons are not visually pressed (unless they are map size buttons showing selection)
-            if (btn != mapSize32Button && btn != mapSize64Button) {
-                 btn.setPressed(false);
-            }
-
-        }
-        // For text fields, the highlight state is not handled here
-
-        // Return the clicked interactable (button or text field)
-        return clickedInteractable; // Return the clicked interactable (button or text field)
-    }
-
-    @Override
-    public List<CustomTextField> getTextFields() {
-        return textFields; // Return the list of text fields
     }
 }

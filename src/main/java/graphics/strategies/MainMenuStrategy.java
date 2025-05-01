@@ -1,23 +1,17 @@
 package graphics.strategies;
 
 import graphics.customUIElements.CustomButton; // Import your Button class
-import graphics.customUIElements.CustomTextField;
-import graphics.customUIElements.Interactable; // Import your Interactable interface
 import graphics.presenters.MainMenuPresenter;
 
 import java.awt.*;
-import java.util.List;
 
 /*
  * MainMenuRenderStrategy is a concrete implementation of the RenderStrategy interface.
  * It defines how to render the main menu of the game, including buttons and background.
  */
-public class MainMenuStrategy implements IRenderStrategy {
+public class MainMenuStrategy extends AbstractRenderStrategy {
 
-    private MainMenuPresenter presenter;
-
-    private List<CustomButton> buttons = new java.util.ArrayList<>(); // List to hold buttons
-    private List<CustomTextField> textFields = new java.util.ArrayList<>(); // List to hold text fields (if needed)
+    MainMenuPresenter presenter; // Reference to the presenter for handling button actions
 
     public MainMenuStrategy(MainMenuPresenter presenter) {
         
@@ -84,70 +78,20 @@ public class MainMenuStrategy implements IRenderStrategy {
         }
     }
 
-    // --- Methods needed for interaction (called by Mouse Listeners) ---
-    public void updateHover(int mouseX, int mouseY) {
-        for (CustomButton btn : buttons) {
-            btn.setHovered(btn.contains(mouseX, mouseY));
-        }
-    }
-
-    public void handlePress(int mouseX, int mouseY) {
-        for (CustomButton btn : buttons) {
-            if (btn.contains(mouseX, mouseY)) {
-                btn.setPressed(true);
-                // Optional: Store which button is being pressed
-                break; // Assuming only one button can be pressed at a time
-            }
-        }
-    }
-
-    public Interactable handleRelease(int mouseX, int mouseY) {
-
-        Interactable clickedInteractable = null; // Initialize to null
-        CustomButton clickedButton = null; // Initialize to null
-        CustomTextField clickedTextField = null; // Initialize to null
-
-        for (CustomButton btn : buttons) {
-            if (btn.isPressed() && btn.contains(mouseX, mouseY)) {
-                 System.out.println("MainMenuRenderStrategy: Click detected on " + btn.getText()); // Debug in View
-                 clickedButton = btn;
-
-                 // Delegation happens here to the presenter
-                 switch (clickedButton.getText()) {
-                     case "Start Game":
-                         presenter.onStartGameClicked(); // Tell presenter about the action
-                         break;
-                     case "Options":
-                         presenter.onOptionsClicked();
-                         break;
-                     case "Exit":
-                         presenter.onExitClicked();
-                         break;
-                     default:
-                         System.out.println("MainMenuRenderStrategy: Unknown button clicked: " + clickedButton.getText());
-                         break;
-                 }
-                 // No game logic here!
-            }
-            btn.setPressed(false); // Reset pressed state on release regardless
-        }
-        
-        // For text fields the highlight state in not handled here
-
-        if (clickedButton != null) {
-            clickedInteractable = clickedButton; // Set the clicked button as the interactable
-        }
-
-        return clickedInteractable; // Return the clicked interactable (button or text field)
-    }
-
-    // Getter for buttons if listeners need direct access
-    public List<CustomButton> getButtons() {
-        return buttons;
-    }
-
     @Override
-    public List<CustomTextField> getTextFields() {
-        return textFields; // Return the list of text fields
+    protected void onButtonClicked(CustomButton btn) {
+        switch (btn.getText()) {
+            case "Start Game":
+                presenter.onStartGameClicked();
+                break;
+            case "Options":
+                presenter.onOptionsClicked();
+                break;
+            case "Exit":
+                presenter.onExitClicked();
+                break;
+            default:
+                System.err.println("MainMenuStrategy: Unknown button clicked: " + btn.getText());
+        }
     }
 }

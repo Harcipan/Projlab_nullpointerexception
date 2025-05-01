@@ -86,7 +86,7 @@ public class GameCoordinator {
         NewGameSetupPresenter newGameSetupPresenter = new NewGameSetupPresenter(this);
 
         // 2. Create the Strategy (View implementation) for the new game setup
-        NewGameSetupStrategy newGameSetupStrategy = new NewGameSetupStrategy(newGameSetupPresenter, this::repaint);
+        NewGameSetupStrategy newGameSetupStrategy = new NewGameSetupStrategy(newGameSetupPresenter);
 
         // 3. Tell PanelRenderer to use the new game setup strategy
         panelRenderer.setRenderStrategy(newGameSetupStrategy);

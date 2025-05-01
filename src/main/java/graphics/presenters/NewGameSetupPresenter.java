@@ -17,12 +17,6 @@ public class NewGameSetupPresenter {
     public NewGameSetupPresenter(GameCoordinator coordinator) {
         this.coordinator = coordinator;
         this.players = new ArrayList<>();
-        // Add default players from sketch
-        players.add(new PlayerInfo("Zsiga", PlayerType.FUNGUS));
-        players.add(new PlayerInfo("Misi", PlayerType.FUNGUS));
-        players.add(new PlayerInfo("Kornel", PlayerType.INSECT));
-        players.add(new PlayerInfo("Reka", PlayerType.INSECT));
-        players.add(new PlayerInfo("Ivan", PlayerType.FUNGUS));
         System.out.println("NewGameSetupPresenter created with default players.");
     }
 
@@ -36,8 +30,6 @@ public class NewGameSetupPresenter {
 
     public void addPlayerRequested() {
         System.out.println("NewGameSetupPresenter: Add Player requested (Not Implemented - needs input dialog)");
-        // TODO: Implement logic to show a dialog to get new player name/type
-        // For now, add a dummy player
         int nextNum = players.size() + 1;
         PlayerType type = (nextNum % 2 == 0) ? PlayerType.INSECT : PlayerType.FUNGUS;
         players.add(new PlayerInfo("Player " + nextNum, type));
@@ -95,5 +87,10 @@ public class NewGameSetupPresenter {
 
     public int getMapSize() {
         return mapSize;
+    }
+
+    // --- Getter for Coordinator ---
+    public GameCoordinator getCoordinator() {
+        return coordinator;
     }
 }

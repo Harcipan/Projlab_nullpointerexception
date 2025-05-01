@@ -1,10 +1,9 @@
-// Create this new file: c:\Users\forianzsiga\Documents\Uni\Projlab\Projlab_nullpointerexception\src\main\java\graphics\customUIElements\CustomTextField.java
 package graphics.customUIElements;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
 import javax.swing.Timer;
+import app.GameCoordinator; // <-- Import GameCoordinator
 
 public class CustomTextField extends Interactable {
 
@@ -15,8 +14,7 @@ public class CustomTextField extends Interactable {
     private boolean showCursor = false;
     private Runnable onEnterCallback = null; // Optional callback when Enter is pressed
     private Timer blinkTimer; // Timer for blinking cursor
-    private Component repaintTarget = null;
-    private Runnable repaintCallback = null; // Optional callback for repainting
+    private GameCoordinator coordinator; // <-- Add coordinator field
 
     // --- Cursor Blink Listener Support ---
     public interface CursorBlinkListener {
@@ -27,18 +25,17 @@ public class CustomTextField extends Interactable {
         this.cursorBlinkListener = listener;
     }
 
-    public CustomTextField(int x, int y, int width, int height, Runnable repaintCallback) { // Add repaintTarget
+    public CustomTextField(int x, int y, int width, int height, GameCoordinator coordinator) { // Accept coordinator
         super(x, y, width, height);
         this.bounds = new Rectangle(x, y, width, height);
-        this.repaintTarget = repaintTarget; // Store the component that needs repainting
-        this.repaintCallback = repaintCallback;
+        this.coordinator = coordinator; // <-- Store coordinator
         
         // Initialize the timer
         blinkTimer = new Timer(500, e -> { // Use lambda for ActionListener
             if (focused) {
                 showCursor = !showCursor;
-                if (this.repaintCallback != null) {
-                    this.repaintCallback.run(); // Execute the callback
+                if (this.coordinator != null) {
+                    this.coordinator.initiateRepaint(); // <-- Use coordinator
                 }
                 if (cursorBlinkListener != null) {
                     cursorBlinkListener.onCursorBlink(showCursor);
@@ -73,9 +70,9 @@ public class CustomTextField extends Interactable {
             showCursor = false; // Hide cursor when focus lost
             blinkTimer.stop(); // Stop blinking
             System.out.println("CustomTextField lost focus: " + bounds);
-            // Repaint one last time using the callback to ensure cursor is hidden
-            if (this.repaintCallback != null) {
-                 this.repaintCallback.run(); // Use the callback
+            // Repaint one last time using the coordinator to ensure cursor is hidden
+            if (this.coordinator != null) {
+                 this.coordinator.initiateRepaint(); // <-- Use coordinator
             }
         }
     }

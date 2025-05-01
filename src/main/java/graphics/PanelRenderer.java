@@ -30,6 +30,7 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
 
     private IRenderStrategy currentRenderStrategy = null; // Initialize to null
     private Timer refreshTimer;
+    private Dimension preferredSize = new Dimension(600, 400);
 
     public PanelRenderer(IRenderStrategy initialStrategy) {
         initPanel(initialStrategy);
@@ -111,10 +112,15 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
         }
     }
 
-    // Override preferred size to give the panel a default size
+    @Override
+    public void setPreferredSize(Dimension d) {
+        this.preferredSize = d;
+        super.setPreferredSize(d);
+    }
+
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(600, 400); // Set a preferred width and height
+        return preferredSize != null ? preferredSize : super.getPreferredSize();
     }
 
     @Override

@@ -17,6 +17,15 @@ public class GameCoordinator {
     /**
      * Starts the application by showing the main menu.
      */
+    public void initiateRepaint() {
+        if (panelRenderer != null) {
+            panelRenderer.repaint(); // Repaint the panel to reflect changes
+            System.out.println("GameCoordinator: Repaint called on PanelRenderer.");
+        } else {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot repaint.");
+        }
+    }
+
     public void startApplication() {
         showMainMenu(); // Delegate to showMainMenu for clarity
     }
@@ -58,6 +67,15 @@ public class GameCoordinator {
         }
     }
      
+    private void repaint() {
+        if (panelRenderer != null) {
+            panelRenderer.repaint(); // Repaint the panel to reflect changes
+            System.out.println("GameCoordinator: Repaint called on PanelRenderer.");
+        } else {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot repaint.");
+        }
+    }
+
     public void showNewGameSetupScreen() {
         System.out.println("GameCoordinator: Setting up New Game Setup Screen...");
         if (panelRenderer == null) {
@@ -68,7 +86,7 @@ public class GameCoordinator {
         NewGameSetupPresenter newGameSetupPresenter = new NewGameSetupPresenter(this);
 
         // 2. Create the Strategy (View implementation) for the new game setup
-        NewGameSetupStrategy newGameSetupStrategy = new NewGameSetupStrategy(newGameSetupPresenter);
+        NewGameSetupStrategy newGameSetupStrategy = new NewGameSetupStrategy(newGameSetupPresenter, this::repaint);
 
         // 3. Tell PanelRenderer to use the new game setup strategy
         panelRenderer.setRenderStrategy(newGameSetupStrategy);

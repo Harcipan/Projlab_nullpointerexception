@@ -1,34 +1,76 @@
 package graphics.strategies;
 
 import graphics.presenters.NewGameSetupPresenter;
-import graphics.customUIElements.Button;
+import graphics.customUIElements.CustomButton;
+import app.PlayerInfo; // Import PlayerInfo
+import app.PlayerType; // Import PlayerType
+
+import graphics.customUIElements.CustomPlayerList; // Import PlayerList renderer
+import graphics.customUIElements.CustomTextField;
+import graphics.customUIElements.Interactable;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewGameSetupStrategy implements RenderStrategy {
+public class NewGameSetupStrategy implements IRenderStrategy {
 
     private NewGameSetupPresenter presenter;
-    private List<Button> buttons;
-    // Add fields for other UI elements (e.g., JComboBox, JTextField wrappers)
+    private final Runnable repaintCallback;
 
-    public NewGameSetupStrategy(NewGameSetupPresenter presenter) {
+    private List<CustomButton> buttons = new ArrayList<>(); // Keep this list for common handling
+    private List<CustomTextField> textFields = new ArrayList<>(); // List to hold text fields (if needed)
+
+    private CustomButton addPlayerButton;
+    private CustomButton mapSize32Button;
+    private CustomButton mapSize64Button;
+    private CustomButton confirmButton;
+    private CustomButton backButton;
+
+    // Define areas/positions (adjust as needed for 600x400 panel)
+    private static final int PLAYER_LIST_X = 30;
+    private static final int PLAYER_LIST_Y = 80;
+    private static final int PLAYER_LIST_WIDTH = 200;
+    private static final int PLAYER_LIST_HEIGHT = 200;
+    private static final int PLAYER_ITEM_HEIGHT = 25;
+
+    private static final int RIGHT_PANEL_X = 300;
+
+    final Rectangle playerListBounds = new Rectangle(PLAYER_LIST_X, PLAYER_LIST_Y, PLAYER_LIST_WIDTH, PLAYER_LIST_HEIGHT);
+
+
+    public NewGameSetupStrategy(NewGameSetupPresenter presenter, Runnable repaintCallback) {
         this.presenter = presenter;
-        this.buttons = new ArrayList<>();
+        this.repaintCallback = repaintCallback;
 
-        // TODO: Add UI elements for game settings (player type, map size, etc.)
-        // Example buttons:
-        buttons.add(new Button("Confirm Setup", 200, 300, 200, 40));
-        buttons.add(new Button("Back", 10, 10, 100, 30));
+        // Create buttons based on sketch
+        addPlayerButton = new CustomButton("Add player...", PLAYER_LIST_X, PLAYER_LIST_Y + PLAYER_LIST_HEIGHT + 10, PLAYER_LIST_WIDTH, 30);
+        mapSize32Button = new CustomButton("32", RIGHT_PANEL_X + 50, 180, 60, 30);
+        mapSize64Button = new CustomButton("64", RIGHT_PANEL_X + 120, 180, 60, 30);
+        confirmButton = new CustomButton("Confirm Setup", 200, 350, 200, 40);
+        backButton = new CustomButton("< Back", 10, 360, 100, 30);
+
+        buttons.add(addPlayerButton);
+        buttons.add(mapSize32Button);
+        buttons.add(mapSize64Button);
+        buttons.add(confirmButton);
+        buttons.add(backButton);
+
+        // Create text fields
+        CustomTextField saveNameField = new CustomTextField(RIGHT_PANEL_X, PLAYER_LIST_Y, 200, 30, repaintCallback);
+
+        textFields.add(saveNameField); // Add to list for handling
     }
 
     @Override
     public void render(Graphics2D g2d, Dimension dimension) {
         // 1. Draw Background
-        g2d.setColor(Color.GRAY); // Different background
+        g2d.setColor(Color.GRAY);
         if (dimension != null) {
             g2d.fillRect(0, 0, dimension.width, dimension.height);
+        } else {
+             g2d.fillRect(0, 0, 600, 400); // Fallback size
+             dimension = new Dimension(600, 400);
         }
 
         // 2. Draw Title
@@ -37,65 +79,126 @@ public class NewGameSetupStrategy implements RenderStrategy {
         String title = "New Game Setup";
         FontMetrics fm = g2d.getFontMetrics();
         int titleWidth = fm.stringWidth(title);
-        int titleX = (dimension != null) ? (dimension.width - titleWidth) / 2 : 50;
-        g2d.drawString(title, titleX, 50);
+        int titleX = (dimension.width - titleWidth) / 2;
+        g2d.drawString(title, titleX, 40);
 
-        // 3. Draw Setup Options (Placeholders)
-        // TODO: Draw labels, dropdowns, text fields etc. based on presenter data
-        g2d.drawString("Player Type: [Dropdown Placeholder]", 100, 120);
-        g2d.drawString("Map Size: [Input Placeholder]", 100, 160);
+        // --- Left Panel: Players ---
+        g2d.setFont(new Font("Arial", Font.BOLD, 16));
+        g2d.setColor(Color.WHITE); // Set color before drawing string
+        g2d.drawString("Players", PLAYER_LIST_X, PLAYER_LIST_Y - 10);
 
-        // 4. Draw Buttons
-        for (Button btn : buttons) {
-            btn.draw(g2d);
+        // Use the PlayerListRenderer to draw the list
+        List<PlayerInfo> players = presenter.getPlayers();
+        CustomPlayerList.draw(g2d, players, playerListBounds);
+
+        // Draw Add Player button (position relative to list bounds)
+        addPlayerButton.draw(g2d); // Ensure button position is correct
+
+        // Save Name
+        g2d.drawString("Name of save:", RIGHT_PANEL_X, PLAYER_LIST_Y - 10);
+        g2d.setColor(Color.LIGHT_GRAY);
+        
+        // Draw all text fields (if any)
+        for (CustomTextField textField : textFields) {
+            textField.draw(g2d); // Draw each text field
         }
+
+        // Map Size
+        g2d.setFont(new Font("Arial", Font.BOLD, 16));
+        g2d.setColor(Color.WHITE);
+        g2d.drawString("Map size:", RIGHT_PANEL_X, 160);
+        // Highlight selected map size button (simple visual cue)
+        int selectedMapSize = presenter.getMapSize();
+        mapSize32Button.setPressed(selectedMapSize == 128); // Use pressed state for visual cue
+        mapSize64Button.setPressed(selectedMapSize == 256);
+        mapSize32Button.draw(g2d);
+        mapSize64Button.draw(g2d);
+        // Reset visual state immediately after drawing if using 'pressed' only for highlight
+        mapSize32Button.setPressed(false);
+        mapSize64Button.setPressed(false);
+
+        // --- Bottom Panel: Navigation ---
+        confirmButton.draw(g2d);
+        backButton.draw(g2d);
     }
 
     // --- Input Handling ---
 
     @Override
     public void updateHover(int mouseX, int mouseY) {
-        for (Button btn : buttons) {
+        for (CustomButton btn : buttons) {
             btn.setHovered(btn.contains(mouseX, mouseY));
         }
-        // TODO: Handle hover for other interactive elements
+        for (CustomTextField textField : textFields) {
+            textField.setHovered(textField.contains(mouseX, mouseY));
+        }
     }
 
     @Override
     public void handlePress(int mouseX, int mouseY) {
-        for (Button btn : buttons) {
+        for (CustomButton btn : buttons) {
             if (btn.contains(mouseX, mouseY)) {
-                btn.setPressed(true);
-                break;
+                // Don't set map size buttons to visually pressed here,
+                // as we use that state only to show selection in render()
+                if (btn != mapSize32Button && btn != mapSize64Button) {
+                     btn.setPressed(true);
+                }
+                break; // Only press one button
             }
         }
-        // TODO: Handle press for other interactive elements
+        for (CustomTextField textField : textFields) {
+            if (textField.contains(mouseX, mouseY)) {
+                textField.setFocused(true); // Set focused state for text field
+            } else {
+                textField.setFocused(false); // Reset other fields
+            }
+        }
     }
 
     @Override
-    public Button handleRelease(int mouseX, int mouseY) {
-        Button clickedButton = null;
-        for (Button btn : buttons) {
-            if (btn.isPressed() && btn.contains(mouseX, mouseY)) {
-                clickedButton = btn;
+    public Interactable handleRelease(int mouseX, int mouseY) {
+
+        Interactable clickedInteractable = null; // Initialize to null
+        
+        for (CustomButton btn : buttons) {
+            // Check map size buttons first (they don't use the standard pressed state for click detection)
+             if ((btn == mapSize32Button || btn == mapSize64Button) && btn.contains(mouseX, mouseY)) {
+                clickedInteractable = btn;
+                 System.out.println("NewGameSetupStrategy: Clicked Map Size Button: " + btn.getText());
+                 presenter.setMapSize(Integer.parseInt(btn.getText()));
+                 break; // Found click
+             }
+             // Check other buttons using standard isPressed state
+             else if (btn.isPressed() && btn.contains(mouseX, mouseY)) {
+                clickedInteractable = btn;
                 System.out.println("NewGameSetupStrategy: Clicked Button: " + btn.getText());
 
                 // Delegate to presenter
-                switch (btn.getText()) {
-                    case "Confirm Setup":
-                        presenter.onConfirmSetupClicked();
-                        break;
-                    case "Back":
-                        presenter.onBackToMainMenuClicked();
-                        break;
+                if (btn == confirmButton) {
+                    presenter.onConfirmSetupClicked();
+                } else if (btn == backButton) {
+                    presenter.onBackToMainMenuClicked();
+                } else if (btn == addPlayerButton) {
+                    presenter.addPlayerRequested();
                 }
+                // Reset pressed state for non-map buttons after action
+                 btn.setPressed(false);
+                 break; // Found click
             }
-            btn.setPressed(false);
+            // Ensure non-clicked buttons are not visually pressed (unless they are map size buttons showing selection)
+            if (btn != mapSize32Button && btn != mapSize64Button) {
+                 btn.setPressed(false);
+            }
+
         }
-        return clickedButton;
+        // For text fields, the highlight state is not handled here
+
+        // Return the clicked interactable (button or text field)
+        return clickedInteractable; // Return the clicked interactable (button or text field)
     }
 
-    public List<Button> getButtons() {
-        return buttons;
+    @Override
+    public List<CustomTextField> getTextFields() {
+        return textFields; // Return the list of text fields
     }
 }

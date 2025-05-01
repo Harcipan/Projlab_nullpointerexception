@@ -1,24 +1,73 @@
 package graphics.presenters;
 
 import app.GameCoordinator;
-// Import any necessary classes for game settings (create if needed)
-// import app.GameSettings;
+import app.PlayerInfo; // Import PlayerInfo
+import app.PlayerType; // Import PlayerType
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewGameSetupPresenter {
 
-    private GameCoordinator coordinator; // To hold the settings being configured
+    private GameCoordinator coordinator;
+    private List<PlayerInfo> players;
+    private String saveName = "MyGame"; // Default save name
+    private int mapSize = 128; // Default map size
 
     public NewGameSetupPresenter(GameCoordinator coordinator) {
         this.coordinator = coordinator;
-        // this.currentSettings = new GameSettings(); // Initialize default settings
-        System.out.println("NewGameSetupPresenter created.");
+        this.players = new ArrayList<>();
+        // Add default players from sketch
+        players.add(new PlayerInfo("Zsiga", PlayerType.FUNGUS));
+        players.add(new PlayerInfo("Misi", PlayerType.FUNGUS));
+        players.add(new PlayerInfo("Kornel", PlayerType.INSECT));
+        players.add(new PlayerInfo("Reka", PlayerType.INSECT));
+        players.add(new PlayerInfo("Ivan", PlayerType.FUNGUS));
+        System.out.println("NewGameSetupPresenter created with default players.");
     }
 
     // --- Methods called by the View (NewGameSetupStrategy) ---
+
     public void onSettingChanged(String settingName, Object value) {
         System.out.println("NewGameSetupPresenter: Setting '" + settingName + "' changed to " + value);
         // TODO: Update currentSettings based on the change
         // e.g., if (settingName.equals("playerType")) currentSettings.setPlayerType((PlayerType)value);
+    }
+
+    public void addPlayerRequested() {
+        System.out.println("NewGameSetupPresenter: Add Player requested (Not Implemented - needs input dialog)");
+        // TODO: Implement logic to show a dialog to get new player name/type
+        // For now, add a dummy player
+        int nextNum = players.size() + 1;
+        PlayerType type = (nextNum % 2 == 0) ? PlayerType.INSECT : PlayerType.FUNGUS;
+        players.add(new PlayerInfo("Player " + nextNum, type));
+    }
+
+    public void setSaveName(String name) {
+        // Called when focus lost or Enter pressed on save name field
+        System.out.println("NewGameSetupPresenter: Save name updated to: " + name);
+        this.saveName = name;
+   }
+
+   public void updatePlayerName(int playerIndex, String newName) {
+       if (playerIndex >= 0 && playerIndex < players.size()) {
+           PlayerInfo oldInfo = players.get(playerIndex);
+           if (!oldInfo.name().equals(newName)) {
+               players.set(playerIndex, new PlayerInfo(newName, oldInfo.type()));
+               System.out.println("NewGameSetupPresenter: Updated player " + playerIndex + " name to: " + newName);
+           }
+       } else {
+           System.err.println("NewGameSetupPresenter: Invalid player index for name update: " + playerIndex);
+       }
+   }
+
+    public void setMapSize(int size) {
+        if (size == 32 || size == 64) {
+            System.out.println("NewGameSetupPresenter: Map size set to: " + size);
+            this.mapSize = size;
+        } else {
+            System.err.println("NewGameSetupPresenter: Invalid map size requested: " + size);
+        }
     }
 
     public void onConfirmSetupClicked() {
@@ -36,5 +85,15 @@ public class NewGameSetupPresenter {
     }
 
     // --- Methods to provide data TO the View ---
-    // public GameSettings getCurrentSettings() { return currentSettings; }
+    public List<PlayerInfo> getPlayers() {
+        return players; // Return defensive copy if modification is risky: return new ArrayList<>(players);
+    }
+
+    public String getSaveName() {
+        return saveName;
+    }
+
+    public int getMapSize() {
+        return mapSize;
+    }
 }

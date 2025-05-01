@@ -2,7 +2,7 @@ package graphics;
 
 // Import strategy interface and concrete strategy classes
 import graphics.strategies.MainMenuStrategy;
-import graphics.strategies.RenderStrategy;
+import graphics.strategies.IRenderStrategy;
 
 // Import necessary Swing and graphics classes
 import javax.swing.*;
@@ -27,27 +27,42 @@ import java.awt.event.MouseEvent;
 
 public class PanelRenderer extends JPanel implements MouseListener, MouseMotionListener {
 
-    private RenderStrategy currentRenderStrategy = null; // Initialize to null
+    private IRenderStrategy currentRenderStrategy = null; // Initialize to null
 
-    // Constructor that accepts a RenderStrategy
-    public PanelRenderer(RenderStrategy initialStrategy) {
-        setRenderStrategy(initialStrategy);
-        setPreferredSize(new Dimension(600, 400));
-        // Add mouse listeners to the panel itself
-        addMouseListener(this);
-        addMouseMotionListener(this);
+    public PanelRenderer(IRenderStrategy initialStrategy) {
+        initPanel(initialStrategy);
     }
 
-    // Defaulting constructor - strategy will be set by Coordinator
     public PanelRenderer() {
-        // No longer call this(...) - strategy starts as null
-        setPreferredSize(new Dimension(600, 400));
-        // Add mouse listeners to the panel itself
-        addMouseListener(this);
-        addMouseMotionListener(this);
+        this(null);
     }
 
-    public void setRenderStrategy(RenderStrategy strategy) {
+    private void initPanel(IRenderStrategy strategy) {
+        setRenderStrategy(strategy);
+        setPreferredSize(new Dimension(600, 400));
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        addKeyListener(createKeyAdapter());
+        setFocusable(true);
+    }
+
+    private java.awt.event.KeyAdapter createKeyAdapter() {
+        return new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                System.out.println("Key Pressed: " + e.getKeyChar());
+                if (currentRenderStrategy instanceof graphics.strategies.NewGameSetupStrategy strategy) {
+                    for (graphics.customUIElements.CustomTextField field : strategy.getTextFields()) {
+                        if (field.isFocused() && field.handleKeyPress(e)) {
+                            repaint();
+                        }
+                    }
+                }
+            }
+        };
+    }
+
+    public void setRenderStrategy(IRenderStrategy strategy) {
         if (strategy == null) {
             System.err.println("Warning: RenderStrategy cannot be null. Setting strategy to null.");
             this.currentRenderStrategy = null; // Set to null instead
@@ -108,12 +123,12 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
     public void mouseReleased(MouseEvent e) {
         if (currentRenderStrategy != null) {
             // Handle the release and potentially get the clicked button
-            Button clickedButton = currentRenderStrategy.handleRelease(e.getX(), e.getY());
+            Interactable clickedInteractable = currentRenderStrategy.handleRelease(e.getX(), e.getY());
             repaint(); // Repaint after release to show normal/hover state
 
             // TODO: Add logic here to handle the action for the clickedButton
-            if (clickedButton != null) {
-                System.out.println("Action triggered for: " + clickedButton.getText());
+            if (clickedInteractable != null) {
+                System.out.println("Action triggered for: " + clickedInteractable.getClass().getSimpleName());
             }
         }
     }

@@ -1,6 +1,8 @@
 package graphics.strategies;
 
-import graphics.customUIElements.Button; // Import your Button class
+import graphics.customUIElements.CustomButton; // Import your Button class
+import graphics.customUIElements.CustomTextField;
+import graphics.customUIElements.Interactable; // Import your Interactable interface
 import graphics.presenters.MainMenuPresenter;
 
 import java.awt.*;
@@ -10,11 +12,12 @@ import java.util.List;
  * MainMenuRenderStrategy is a concrete implementation of the RenderStrategy interface.
  * It defines how to render the main menu of the game, including buttons and background.
  */
-public class MainMenuStrategy implements RenderStrategy {
+public class MainMenuStrategy implements IRenderStrategy {
 
     private MainMenuPresenter presenter;
 
-    private List<Button> buttons = new java.util.ArrayList<>(); // List to hold buttons
+    private List<CustomButton> buttons = new java.util.ArrayList<>(); // List to hold buttons
+    private List<CustomTextField> textFields = new java.util.ArrayList<>(); // List to hold text fields (if needed)
 
     public MainMenuStrategy(MainMenuPresenter presenter) {
         
@@ -23,9 +26,9 @@ public class MainMenuStrategy implements RenderStrategy {
         }
         this.presenter = presenter;
 
-        buttons.add(new Button("Start Game", 200, 150, 200, 40));
-        buttons.add(new Button("Options", 200, 200, 200, 40));
-        buttons.add(new Button("Exit", 200, 250, 200, 40));
+        buttons.add(new CustomButton("Start Game", 200, 150, 200, 40));
+        buttons.add(new CustomButton("Options", 200, 200, 200, 40));
+        buttons.add(new CustomButton("Exit", 200, 250, 200, 40));
     }
 
     @Override
@@ -76,20 +79,20 @@ public class MainMenuStrategy implements RenderStrategy {
     // New private helper method for drawing buttons
     private void drawButtons(Graphics2D g2d) {
         // Draw all the buttons
-        for (Button btn : buttons) {
+        for (CustomButton btn : buttons) {
             btn.draw(g2d); // The Button's draw method also uses the passed g2d
         }
     }
 
     // --- Methods needed for interaction (called by Mouse Listeners) ---
     public void updateHover(int mouseX, int mouseY) {
-        for (Button btn : buttons) {
+        for (CustomButton btn : buttons) {
             btn.setHovered(btn.contains(mouseX, mouseY));
         }
     }
 
     public void handlePress(int mouseX, int mouseY) {
-        for (Button btn : buttons) {
+        for (CustomButton btn : buttons) {
             if (btn.contains(mouseX, mouseY)) {
                 btn.setPressed(true);
                 // Optional: Store which button is being pressed
@@ -98,9 +101,13 @@ public class MainMenuStrategy implements RenderStrategy {
         }
     }
 
-    public Button handleRelease(int mouseX, int mouseY) {
-        Button clickedButton = null;
-        for (Button btn : buttons) {
+    public Interactable handleRelease(int mouseX, int mouseY) {
+
+        Interactable clickedInteractable = null; // Initialize to null
+        CustomButton clickedButton = null; // Initialize to null
+        CustomTextField clickedTextField = null; // Initialize to null
+
+        for (CustomButton btn : buttons) {
             if (btn.isPressed() && btn.contains(mouseX, mouseY)) {
                  System.out.println("MainMenuRenderStrategy: Click detected on " + btn.getText()); // Debug in View
                  clickedButton = btn;
@@ -124,11 +131,23 @@ public class MainMenuStrategy implements RenderStrategy {
             }
             btn.setPressed(false); // Reset pressed state on release regardless
         }
-        return clickedButton; // Return the button that was clicked, if any
+        
+        // For text fields the highlight state in not handled here
+
+        if (clickedButton != null) {
+            clickedInteractable = clickedButton; // Set the clicked button as the interactable
+        }
+
+        return clickedInteractable; // Return the clicked interactable (button or text field)
     }
 
     // Getter for buttons if listeners need direct access
-    public List<Button> getButtons() {
+    public List<CustomButton> getButtons() {
         return buttons;
+    }
+
+    @Override
+    public List<CustomTextField> getTextFields() {
+        return textFields; // Return the list of text fields
     }
 }

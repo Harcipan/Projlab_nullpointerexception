@@ -7,12 +7,8 @@ import java.awt.*; // Import necessary AWT classes (Graphics2D, Color, Font, Fon
  * It provides a simple way to create buttons with text, colors, and hover effects.
  */
 
-public class Button {
+public class CustomButton extends Interactable {
     private String text;
-    private int x, y, width, height;
-    private boolean isHovered; // Added for visual feedback on mouse over
-    private boolean isPressed;
-    private Rectangle bounds; // Store bounds for easier checking
 
     // Colors (can be customized)
     private Color normalColor = Color.LIGHT_GRAY;
@@ -22,15 +18,9 @@ public class Button {
     private Font textFont = new Font("Arial", Font.BOLD, 14);
 
 
-    public Button(String text, int x, int y, int width, int height) {
+    public CustomButton(String text, int x, int y, int width, int height) {
+        super(x, y, width, height); // Call the constructor of Interactable
         this.text = text;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.isPressed = false;
-        this.isHovered = false;
-        this.bounds = new Rectangle(x, y, width, height);
     }
 
     /**
@@ -38,6 +28,9 @@ public class Button {
      * @param g2d The Graphics2D context to draw on.
      */
     public void draw(Graphics2D g2d) {
+        // Save original settings
+        beforeDraw(g2d);
+
         // Determine background color based on state
         Color bgColor;
         if (isPressed) {
@@ -52,7 +45,7 @@ public class Button {
         g2d.setColor(bgColor);
         g2d.fillRect(x, y, width, height);
 
-        // Draw border (optional)
+        // Draw border
         g2d.setColor(Color.BLACK);
         g2d.drawRect(x, y, width, height);
 
@@ -67,6 +60,9 @@ public class Button {
         int textY = y + (height - textHeight) / 2 + fm.getAscent(); // Center vertically
 
         g2d.drawString(text, textX, textY);
+
+        // Restore original settings
+        afterDraw(g2d);
     }
 
     /**
@@ -81,23 +77,6 @@ public class Button {
 
 
     // --- Getters and Setters ---
-
-    public void setPressed(boolean pressed) {
-        isPressed = pressed;
-    }
-
-    public boolean isPressed() {
-        return isPressed;
-    }
-
-    public void setHovered(boolean hovered) {
-        isHovered = hovered;
-    }
-
-    public boolean isHovered() {
-        return isHovered;
-    }
-
     public String getText() {
         return text;
     }

@@ -35,8 +35,9 @@ echo Press any button to compile 'n' run...
 pause >nul
 cls
 
-dir /s /b ..\src\main\java\*.java > sources.txt
-javac -d target\classes -sourcepath src\main\java @sources.txt
+if exist sources.txt del sources.txt
+for /f %%A in ('forfiles /p ..\src /s /m *.java /c "cmd /c echo @relpath"') do echo ..\src\%%~A >> ../compiler/sources.txt
+javac -d target\classes -sourcepath ..\src\main\java @sources.txt
 java -cp target\classes Main
 
 pause

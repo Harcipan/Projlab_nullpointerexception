@@ -1,6 +1,7 @@
 package graphics.strategies;
 
 import graphics.customUIElements.Button; // Import your Button class
+import graphics.presenters.MainMenuPresenter;
 
 import java.awt.*;
 import java.util.List;
@@ -9,13 +10,19 @@ import java.util.List;
  * MainMenuRenderStrategy is a concrete implementation of the RenderStrategy interface.
  * It defines how to render the main menu of the game, including buttons and background.
  */
-public class MainMenuRenderStrategy implements RenderStrategy {
+public class MainMenuStrategy implements RenderStrategy {
+
+    private MainMenuPresenter presenter;
 
     private List<Button> buttons = new java.util.ArrayList<>(); // List to hold buttons
 
-    public MainMenuRenderStrategy(/* MainMenuViewModel viewModel */) {
-        // this.viewModel = viewModel;
-        // Create buttons (adjust coordinates as needed)
+    public MainMenuStrategy(MainMenuPresenter presenter) {
+        
+        if (presenter == null) {
+            throw new IllegalArgumentException("MainMenuPresenter cannot be null");
+        }
+        this.presenter = presenter;
+
         buttons.add(new Button("Start Game", 200, 150, 200, 40));
         buttons.add(new Button("Options", 200, 200, 200, 40));
         buttons.add(new Button("Exit", 200, 250, 200, 40));
@@ -46,15 +53,14 @@ public class MainMenuRenderStrategy implements RenderStrategy {
     private void drawTitle(Graphics2D g2d, Dimension dimension) {
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 36));
-        // Basic centering example (adjust as needed)
         String title = "Fungorium";
         FontMetrics fm = g2d.getFontMetrics();
         int titleWidth = fm.stringWidth(title);
-        int titleX = 50; // Example fixed X, or calculate based on dimension.width
+        int titleX = 50;
          if (dimension != null) {
              titleX = (dimension.width - titleWidth) / 2;
          }
-        g2d.drawString(title, titleX, 100); // Adjust Y as needed
+        g2d.drawString(title, titleX, 100);
     }
 
     private void drawFooterCredits(Graphics2D g2d, Dimension dimension) {
@@ -64,7 +70,7 @@ public class MainMenuRenderStrategy implements RenderStrategy {
         FontMetrics fm = g2d.getFontMetrics();
         int creditsWidth = fm.stringWidth(credits);
         int creditsX = (dimension.width - creditsWidth) / 2;
-        g2d.drawString(credits, creditsX, dimension.height - 30); // Adjust Y as needed
+        g2d.drawString(credits, creditsX, dimension.height - 30);
     }
 
     // New private helper method for drawing buttons
@@ -96,10 +102,25 @@ public class MainMenuRenderStrategy implements RenderStrategy {
         Button clickedButton = null;
         for (Button btn : buttons) {
             if (btn.isPressed() && btn.contains(mouseX, mouseY)) {
-                 System.out.println("Clicked: " + btn.getText()); // Debug
-                 clickedButton = btn; // This button was clicked
-                 // Trigger action based on clickedButton.getText() or the button object itself
-                 // e.g., if (viewModel != null) viewModel.triggerAction(btn.getText());
+                 System.out.println("MainMenuRenderStrategy: Click detected on " + btn.getText()); // Debug in View
+                 clickedButton = btn;
+
+                 // Delegation happens here to the presenter
+                 switch (clickedButton.getText()) {
+                     case "Start Game":
+                         presenter.onStartGameClicked(); // Tell presenter about the action
+                         break;
+                     case "Options":
+                         presenter.onOptionsClicked();
+                         break;
+                     case "Exit":
+                         presenter.onExitClicked();
+                         break;
+                     default:
+                         System.out.println("MainMenuRenderStrategy: Unknown button clicked: " + clickedButton.getText());
+                         break;
+                 }
+                 // No game logic here!
             }
             btn.setPressed(false); // Reset pressed state on release regardless
         }

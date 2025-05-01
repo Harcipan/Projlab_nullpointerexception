@@ -1,7 +1,7 @@
 package graphics;
 
 // Import strategy interface and concrete strategy classes
-import graphics.strategies.MainMenuRenderStrategy;
+import graphics.strategies.MainMenuStrategy;
 import graphics.strategies.RenderStrategy;
 
 // Import necessary Swing and graphics classes
@@ -27,7 +27,7 @@ import java.awt.event.MouseEvent;
 
 public class PanelRenderer extends JPanel implements MouseListener, MouseMotionListener {
 
-    private RenderStrategy currentRenderStrategy;
+    private RenderStrategy currentRenderStrategy = null; // Initialize to null
 
     // Constructor that accepts a RenderStrategy
     public PanelRenderer(RenderStrategy initialStrategy) {
@@ -38,16 +38,19 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
         addMouseMotionListener(this);
     }
 
-    // Defaulting to main menu strategy for the constructor
+    // Defaulting constructor - strategy will be set by Coordinator
     public PanelRenderer() {
-        // Set a default strategy, e.g., main menu, or null if required externally
-        this(new MainMenuRenderStrategy()); // Example: Default to main menu
+        // No longer call this(...) - strategy starts as null
+        setPreferredSize(new Dimension(600, 400));
+        // Add mouse listeners to the panel itself
+        addMouseListener(this);
+        addMouseMotionListener(this);
     }
 
     public void setRenderStrategy(RenderStrategy strategy) {
         if (strategy == null) {
-            System.err.println("Warning: RenderStrategy cannot be null. Setting a default.");
-            this.currentRenderStrategy = new MainMenuRenderStrategy(); // Fallback example
+            System.err.println("Warning: RenderStrategy cannot be null. Setting strategy to null.");
+            this.currentRenderStrategy = null; // Set to null instead
         } else {
             this.currentRenderStrategy = strategy;
         }
@@ -111,7 +114,6 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
             // TODO: Add logic here to handle the action for the clickedButton
             if (clickedButton != null) {
                 System.out.println("Action triggered for: " + clickedButton.getText());
-                // Example: switch (clickedButton.getText()) { case "Start Game": ... }
             }
         }
     }

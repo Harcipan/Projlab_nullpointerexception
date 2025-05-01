@@ -29,7 +29,7 @@ public class NewGameSetupPresenter {
     }
 
     public void addPlayerRequested() {
-        System.out.println("NewGameSetupPresenter: Add Player requested (Not Implemented - needs input dialog)");
+        System.out.println("NewGameSetupPresenter: Add Player requested");
         int nextNum = players.size() + 1;
         PlayerType type = (nextNum % 2 == 0) ? PlayerType.INSECT : PlayerType.FUNGUS;
         players.add(new PlayerInfo("Player " + nextNum, type));

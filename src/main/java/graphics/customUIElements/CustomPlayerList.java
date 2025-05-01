@@ -3,7 +3,11 @@ package graphics.customUIElements;
 import app.PlayerInfo;
 import app.PlayerType;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -17,6 +21,18 @@ public class CustomPlayerList {
     private static final int ICON_SIZE = 15;   // Size of the player type icon
     private static final int ICON_TEXT_GAP = 5; // Gap between icon and text field
 
+    private static final BufferedImage FUNGUS_ICON;
+    private static final BufferedImage INSECT_ICON;
+
+    static {
+        try {
+            FUNGUS_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon.png").toFile());
+            INSECT_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon.png").toFile());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load player icons", e);
+        }
+    }
+
     /**
      * Draws the player list using CustomTextFields for names.
      *
@@ -27,20 +43,8 @@ public class CustomPlayerList {
      * @param focusedPlayerIndex The index of the player/text field currently focused for editing (-1 if none).
      */
     public static void draw(Graphics2D g2d, List<PlayerInfo> players, List<CustomTextField> playerTextFields, Rectangle bounds) {
-        if (players == null) {
-            System.err.println("CustomPlayerList.draw: Players list is null.");
-            return; // Or throw an exception
-        }
-        if (playerTextFields == null) {
-            System.err.println("CustomPlayerList.draw: Player text fields list is null.");
-            return; // Or throw an exception
-        }
-        if (bounds == null) {
-            System.err.println("CustomPlayerList.draw: Bounds are null.");
-            return; // Or throw an exception
-        }
-        if (players.size() != playerTextFields.size()) {
-            System.err.println("CustomPlayerList.draw: Players list and text fields list sizes do not match.");
+        if (players == null || playerTextFields == null || bounds == null || players.size() != playerTextFields.size()) {
+            System.err.println("CustomPlayerList.draw: Invalid input - lists null, mismatched, or bounds null.");
             return; // Or throw an exception
         }
 
@@ -79,12 +83,9 @@ public class CustomPlayerList {
             int textFieldWidth = bounds.width - (textFieldX - bounds.x) - PADDING;
             int textFieldHeight = ITEM_HEIGHT - PADDING; // Use padding top/bottom
 
-            // Draw icon placeholder
-            g2d.setColor(player.type() == PlayerType.FUNGUS ? Color.MAGENTA : Color.CYAN);
-            g2d.fillRect(iconX, iconY, ICON_SIZE, ICON_SIZE);
-            g2d.setColor(Color.BLACK);
-            g2d.setStroke(new BasicStroke(1)); // Reset stroke for icon border
-            g2d.drawRect(iconX, iconY, ICON_SIZE, ICON_SIZE);
+            // Draw icon using the loaded images
+            BufferedImage icon = player.type() == PlayerType.FUNGUS ? FUNGUS_ICON : INSECT_ICON;
+            g2d.drawImage(icon, iconX, iconY, ICON_SIZE, ICON_SIZE, null);
 
             // Configure and draw the text field
             textField.setBounds(textFieldX, textFieldY, textFieldWidth, textFieldHeight);

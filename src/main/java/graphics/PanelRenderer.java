@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Dimension;
+import javax.swing.Timer;
 
 // Import custom UI elements
 import graphics.customUIElements.*;
@@ -28,9 +29,11 @@ import java.awt.event.MouseEvent;
 public class PanelRenderer extends JPanel implements MouseListener, MouseMotionListener {
 
     private IRenderStrategy currentRenderStrategy = null; // Initialize to null
+    private Timer refreshTimer;
 
     public PanelRenderer(IRenderStrategy initialStrategy) {
         initPanel(initialStrategy);
+        startRefreshTimer();
     }
 
     public PanelRenderer() {
@@ -44,6 +47,11 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
         addMouseMotionListener(this);
         addKeyListener(createKeyAdapter());
         setFocusable(true);
+    }
+
+    private void startRefreshTimer() {
+        refreshTimer = new Timer(16, e -> repaint()); // Refresh approximately 60 times per second
+        refreshTimer.start();
     }
 
     private java.awt.event.KeyAdapter createKeyAdapter() {
@@ -102,6 +110,14 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
     @Override
     public Dimension getPreferredSize() {
         return new Dimension(600, 400); // Set a preferred width and height
+    }
+
+    @Override
+    public void removeNotify() {
+        super.removeNotify();
+        if (refreshTimer != null) {
+            refreshTimer.stop(); // Stop the timer when the panel is removed
+        }
     }
 
     // --- MouseListener Methods --- 

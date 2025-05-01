@@ -50,7 +50,12 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
     }
 
     private void startRefreshTimer() {
-        refreshTimer = new Timer(16, e -> repaint()); // Refresh approximately 60 times per second
+        refreshTimer = new Timer(32, e ->  {
+            // if it is main menu, repaint every 32ms (30 FPS)
+            if (currentRenderStrategy instanceof MainMenuStrategy) {
+                repaint();
+            }
+        }); // Refresh approximately 60 times per second
         refreshTimer.start();
     }
 

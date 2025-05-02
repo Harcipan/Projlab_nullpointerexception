@@ -4,14 +4,42 @@
 	"maxSporeCount": 1
 },
 
+"T1": {
+	"Tiles": [t0],
+	"breakChance": 1,
+	"maxSporeCount": 1
+},
+
 "t0": {
 	"parentTekton": T0,
 	"growthRate": 1,
 	"maxMycelium": 2
 },
 
+"t0": {
+	"parentTekton": T1,
+	"growthRate": 1,
+	"maxMycelium": 2
+},
+
 "insect_0": {
 	"currentTile": "t0",
-	"speed": 2,
+	"speed": 1,
 	"canCut": true,
+},
+
+"insect_1": {
+	"currentTile": "t0",
+	"speed": 3,
+	"canCut": true,
+},
+
+"slowspore_0": {
+	"currentTile": t0,
+	"isConsumed": true
+},
+
+"speedupspore_0": {
+	"currentTile": t0,
+	"isConsumed": true
 }

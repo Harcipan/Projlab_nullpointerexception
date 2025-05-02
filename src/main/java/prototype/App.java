@@ -6,13 +6,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 import entities.GameEntity;
-import entities.Insect;
 import map.Map;
 import player.*;
-import use_cases.UseCase;
 
 public class App {
-    boolean running = true;
+    static boolean running = true;
     CommandList commands;
     CommandParser commandParser;
     GameData gameData;  //data store for writing to file
@@ -100,11 +98,11 @@ public class App {
         this.map = map;
     }
 
-    public void start(){
+    public static void start(){
         running = true;
     }
 
-    public void stop(){
+    public static void stop(){
         running = false;
     }
 
@@ -134,6 +132,10 @@ public class App {
             }
         }
 
+        printExitMessage();
+    }
+
+    public static void printExitMessage() {
         //A nagyrészét Claude AI adta nekem... additions are welcome :)
         String[] haha = {
             "Goodbye!",
@@ -161,5 +163,4 @@ public class App {
         Random rand = new Random();
         System.out.println(haha[rand.nextInt(0, haha.length)]);
     }
-    
 }

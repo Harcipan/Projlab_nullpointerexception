@@ -1,6 +1,7 @@
 package graphics.presenters;
 
 import app.GameCoordinator; // Import the GameCoordinator class
+import prototype.App;
 
 /* This class acts as an intermediary between the GUI and the application logic.
  * The purpose is to follow the MVP (Model-View-Presenter) pattern, where this class serves as the Presenter.
@@ -32,6 +33,12 @@ public class MainMenuPresenter {
         System.out.println("MainMenuPresenter: Handling 'Options' action.");
         // Delegate showing options to the coordinator
         coordinator.showOptionsScreen();
+    }
+
+    public void onTesterClicked() {
+        System.out.println("MainMenuPresenter: Handling 'Tester' action.");
+        App app = new App();
+        app.run();
     }
 
     public void onExitClicked() {

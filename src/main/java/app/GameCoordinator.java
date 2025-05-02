@@ -4,6 +4,7 @@ import graphics.PanelRenderer;
 import graphics.presenters.*;
 import graphics.strategies.*;
 import map.Map;
+import prototype.App;
 
 import javax.swing.JFrame;
 import java.awt.Dimension;
@@ -70,7 +71,15 @@ public class GameCoordinator {
     }
 
     public void exitApplication() {
-        // TODO: Implement exit logic
+        System.out.println("GameCoordinator: Exiting application...");
+        if (mainFrame != null) {
+            mainFrame.dispose(); // Close the main frame
+            System.out.println("GameCoordinator: Main frame disposed.");
+        } else {
+            System.err.println("mainFrame is null. No idea how this happened.");
+        }
+        App.stop(); // Stop and exit the application
+        App.printExitMessage();
     }
 
     public void showMainMenu() {

@@ -2,6 +2,7 @@ package graphics.strategies;
 
 import graphics.customUIElements.CustomButton; // Import your Button class
 import graphics.presenters.MainMenuPresenter;
+import prototype.App;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -46,8 +47,9 @@ public class MainMenuStrategy extends AbstractRenderStrategy {
         this.presenter = presenter;
 
         buttons.add(new CustomButton("Start Game", 200, 150, 200, 40));
-        buttons.add(new CustomButton("Options", 200, 200, 200, 40));
-        buttons.add(new CustomButton("Exit", 200, 250, 200, 40));
+        buttons.add(new CustomButton("Tester", 200, 200, 200, 40));
+        buttons.add(new CustomButton("Options", 200, 250, 200, 40));
+        buttons.add(new CustomButton("Exit", 200, 300, 200, 40));
     }
 
     @Override
@@ -127,6 +129,9 @@ public class MainMenuStrategy extends AbstractRenderStrategy {
                 break;
             case "Options":
                 presenter.onOptionsClicked();
+                break;
+            case "Tester":
+                presenter.onTesterClicked();
                 break;
             case "Exit":
                 presenter.onExitClicked();

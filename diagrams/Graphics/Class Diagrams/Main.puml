@@ -1,0 +1,179 @@
+@startuml
+
+skinparam groupInheritance 3
+skinparam linetype ortho
+
+/'
+Bizonyos részleteket mint pl. Interactable-nél az állapotváltozókat kihagytam
+mivel az "túlságosan a részletekbe menne", elvesztené a class diagram jellegét,
+ami az osztályok közötti viszonyokat mutatja meg, nem igazán azt, hogy mit hogyan
+csinál egy adott osztály, mint például az állapot elmentést.
+A getter-setter párosokhoz mindig tartozik egy mező vagy asszociáció. Ez azért is 
+van, hogy ne is legyen az kérdés, hogy MIÉRT van ott az a getter v. getter-setter 
+páros.
+Bizonyos mezők mégis megmaradnak, mint x, y az Interactable-nál. Ez azért is van,
+mivel segít az Interactable lényegének megértéséhez, ami egy UI widget 
+("customUIElements") ősosztálya.
+
+TL;DR hogy mi és mi nem kerül be az művészi kérdés. Igazándiból a fő 
+kérdés az, hogy mennyire segít megérteni az osztályt az adott metódus,
+mező.
+'/
+
+package "Class diagram for graphics subsystem" #e9e8eb {
+    package "Custom UI elements" #e9ffff {
+        class Interactable{
+            # x : int
+            # y : int 
+            # width : int
+            # height : int 
+            # isPressed : boolean
+            # isHovered : boolean
+            # bounds : Rectangle
+
+            + beforeDraw(g2d : Graphics2D)
+            + afterDraw(g2d : Graphics2D)
+
+            + setPressed(pressed : boolean)
+            + isPressed() : boolean
+            + setHovered(hovered : boolean)
+            + isHovered() : boolean
+        }
+        
+        class CustomButton{
+            - text : String
+
+            + draw(g2d : Graphics2D)
+
+            + contains(x : int, y : int) : boolean
+
+            + getText() : String
+        }
+
+        Interactable <|-- CustomButton
+
+        interface CursorBlinkListener {
+            + onCursorBlink(showCursor : boolean)
+        }
+
+        class CustomTextField{
+            - text : String
+            - focused : boolean
+            - onEnterCallback : Runnable
+            
+            + draw(g2d : Graphics2D)
+
+            + handleKeyPress(e : KeyEvent)
+            + contains(x : int, y : int) : boolean
+
+            + getText() : String
+            + setText(text : String)
+            + isFocused() : boolean
+            + setFocused(focused : boolean)
+            + getBounds() : Rectangle
+            + setBounds(bounds : Rectangle)
+            + setOnEnterCallback(callback : Runnable)
+            + setCursorBlinkListener(listener: CursorBlinkListener)
+        }
+
+        Interactable <|-- CustomTextField
+        CursorBlinkListener "0..1" -- CustomTextField : < has a handle to
+        GameCoordinator "1" -- CustomTextField : < has a handle to
+
+        class CustomPlayerList {
+            {static} + draw(g2d : Graphics2D, players : List<PlayerInfo>, playerTextFields : List<CustomTextField>, bounds : Rectangle)
+            
+            {static} + getPlayerIndexAt(mouseY : int, bounds : Rectangle, playerCount : int) : int
+        }
+    }
+
+
+
+
+
+    package "Strategies" #e9ffff {
+        interface IRenderStrategy{
+            + render(g2d : Graphics2D, dimension : Dimension)
+
+            + updateHover(mouseX : int, mouseY : int)
+            + handlePress(mouseX : int, mouseY : int)
+            + handleRelease(mouseX : int, mouseY : int) : Interactable
+
+            + getTextFields() : List<CustomTextField>
+        }
+
+        abstract class AbstractRenderStrategy {
+            {abstract} + render(g2d : Graphics2D, dimension : Dimension)
+            {abstract} # onButtonClicked(btn : CustomButton)
+
+            + updateHover(mouseX : int, mouseY : int)
+            + handlePress(mouseX : int, mouseY : int)
+            + handleRelease(mouseX : int, mouseY : int) : Interactable
+
+            + getTextFields() : List<CustomTextField>
+        }
+
+        IRenderStrategy <|.. AbstractRenderStrategy : realizes
+
+        CustomButton "0..*" -- AbstractRenderStrategy : < owns
+        CustomTextField "0..*" -- AbstractRenderStrategy : < owns
+
+        class InGameStrategy {
+            + render (g2d : Graphics2D, dimension : Dimension)
+            - drawGameMap(g2d : Graphics2D, dimension : Dimension)
+            - drawHUD(g2d : Graphics2D, dimension : Dimension)
+
+            # onButtonClicked (btn : CustomButton)
+        }
+
+        AbstractRenderStrategy <|-- InGameStrategy
+        InGamePresenter "1" -- InGameStrategy : < owns
+
+        class MainMenuStrategy {
+            + render (g2d : Graphics2D, dimension : Dimension)
+            - drawBackground(g2d : Graphics2D, dimension : Dimension)
+            - drawAnimation(g2d : Graphics2D, dimension : Dimension)
+            - drawTitle(g2d : Graphics2D, dimension : Dimension)
+            - drawFooterCredits(g2d : Graphics2D, dimension : Dimension)
+            - drawButtons(g2d : Graphics2D, dimension : Dimension)
+            
+            # onButtonClicked (btn : CustomButton)
+        }
+
+        AbstractRenderStrategy <|-- MainMenuStrategy
+        MainMenuPresenter "1" -- MainMenuStrategy : < owns
+
+
+        class NewGameSetupStrategy {
+            + render (g2d : Graphics2D, dimension : Dimension)
+            
+            # onButtonClicked (btn : CustomButton)
+            + handleKeyPressEvent(e : KeyEvent)
+        }
+
+        AbstractRenderStrategy <|-- NewGameSetupStrategy
+        NewGameSetupPresenter "1" -- NewGameSetupStrategy : < owns
+        CustomButton -- NewGameSetupStrategy : < owns and draws
+        CustomTextField -- NewGameSetupStrategy : < owns and draws
+    }
+
+
+    package "Presenters" #e9ffff{
+        class InGamePresenter {
+
+        }
+        GameCoordinator "1" -- InGamePresenter : < has a handle to
+
+        class MainMenuPresenter {
+
+        }
+        GameCoordinator "1" -- MainMenuPresenter : < has a handle to
+
+        class NewGameSetupPresenter {
+
+        }
+        GameCoordinator "1" -- NewGameSetupPresenter : < has a handle to
+    }
+}
+
+@enduml

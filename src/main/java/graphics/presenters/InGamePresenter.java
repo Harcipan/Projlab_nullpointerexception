@@ -17,18 +17,6 @@ public class InGamePresenter {
         this.coordinator = coordinator;
     }
 
-    // Called by the view when the Pause button is clicked
-    public void onPauseClicked() {
-        System.out.println("InGamePresenter: Pause clicked");
-        // TODO: Implement pause logic, e.g., coordinator.pauseGame();
-    }
-
-    // Called by the view when the Save button is clicked
-    public void onSaveClicked() {
-        System.out.println("InGamePresenter: Save clicked");
-        // TODO: Implement save logic, e.g., coordinator.saveGame();
-    }
-
     // Called by the view to get the current score
     public int getScore() {
         return score;
@@ -45,5 +33,9 @@ public class InGamePresenter {
 
     public int getMapSize() {
         return coordinator.getMapSize();
+    }
+
+    public int getHUDWidth() {
+        return coordinator.getHUDWidth(); // Get the HUD width from the coordinator
     }
 }

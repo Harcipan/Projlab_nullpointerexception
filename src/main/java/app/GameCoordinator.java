@@ -17,6 +17,10 @@ public class GameCoordinator {
     public void setFrame(JFrame frame) { this.mainFrame = frame; }
     public void setPanelRenderer(PanelRenderer renderer) { this.panelRenderer = renderer; }
 
+    final int HUD_WIDTH = 350;
+    final int GAME_WINDOW_WIDTH = 1024 + HUD_WIDTH;
+    final int GAME_WINDOW_HEIGHT = 1024;
+
     /**
      * Starts the application by showing the main menu.
      */
@@ -65,10 +69,10 @@ public class GameCoordinator {
 
         // Always pack and center the frame to force resize
         if (mainFrame != null) {
-            mainFrame.setPreferredSize(new Dimension(1024, 1024));
-            mainFrame.setMinimumSize(new Dimension(1024, 1024));
-            mainFrame.setMaximumSize(new Dimension(1024, 1024));
-            mainFrame.setSize(1024, 1024);
+            mainFrame.setPreferredSize(new Dimension(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT));
+            mainFrame.setMinimumSize(new Dimension(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT));
+            mainFrame.setMaximumSize(new Dimension(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT));
+            mainFrame.setSize(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
             panelRenderer.revalidate();
             mainFrame.pack();
             mainFrame.setLocationRelativeTo(null);
@@ -169,5 +173,17 @@ public class GameCoordinator {
         } 
         
         return ret;
+    }
+
+    public int getWindowWidth() {
+        return mainFrame != null ? mainFrame.getWidth() : 0;
+    }
+
+    public int getWindowHeight() {
+        return mainFrame != null ? mainFrame.getHeight() : 0;
+    }
+
+    public int getHUDWidth() {
+        return HUD_WIDTH;
     }
 }

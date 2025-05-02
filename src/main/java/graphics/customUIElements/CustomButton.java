@@ -1,6 +1,10 @@
 package graphics.customUIElements;
 
 import java.awt.*; // Import necessary AWT classes (Graphics2D, Color, Font, FontMetrics, Rectangle)
+import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
 
 /*
  * This button is a custom UI element that can be used in various parts of the application.
@@ -17,10 +21,32 @@ public class CustomButton extends Interactable {
     private Color textColor = Color.BLACK;
     private Font textFont = new Font("Arial", Font.BOLD, 14);
 
+    private BufferedImage image = null;
 
     public CustomButton(String text, int x, int y, int width, int height) {
         super(x, y, width, height); // Call the constructor of Interactable
         this.text = text;
+    }
+
+    /**
+     * Sets the image for the button using a file path.
+     * @param imagePath The path to the image file.
+     */
+    public void setImage(String imagePath) {
+        try {
+            image = ImageIO.read(new File(imagePath));
+        } catch (IOException e) {
+            System.err.println("CustomButton: Could not load image: " + imagePath);
+            image = null;
+        }
+    }
+
+    /**
+     * Sets the image for the button using a BufferedImage.
+     * @param img The BufferedImage to set.
+     */
+    public void setImage(BufferedImage img) {
+        this.image = img;
     }
 
     /**
@@ -49,7 +75,18 @@ public class CustomButton extends Interactable {
         g2d.setColor(Color.BLACK);
         g2d.drawRect(x, y, width, height);
 
-        // Draw text centered
+        // Draw image if present
+        if (image != null) {
+            int imgW = image.getWidth();
+            int imgH = image.getHeight();
+            int drawW = Math.min(imgW, width - 8);
+            int drawH = Math.min(imgH, height - 8);
+            int imgX = x + (width - drawW) / 2;
+            int imgY = y + (height - drawH) / 2;
+            g2d.drawImage(image, imgX, imgY, drawW, drawH, null);
+        }
+
+        // Draw text centered (over image if present)
         g2d.setColor(textColor);
         g2d.setFont(textFont);
         FontMetrics fm = g2d.getFontMetrics();

@@ -53,6 +53,20 @@ public class NewGameSetupPresenter {
        }
    }
 
+    /**
+     * Toggles the player type (FUNGUS <-> INSECT) for the player at the given index.
+     */
+    public void togglePlayerType(int playerIndex) {
+        if (playerIndex >= 0 && playerIndex < players.size()) {
+            PlayerInfo oldInfo = players.get(playerIndex);
+            PlayerType newType = (oldInfo.type() == PlayerType.FUNGUS) ? PlayerType.INSECT : PlayerType.FUNGUS;
+            players.set(playerIndex, new PlayerInfo(oldInfo.name(), newType));
+            System.out.println("NewGameSetupPresenter: Toggled player " + playerIndex + " type to: " + newType);
+        } else {
+            System.err.println("NewGameSetupPresenter: Invalid player index for type toggle: " + playerIndex);
+        }
+    }
+
     public void setMapSize(int size) {
         if (size == 32 || size == 64) {
             System.out.println("NewGameSetupPresenter: Map size set to: " + size);

@@ -25,7 +25,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
         this.presenter = presenter;
 
         try {
-            backgroundImage = ImageIO.read(new File("res/32bg.png"));
+            backgroundImage = ImageIO.read(new File("res/backgrounds/32bg.png"));
         } catch (IOException e) {
             System.err.println("Could not load background image: res/32bg.png");
             backgroundImage = null;

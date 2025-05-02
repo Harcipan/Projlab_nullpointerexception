@@ -8,6 +8,7 @@ import prototype.App;
 
 import javax.swing.JFrame;
 import java.awt.Dimension;
+import java.util.List;
 
 public class GameCoordinator {
     private JFrame mainFrame;
@@ -32,9 +33,20 @@ public class GameCoordinator {
         showMainMenu(); // Delegate to showMainMenu for clarity
     }
 
-    public void startGame() {
+    public void startGame(int mapSize, List<PlayerInfo> players, String saveName) {
         // invoke the InGamePresenter and set the render strategy to InGameStrategy
         System.out.println("GameCoordinator: Starting game...");
+
+        // Create the game map based on the selected size
+        if (mapSize == 32) {
+            gameMap = new Map(32, 32); // Create a 32x32 map
+        } else if (mapSize == 64) {
+            gameMap = new Map(64, 64); // Create a 64x64 map
+        } else {
+            System.err.println("GameCoordinator Error: Invalid map size. Cannot start game.");
+            return;
+        }
+
         if (panelRenderer == null) {
             System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot start game.");
             return;
@@ -147,7 +159,7 @@ public class GameCoordinator {
             return -1; // or some default value
         } 
         
-        if (gameMap.getWidth() != 64 && gameMap.getWidth() != 32) {
+        if (!(gameMap.getWidth() != 64 || gameMap.getWidth() != 32)) {
             System.err.println("GameCoordinator Error: Map size is not 32 or 64. Cannot get map size.");
             return -1; // or some default value
         } 

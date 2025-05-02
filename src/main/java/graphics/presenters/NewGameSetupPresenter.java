@@ -12,7 +12,7 @@ public class NewGameSetupPresenter {
     private GameCoordinator coordinator;
     private List<PlayerInfo> players;
     private String saveName = "MyGame"; // Default save name
-    private int mapSize = 128; // Default map size
+    private int mapSize = 32; // Default map size
 
     public NewGameSetupPresenter(GameCoordinator coordinator) {
         this.coordinator = coordinator;
@@ -68,7 +68,7 @@ public class NewGameSetupPresenter {
         // Tell coordinator to start the game with the chosen settings
         // coordinator.startGame(currentSettings);
         System.out.println("NewGameSetupPresenter: Requesting game start (actual settings TBD).");
-        coordinator.startGame(); // Using parameterless startGame for now
+        coordinator.startGame(mapSize, players, saveName); // Pass the map size, players, and save name to the coordinator
     }
 
     public void onBackToMainMenuClicked() {

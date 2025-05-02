@@ -6,6 +6,7 @@ import app.PlayerInfo;
 
 import graphics.customUIElements.CustomPlayerList;
 import graphics.customUIElements.CustomTextField;
+import graphics.customUIElements.Interactable;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -24,6 +25,7 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
     private CustomTextField saveNameField;
 
     private List<CustomTextField> playerTextFields = new ArrayList<>();
+    private List<CustomButton> playerIconButtons = new ArrayList<>();
     private int focusedPlayerIndex = -1;
 
     private static final int PLAYER_LIST_X = 30;
@@ -58,6 +60,7 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
 
     private void syncPlayerTextFields() {
         List<PlayerInfo> players = presenter.getPlayers();
+        // Sync text fields
         while (playerTextFields.size() < players.size()) {
             int index = playerTextFields.size();
             PlayerInfo player = players.get(index);
@@ -66,6 +69,20 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
             newPlayerField.setOnEnterCallback(() -> updatePlayerNameFromField(index));
             playerTextFields.add(newPlayerField);
             textFields.add(newPlayerField);
+        }
+        // Remove extra fields if players were removed
+        while (playerTextFields.size() > players.size()) {
+            playerTextFields.remove(playerTextFields.size() - 1);
+        }
+        // Sync icon buttons
+        playerIconButtons.clear();
+        for (int i = 0; i < players.size(); i++) {
+            int itemY = playerListBounds.y + (i * 25); // ITEM_HEIGHT
+            int iconX = playerListBounds.x + 5; // PADDING
+            int iconY = itemY + (25 - 15) / 2; // ITEM_HEIGHT - ICON_SIZE
+            CustomButton iconBtn = new CustomButton("", iconX, iconY, 15, 15);
+            iconBtn.setImage(graphics.customUIElements.CustomPlayerList.getIconForType(players.get(i).type()));
+            playerIconButtons.add(iconBtn);
         }
     }
 
@@ -100,7 +117,13 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
         g2d.drawString("Players", PLAYER_LIST_X, PLAYER_LIST_Y - 10);
 
         List<PlayerInfo> players = presenter.getPlayers();
-        // Pass playerTextFields instead of the general textFields list
+        // Draw icon buttons and text fields for each player
+        for (int i = 0; i < players.size(); i++) {
+            CustomButton iconBtn = playerIconButtons.get(i);
+            // Update icon image in case type changed
+            iconBtn.setImage(graphics.customUIElements.CustomPlayerList.getIconForType(players.get(i).type()));
+            iconBtn.draw(g2d);
+        }
         CustomPlayerList.draw(g2d, players, playerTextFields, playerListBounds);
 
         addPlayerButton.draw(g2d);
@@ -151,6 +174,68 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
         } else if (btn == backButton) {
             presenter.onBackToMainMenuClicked();
         }
+    }
+
+    @Override
+    public void updateHover(int mouseX, int mouseY) {
+        for (CustomButton btn : buttons) {
+            btn.setHovered(btn.contains(mouseX, mouseY));
+        }
+        for (CustomTextField textField : textFields) {
+            textField.setHovered(textField.contains(mouseX, mouseY));
+        }
+        for (CustomButton iconBtn : playerIconButtons) {
+            iconBtn.setHovered(iconBtn.contains(mouseX, mouseY));
+        }
+    }
+
+    @Override
+    public void handlePress(int mouseX, int mouseY) {
+        for (CustomButton btn : buttons) {
+            if (btn.contains(mouseX, mouseY)) {
+                btn.setPressed(true);
+                break; // Only press one button
+            }
+        }
+        for (CustomTextField textField : textFields) {
+            if (textField.contains(mouseX, mouseY)) {
+                textField.setFocused(true); // Set focused state for text field
+            } else {
+                textField.setFocused(false); // Reset other fields
+            }
+        }
+        for (CustomButton iconBtn : playerIconButtons) {
+            if (iconBtn.contains(mouseX, mouseY)) {
+                iconBtn.setPressed(true);
+            } else {
+                iconBtn.setPressed(false);
+            }
+        }
+    }
+
+    @Override
+    public Interactable handleRelease(int mouseX, int mouseY) {
+        Interactable clickedInteractable = null;
+        for (CustomButton btn : buttons) {
+            if (btn.contains(mouseX, mouseY)) {
+                clickedInteractable = btn;
+                onButtonClicked(btn);
+            }
+            btn.setPressed(false);
+        }
+        for (int i = 0; i < playerIconButtons.size(); i++) {
+            CustomButton iconBtn = playerIconButtons.get(i);
+            if (iconBtn.contains(mouseX, mouseY)) {
+                presenter.togglePlayerType(i);
+                syncPlayerTextFields();
+                if (presenter.getCoordinator() != null) {
+                    presenter.getCoordinator().initiateRepaint();
+                }
+            }
+            iconBtn.setPressed(false);
+        }
+        // For text fields, the highlight state is not handled here
+        return clickedInteractable;
     }
 
     public void handleKeyPressEvent(KeyEvent e) {

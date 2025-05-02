@@ -34,6 +34,16 @@ public class CustomPlayerList {
     }
 
     /**
+     * Exposes the correct icon for a given PlayerType.
+     *
+     * @param type The PlayerType for which the icon is needed.
+     * @return The BufferedImage representing the icon.
+     */
+    public static BufferedImage getIconForType(PlayerType type) {
+        return type == PlayerType.FUNGUS ? FUNGUS_ICON : INSECT_ICON;
+    }
+
+    /**
      * Draws the player list using CustomTextFields for names.
      *
      * @param g2d             The Graphics2D context to draw on.
@@ -84,7 +94,7 @@ public class CustomPlayerList {
             int textFieldHeight = ITEM_HEIGHT - PADDING; // Use padding top/bottom
 
             // Draw icon using the loaded images
-            BufferedImage icon = player.type() == PlayerType.FUNGUS ? FUNGUS_ICON : INSECT_ICON;
+            BufferedImage icon = getIconForType(player.type());
             g2d.drawImage(icon, iconX, iconY, ICON_SIZE, ICON_SIZE, null);
 
             // Configure and draw the text field

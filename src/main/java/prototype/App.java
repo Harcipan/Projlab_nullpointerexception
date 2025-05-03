@@ -11,6 +11,8 @@ import player.*;
 
 public class App {
     static boolean running = true;
+    static List<InsectPlayer> insectPlayers = new ArrayList<>();
+    static List<FungusPlayer> fungusPlayers = new ArrayList<>();
     CommandList commands;
     CommandParser commandParser;
     GameData gameData;  //data store for writing to file
@@ -18,13 +20,7 @@ public class App {
     int currentTurn = 0;
     int maxTurns = 1000; //max turns for the game, if it reaches this, the game ends
 
-    static List<InsectPlayer> insectPlayers;
-    static List<FungusPlayer> fungusPlayers;
-
     public App() { //app inicialization so loggers work
-        insectPlayers = new ArrayList<InsectPlayer>();
-
-        fungusPlayers = new ArrayList<FungusPlayer>();
     }
 
     public void reset(){

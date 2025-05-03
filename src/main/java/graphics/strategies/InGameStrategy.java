@@ -79,7 +79,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
 
         // display current turn and active player
         g2d.setFont(new Font("Arial", Font.PLAIN, 16));
-        g2d.drawString("Turn: " + presenter.getCurrentTurn(), 30, 40);
+        g2d.drawString("Turn: " + (int)(Math.floor((double)presenter.getCurrentTurn() / presenter.getPlayers().size())+1), 30, 40);
         java.util.List<PlayerInfo> _playersInfo = presenter.getPlayers();
         if (!_playersInfo.isEmpty()) {
             PlayerInfo _current = _playersInfo.get(presenter.getCurrentTurn() % _playersInfo.size());
@@ -148,17 +148,6 @@ public class InGameStrategy extends AbstractRenderStrategy {
             g2d.setColor(Color.GREEN);
             g2d.fillRect(presenter.getHUDWidth(), 0, dimension.width - presenter.getHUDWidth(), dimension.height);
         }
-        int mapSize = presenter.getMapSize();
-        for (int y = 0; y < mapSize; y++) {
-            for (int x = 0; x < mapSize; x++) {
-                int drawX = presenter.getHUDWidth() + x * TILE_SIZE;
-                int drawY = y * TILE_SIZE;
-                g2d.setColor(Color.LIGHT_GRAY);
-                g2d.fillRect(drawX, drawY, TILE_SIZE, TILE_SIZE);
-                g2d.setColor(Color.BLACK);
-                g2d.drawRect(drawX, drawY, TILE_SIZE, TILE_SIZE);
-            }
-        }
     }
 
     @Override
@@ -181,9 +170,25 @@ public class InGameStrategy extends AbstractRenderStrategy {
     @Override
     public void handlePress(int mouseX, int mouseY) {
         if (presenter.isPlacementPhase()) {
-            // Place character for current player at mouseX, mouseY
-            // TODO: Implement placement logic (e.g., check tile, update state, advance player)
-            // Example: presenter.placeCharacterAt(new Point(mouseX, mouseY));
+            int gridX = (mouseX - presenter.getHUDWidth()) / TILE_SIZE;
+            int gridY = mouseY / TILE_SIZE;
+            int mapSize = presenter.getMapSize();
+            if (gridX >= 0 && gridY >= 0 && gridX < mapSize && gridY < mapSize) {
+                PlayerInfo player = presenter.getPlayers().get(presenter.getPlacingPlayerIndex());
+                String entityType = player.type() == PlayerType.FUNGUS ? "FungusEntity" : "InsectEntity";
+                System.out.println("Placing " + entityType + " for player '" + player.name() + "' at tile (" + gridX + ", " + gridY + ")");
+                // TODO: Actually create and add the entity to the game model here
+                // Increment turn after placement
+                presenter.getCoordinator().setCurrentTurn(presenter.getCoordinator().getCurrentTurn() + 1);
+                int next = presenter.getPlacingPlayerIndex() + 1;
+                if (next >= presenter.getPlayers().size()) {
+                    presenter.setPlacementPhase(false);
+                    presenter.setPlacingPlayerIndex(0);
+                    presenter.setPlacementHover(null);
+                } else {
+                    presenter.setPlacingPlayerIndex(next);
+                }
+            }
         } else {
             super.handlePress(mouseX, mouseY);
         }

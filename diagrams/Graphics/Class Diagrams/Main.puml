@@ -1,4 +1,4 @@
-@startuml
+@startuml Main
 
 skinparam groupInheritance 3
 skinparam linetype ortho
@@ -19,7 +19,7 @@ TL;DR hogy mi és mi nem kerül be az művészi kérdés. Igazándiból a fő
 kérdés az, hogy mennyire segít megérteni az osztályt az adott metódus,
 mező.
 '/
-package app{
+package "App" as app{
     struct PlayerInfo
     class GameCoordinator
 }
@@ -102,7 +102,7 @@ package "Graphics" as graphics #f5ffff{
         }
     }
 
-    package presenters{
+    package "Presenters" as presenters{
         class InGamePresenter
         class MainMenuPresenter
         class NewGameSetupPresenter
@@ -256,7 +256,7 @@ package "Graphics" as graphics #f5ffff{
     IRenderStrategy "0..1" -- PanelRenderer : < currentRendererStrategy
 }
 
-package "App"as app #e9ffff {
+package "App" as app #e9ffff {
     enum PlayerType{
         FUNGUS
         INSECT

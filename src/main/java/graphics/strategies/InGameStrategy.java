@@ -2,6 +2,8 @@ package graphics.strategies;
 
 import graphics.customUIElements.CustomButton;
 import graphics.presenters.InGamePresenter;
+import app.PlayerInfo;
+import app.PlayerType;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +11,29 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class InGameStrategy extends AbstractRenderStrategy {
 
     private InGamePresenter presenter;
     private BufferedImage backgroundImage;
+    private CustomButton nextTurnButton;
 
     private static final int TILE_SIZE = 32;
+    private static final int PLAYER_ICON_SIZE = 40;
+    private static final int PLAYER_ICON_GAP = 18;
+    private static final int PLAYER_ICON_START_Y = 70;
+    private static BufferedImage FUNGUS_ICON;
+    private static BufferedImage INSECT_ICON;
+
+    static {
+        try {
+            FUNGUS_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon.png").toFile());
+            INSECT_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon.png").toFile());
+        } catch (IOException e) {
+            System.err.println("Could not load player icons");
+        }
+    }
 
     public InGameStrategy(InGamePresenter presenter) {
         if (presenter == null) {
@@ -29,6 +47,13 @@ public class InGameStrategy extends AbstractRenderStrategy {
             System.err.println("Could not load background image: res/32bg.png");
             backgroundImage = null;
         }
+
+        int btnWidth = 180;
+        int btnHeight = 40;
+        int btnX = 30;
+        int btnY = 600; // Will be adjusted dynamically in drawLeftPanel
+        nextTurnButton = new CustomButton("Next Turn", btnX, btnY, btnWidth, btnHeight);
+        buttons.add(nextTurnButton);
     }
 
     @Override
@@ -43,7 +68,37 @@ public class InGameStrategy extends AbstractRenderStrategy {
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 20));
         g2d.drawString("Info Panel", 30, 40);
-        // You can add more info or UI elements here later
+
+        // Draw player icons horizontally
+        java.util.List<PlayerInfo> players = presenter.getPlayers();
+        int currentTurn = presenter.getCurrentTurn();
+        int iconX = 30;
+        int iconY = PLAYER_ICON_START_Y;
+        int iconSpacing = PLAYER_ICON_SIZE + 24;
+        for (int i = 0; i < players.size(); i++) {
+            PlayerInfo player = players.get(i);
+            BufferedImage icon = player.type() == PlayerType.FUNGUS ? FUNGUS_ICON : INSECT_ICON;
+            // Highlight current player
+            if (i == currentTurn) {
+                g2d.setColor(Color.RED);
+                g2d.setStroke(new BasicStroke(3));
+                g2d.drawRect(iconX - 4, iconY - 4, PLAYER_ICON_SIZE + 8, PLAYER_ICON_SIZE + 8);
+            }
+            g2d.drawImage(icon, iconX, iconY, PLAYER_ICON_SIZE, PLAYER_ICON_SIZE, null);
+            g2d.setColor(Color.WHITE);
+            g2d.setFont(new Font("Arial", Font.PLAIN, 13));
+            g2d.drawString(player.name(), iconX, iconY + PLAYER_ICON_SIZE + 16);
+            iconX += iconSpacing;
+        }
+
+        // --- Draw Next Turn button at the left bottom ---
+        int btnMargin = 30;
+        int btnWidth = nextTurnButton.getBounds().width;
+        int btnHeight = nextTurnButton.getBounds().height;
+        int btnX = btnMargin;
+        int btnY = dimension.height - btnHeight - btnMargin;
+        nextTurnButton.setBounds(btnX, btnY, btnWidth, btnHeight);
+        nextTurnButton.draw(g2d);
     }
 
     private void drawGameMap(Graphics2D g2d, Dimension dimension) {
@@ -69,6 +124,12 @@ public class InGameStrategy extends AbstractRenderStrategy {
 
     @Override
     protected void onButtonClicked(CustomButton btn) {
-        // No buttons to handle in the in-game strategy
+        if (btn == nextTurnButton) {
+            // Advance turn
+            int playerCount = presenter.getPlayers().size();
+            int nextTurn = (presenter.getCurrentTurn() + 1) % playerCount;
+            presenter.getCoordinator().setCurrentTurn(nextTurn);
+            presenter.getCoordinator().initiateRepaint();
+        }
     }
 }

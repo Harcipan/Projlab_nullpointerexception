@@ -38,9 +38,8 @@ public interface IRenderStrategy {
      *
      * @param mouseX The X coordinate of the mouse.
      * @param mouseY The Y coordinate of the mouse.
-     * @return The button that was pressed, if any.
      */
-    public void handlePress(int mouseX, int mouseY);
+    void handlePress(int mouseX, int mouseY);
 
     /**
      * Handles mouse release events.
@@ -52,4 +51,4 @@ public interface IRenderStrategy {
     public Interactable handleRelease(int mouseX, int mouseY);
 
     public List<CustomTextField> getTextFields(); // Added to get the list of text fields
-}  
+}

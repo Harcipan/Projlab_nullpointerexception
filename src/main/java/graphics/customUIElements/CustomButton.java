@@ -118,5 +118,17 @@ public class CustomButton extends Interactable {
         return text;
     }
 
+    public Rectangle getBounds() {
+        return bounds;
+    }
+
+    public void setBounds(int x, int y, int width, int height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.bounds = new Rectangle(x, y, width, height);
+    }
+
     // Optional: Add setters for colors/font if needed
 }

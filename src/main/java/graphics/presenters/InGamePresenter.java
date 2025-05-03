@@ -1,6 +1,8 @@
 package graphics.presenters;
 
 import app.GameCoordinator;
+import app.PlayerInfo;
+import java.util.List;
 
 /**
  * InGamePresenter acts as the Presenter in the MVP pattern for the in-game view.
@@ -37,5 +39,13 @@ public class InGamePresenter {
 
     public int getHUDWidth() {
         return coordinator.getHUDWidth(); // Get the HUD width from the coordinator
+    }
+
+    public List<PlayerInfo> getPlayers() {
+        return coordinator.getPlayers();
+    }
+
+    public int getCurrentTurn() {
+        return coordinator.getCurrentTurn();
     }
 }

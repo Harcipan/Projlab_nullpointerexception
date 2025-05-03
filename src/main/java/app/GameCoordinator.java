@@ -14,6 +14,9 @@ public class GameCoordinator {
     private JFrame mainFrame;
     private PanelRenderer panelRenderer;
     private Map gameMap;
+    private List<PlayerInfo> players;
+    private int currentTurn;
+
     public void setFrame(JFrame frame) { this.mainFrame = frame; }
     public void setPanelRenderer(PanelRenderer renderer) { this.panelRenderer = renderer; }
 
@@ -50,6 +53,9 @@ public class GameCoordinator {
             System.err.println("GameCoordinator Error: Invalid map size. Cannot start game.");
             return;
         }
+
+        this.players = players;
+        this.currentTurn = 0; // Start with the first player
 
         if (panelRenderer == null) {
             System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot start game.");
@@ -185,5 +191,17 @@ public class GameCoordinator {
 
     public int getHUDWidth() {
         return HUD_WIDTH;
+    }
+
+    public List<PlayerInfo> getPlayers() {
+        return players;
+    }
+
+    public int getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void setCurrentTurn(int turn) {
+        this.currentTurn = turn;
     }
 }

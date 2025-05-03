@@ -126,7 +126,7 @@ public class MainMenuStrategy extends AbstractRenderStrategy {
             case "Start Game":
                 presenter.onStartGameClicked();
                 break;
-            case "Tester":
+            case "Open Console":
                 presenter.onTesterClicked();
                 break;
             case "Exit":

@@ -47,7 +47,7 @@ public class MainMenuStrategy extends AbstractRenderStrategy {
         this.presenter = presenter;
 
         buttons.add(new CustomButton("Start Game", 200, 150, 200, 40));
-        buttons.add(new CustomButton("Tester", 200, 200, 200, 40));
+        buttons.add(new CustomButton("Open Console", 200, 200, 200, 40));
         buttons.add(new CustomButton("Exit", 200, 250, 200, 40));
     }
 

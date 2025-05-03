@@ -69,34 +69,52 @@ public class InGameStrategy extends AbstractRenderStrategy {
         g2d.setFont(new Font("Arial", Font.BOLD, 20));
         g2d.drawString("Info Panel", 30, 40);
 
-        // Draw player icons horizontally
+        // Draw player icons in rows, wrapping if needed
         java.util.List<PlayerInfo> players = presenter.getPlayers();
         int currentTurn = presenter.getCurrentTurn();
+        int hudWidth = presenter.getHUDWidth();
         int iconX = 30;
         int iconY = PLAYER_ICON_START_Y;
-        int iconSpacing = PLAYER_ICON_SIZE + 24;
+        int iconSpacingX = PLAYER_ICON_SIZE + 24;
+        int iconSpacingY = PLAYER_ICON_SIZE + 24;
+        int iconsPerRow = Math.max(1, (hudWidth - 2 * iconX) / iconSpacingX);
+        int row = 0;
+        int col = 0;
         for (int i = 0; i < players.size(); i++) {
             PlayerInfo player = players.get(i);
             BufferedImage icon = player.type() == PlayerType.FUNGUS ? FUNGUS_ICON : INSECT_ICON;
+            int drawX = iconX + col * iconSpacingX;
+            int drawY = iconY + row * iconSpacingY;
             // Highlight current player
             if (i == currentTurn) {
                 g2d.setColor(Color.RED);
                 g2d.setStroke(new BasicStroke(3));
-                g2d.drawRect(iconX - 4, iconY - 4, PLAYER_ICON_SIZE + 8, PLAYER_ICON_SIZE + 8);
+                g2d.drawRect(drawX - 4, drawY - 4, PLAYER_ICON_SIZE + 8, PLAYER_ICON_SIZE + 8);
             }
-            g2d.drawImage(icon, iconX, iconY, PLAYER_ICON_SIZE, PLAYER_ICON_SIZE, null);
+            g2d.drawImage(icon, drawX, drawY, PLAYER_ICON_SIZE, PLAYER_ICON_SIZE, null);
             g2d.setColor(Color.WHITE);
             g2d.setFont(new Font("Arial", Font.PLAIN, 13));
-            g2d.drawString(player.name(), iconX, iconY + PLAYER_ICON_SIZE + 16);
-            iconX += iconSpacing;
+            g2d.drawString(player.name(), drawX, drawY + PLAYER_ICON_SIZE + 16);
+            col++;
+            if (col >= iconsPerRow) {
+                col = 0;
+                row++;
+            }
         }
-
-        // --- Draw Next Turn button at the left bottom ---
+        // Calculate Y position for Next Turn button
         int btnMargin = 30;
         int btnWidth = nextTurnButton.getBounds().width;
         int btnHeight = nextTurnButton.getBounds().height;
         int btnX = btnMargin;
-        int btnY = dimension.height - btnHeight - btnMargin;
+        int btnY = iconY + (row + (col > 0 ? 1 : 0)) * iconSpacingY + btnMargin;
+        // If no players, keep button at bottom
+        if (players.isEmpty()) {
+            btnY = dimension.height - btnHeight - btnMargin;
+        }
+        // Prevent button from overflowing panel
+        if (btnY + btnHeight + btnMargin > dimension.height) {
+            btnY = dimension.height - btnHeight - btnMargin;
+        }
         nextTurnButton.setBounds(btnX, btnY, btnWidth, btnHeight);
         nextTurnButton.draw(g2d);
     }

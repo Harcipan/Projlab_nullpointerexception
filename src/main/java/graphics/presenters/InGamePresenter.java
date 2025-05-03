@@ -2,6 +2,7 @@ package graphics.presenters;
 
 import app.GameCoordinator;
 import app.PlayerInfo;
+import java.awt.Point;
 import java.util.List;
 
 /**
@@ -10,6 +11,11 @@ import java.util.List;
  */
 public class InGamePresenter {
     private GameCoordinator coordinator;
+
+    // Placement phase state
+    private boolean placementPhase = true;
+    private int placingPlayerIndex = 0;
+    private Point placementHover = null;
 
     public InGamePresenter(GameCoordinator coordinator) {
         if (coordinator == null) {
@@ -36,5 +42,29 @@ public class InGamePresenter {
 
     public int getCurrentTurn() {
         return coordinator.getCurrentTurn();
+    }
+
+    public boolean isPlacementPhase() {
+        return placementPhase;
+    }
+
+    public void setPlacementPhase(boolean phase) {
+        this.placementPhase = phase;
+    }
+
+    public int getPlacingPlayerIndex() {
+        return placingPlayerIndex;
+    }
+
+    public void setPlacingPlayerIndex(int idx) {
+        this.placingPlayerIndex = idx;
+    }
+
+    public Point getPlacementHover() {
+        return placementHover;
+    }
+
+    public void setPlacementHover(Point p) {
+        this.placementHover = p;
     }
 }

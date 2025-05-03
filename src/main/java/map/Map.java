@@ -22,16 +22,17 @@ public class Map {
     int width; // Width of the map
     int height; // Height of the map
 
+    // WHY THE F*** DOES THIS EXIST?!?!?!?
+    public Map() {
+        this(100, 100); // Default size
+    }
+
     public Map(int width, int height) {
         replace(this);
         UseCase.printWrapper("Initializing Map as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         tektons = new ArrayList<>();
         tiles = new Tile[width][height]; // Example size, can be changed
         UseCase.printWrapper("Map: "+UseCase.logger.get(this), ArrowDirection.LEFT);
-    }
-
-    public Map() {
-        this(100, 100); // Default size
     }
 
     public int addTekton(Tekton tekton) {

@@ -60,6 +60,16 @@ public class InGameStrategy extends AbstractRenderStrategy {
     public void render(Graphics2D g2d, Dimension dimension) {
         drawLeftPanel(g2d, dimension);
         drawGameMap(g2d, dimension);
+        // Draw placement hover icon if in placement phase
+        if (presenter.isPlacementPhase() && presenter.getPlacementHover() != null) {
+            PlayerInfo player = presenter.getPlayers().get(presenter.getPlacingPlayerIndex());
+            BufferedImage icon = player.type() == PlayerType.FUNGUS ? FUNGUS_ICON : INSECT_ICON;
+            Point p = presenter.getPlacementHover();
+            Composite oldComp = g2d.getComposite();
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.5f));
+            g2d.drawImage(icon, p.x - PLAYER_ICON_SIZE / 2, p.y - PLAYER_ICON_SIZE / 2, PLAYER_ICON_SIZE, PLAYER_ICON_SIZE, null);
+            g2d.setComposite(oldComp);
+        }
     }
 
     private void drawLeftPanel(Graphics2D g2d, Dimension dimension) {
@@ -125,6 +135,8 @@ public class InGameStrategy extends AbstractRenderStrategy {
             btnY = dimension.height - btnHeight - btnMargin;
         }
         nextTurnButton.setBounds(btnX, btnY, btnWidth, btnHeight);
+        // Disable next turn button during placement phase
+        nextTurnButton.setEnabled(!presenter.isPlacementPhase());
         nextTurnButton.draw(g2d);
     }
 
@@ -155,6 +167,25 @@ public class InGameStrategy extends AbstractRenderStrategy {
             // Advance turn
             presenter.getCoordinator().setCurrentTurn(presenter.getCoordinator().getCurrentTurn() + 1);
             presenter.getCoordinator().initiateRepaint();
+        }
+    }
+
+    @Override
+    public void updateHover(int mouseX, int mouseY) {
+        super.updateHover(mouseX, mouseY);
+        if (presenter.isPlacementPhase()) {
+            presenter.setPlacementHover(new Point(mouseX, mouseY));
+        }
+    }
+
+    @Override
+    public void handlePress(int mouseX, int mouseY) {
+        if (presenter.isPlacementPhase()) {
+            // Place character for current player at mouseX, mouseY
+            // TODO: Implement placement logic (e.g., check tile, update state, advance player)
+            // Example: presenter.placeCharacterAt(new Point(mouseX, mouseY));
+        } else {
+            super.handlePress(mouseX, mouseY);
         }
     }
 }

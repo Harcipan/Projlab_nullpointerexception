@@ -4,6 +4,7 @@ import graphics.PanelRenderer;
 import graphics.presenters.*;
 import graphics.strategies.*;
 import map.Map;
+import map.Tekton;
 import prototype.App;
 
 import javax.swing.JFrame;
@@ -52,11 +53,21 @@ public class GameCoordinator
         // Create the game map based on the selected size
         if (mapSize == 32) {
             gameMap = new Map(32, 32); // Create a 32x32 map
+            // generate a tekton and assign tiles
         } else if (mapSize == 64) {
             gameMap = new Map(64, 64); // Create a 64x64 map
         } else {
             System.err.println("GameCoordinator Error: Invalid map size. Cannot start game.");
             return;
+        }
+
+        Tekton tek = new Tekton(gameMap);
+        // for every tile in the map, assign the tile to the tekton and its reverse
+        for (int i = 0; i < gameMap.getWidth(); i++) {
+            for (int j = 0; j < gameMap.getHeight(); j++) {
+                gameMap.getTile(i,j).setParentTekton(tek);
+                tek.addTile(gameMap.getTile(i,j));
+            }
         }
 
         this.players = players;

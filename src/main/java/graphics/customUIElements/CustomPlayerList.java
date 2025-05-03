@@ -1,7 +1,6 @@
 package graphics.customUIElements;
 
-import app.PlayerInfo;
-import app.PlayerType;
+import player.*;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -39,20 +38,20 @@ public class CustomPlayerList {
      * @param type The PlayerType for which the icon is needed.
      * @return The BufferedImage representing the icon.
      */
-    public static BufferedImage getIconForType(PlayerType type) {
-        return type == PlayerType.FUNGUS ? FUNGUS_ICON : INSECT_ICON;
+    public static BufferedImage getIconForType(Player player) {
+        return player instanceof FungusPlayer ? FUNGUS_ICON : INSECT_ICON;
     }
 
     /**
      * Draws the player list using CustomTextFields for names.
      *
      * @param g2d             The Graphics2D context to draw on.
-     * @param players         The list of PlayerInfo objects (used for icons).
+     * @param players         The list of Player objects (used for icons).
      * @param playerTextFields The list of CustomTextField objects corresponding to the players.
      * @param bounds          The Rectangle defining the area where the list should be drawn.
      * @param focusedPlayerIndex The index of the player/text field currently focused for editing (-1 if none).
      */
-    public static void draw(Graphics2D g2d, List<PlayerInfo> players, List<CustomTextField> playerTextFields, Rectangle bounds) {
+    public static void draw(Graphics2D g2d, List<Player> players, List<CustomTextField> playerTextFields, Rectangle bounds) {
         if (players == null || playerTextFields == null || bounds == null || players.size() != playerTextFields.size()) {
             System.err.println("CustomPlayerList.draw: Invalid input - lists null, mismatched, or bounds null.");
             return; // Or throw an exception
@@ -76,7 +75,7 @@ public class CustomPlayerList {
         g2d.clipRect(bounds.x + 1, bounds.y + 1, bounds.width - 2, bounds.height - 2);
 
         for (int i = 0; i < players.size(); i++) {
-            PlayerInfo player = players.get(i);
+            Player player = players.get(i);
             CustomTextField textField = playerTextFields.get(i);
             int itemY = bounds.y + (i * ITEM_HEIGHT); // Start Y of the item row
 
@@ -94,7 +93,7 @@ public class CustomPlayerList {
             int textFieldHeight = ITEM_HEIGHT - PADDING; // Use padding top/bottom
 
             // Draw icon using the loaded images
-            BufferedImage icon = getIconForType(player.type());
+            BufferedImage icon = getIconForType(player);
             g2d.drawImage(icon, iconX, iconY, ICON_SIZE, ICON_SIZE, null);
 
             // Configure and draw the text field

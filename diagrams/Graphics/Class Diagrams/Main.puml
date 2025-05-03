@@ -81,7 +81,7 @@ package "Class diagram for graphics subsystem" #e9e8eb {
         GameCoordinator "1" -- CustomTextField : < has a handle to
 
         class CustomPlayerList {
-            {static} + draw(g2d : Graphics2D, players : List<PlayerInfo>, playerTextFields : List<CustomTextField>, bounds : Rectangle)
+            {static} + draw(g2d : Graphics2D, players : List<Player>, playerTextFields : List<CustomTextField>, bounds : Rectangle)
             
             {static} + getPlayerIndexAt(mouseY : int, bounds : Rectangle, playerCount : int) : int
         }

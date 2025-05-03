@@ -176,6 +176,14 @@ public class Tile {
         return y;
     }
 
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     /**
      * Check if the tile has a bridge to the given tile
      * @param tile the tile to check

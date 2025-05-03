@@ -1,8 +1,9 @@
 package graphics.presenters;
 
 import app.GameCoordinator;
-import app.PlayerInfo; // Import PlayerInfo
-import app.PlayerType; // Import PlayerType
+import player.FungusPlayer;
+import player.InsectPlayer;
+import player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 public class NewGameSetupPresenter {
 
     private GameCoordinator coordinator;
-    private List<PlayerInfo> players;
+    private List<Player> players;
     private String saveName = "MyGame"; // Default save name
     private int mapSize = 32; // Default map size
 
@@ -31,8 +32,8 @@ public class NewGameSetupPresenter {
     public void addPlayerRequested() {
         System.out.println("NewGameSetupPresenter: Add Player requested");
         int nextNum = players.size() + 1;
-        PlayerType type = (nextNum % 2 == 0) ? PlayerType.INSECT : PlayerType.FUNGUS;
-        players.add(new PlayerInfo("Player " + nextNum, type));
+        Player player = (nextNum % 2 == 0) ? new InsectPlayer() : new FungusPlayer();
+        players.add(player);
     }
 
     public void setSaveName(String name) {
@@ -43,9 +44,9 @@ public class NewGameSetupPresenter {
 
    public void updatePlayerName(int playerIndex, String newName) {
        if (playerIndex >= 0 && playerIndex < players.size()) {
-           PlayerInfo oldInfo = players.get(playerIndex);
-           if (!oldInfo.name().equals(newName)) {
-               players.set(playerIndex, new PlayerInfo(newName, oldInfo.type()));
+           Player oldInfo = players.get(playerIndex);
+           if (!oldInfo.getName().equals(newName)) {
+               oldInfo.setName(newName);
                System.out.println("NewGameSetupPresenter: Updated player " + playerIndex + " name to: " + newName);
            }
        } else {
@@ -58,10 +59,17 @@ public class NewGameSetupPresenter {
      */
     public void togglePlayerType(int playerIndex) {
         if (playerIndex >= 0 && playerIndex < players.size()) {
-            PlayerInfo oldInfo = players.get(playerIndex);
-            PlayerType newType = (oldInfo.type() == PlayerType.FUNGUS) ? PlayerType.INSECT : PlayerType.FUNGUS;
-            players.set(playerIndex, new PlayerInfo(oldInfo.name(), newType));
-            System.out.println("NewGameSetupPresenter: Toggled player " + playerIndex + " type to: " + newType);
+            Player oldPlayer = players.get(playerIndex);
+            String name = oldPlayer.getName();
+            Player newPlayer;
+            if (oldPlayer instanceof FungusPlayer) {
+                newPlayer = new InsectPlayer();
+            } else {
+                newPlayer = new FungusPlayer();
+            }
+            newPlayer.setName(name);
+            players.set(playerIndex, newPlayer);
+            System.out.println("NewGameSetupPresenter: Toggled player " + playerIndex + " type.");
         } else {
             System.err.println("NewGameSetupPresenter: Invalid player index for type toggle: " + playerIndex);
         }
@@ -91,7 +99,7 @@ public class NewGameSetupPresenter {
     }
 
     // --- Methods to provide data TO the View ---
-    public List<PlayerInfo> getPlayers() {
+    public List<Player> getPlayers() {
         return players; // Return defensive copy if modification is risky: return new ArrayList<>(players);
     }
 

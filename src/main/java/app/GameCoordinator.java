@@ -6,6 +6,7 @@ import graphics.strategies.*;
 import map.Map;
 import map.Tekton;
 import prototype.App;
+import player.*;
 
 import javax.swing.JFrame;
 import java.awt.Dimension;
@@ -20,7 +21,7 @@ public class GameCoordinator
 
     // Game state variables
     private Map gameMap;
-    private List<PlayerInfo> players;
+    private List<Player> players;
     private int currentTurn;
 
     public void setFrame(JFrame frame) { this.mainFrame = frame; }
@@ -46,7 +47,7 @@ public class GameCoordinator
         showMainMenu(); // Delegate to showMainMenu for clarity
     }
 
-    public void startGame(int mapSize, List<PlayerInfo> players, String saveName) {
+    public void startGame(int mapSize, List<Player> players, String saveName) {
         // invoke the InGamePresenter and set the render strategy to InGameStrategy
         System.out.println("GameCoordinator: Starting game...");
 
@@ -209,7 +210,7 @@ public class GameCoordinator
         return HUD_WIDTH;
     }
 
-    public List<PlayerInfo> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
@@ -219,5 +220,9 @@ public class GameCoordinator
 
     public void setCurrentTurn(int turn) {
         this.currentTurn = turn;
+    }
+
+    public Map getGameMap() {
+        return gameMap;
     }
 }

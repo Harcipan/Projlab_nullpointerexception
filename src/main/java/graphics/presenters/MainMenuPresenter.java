@@ -29,16 +29,14 @@ public class MainMenuPresenter {
         coordinator.showNewGameSetupScreen();
     }
 
-    public void onOptionsClicked() {
-        System.out.println("MainMenuPresenter: Handling 'Options' action.");
-        // Delegate showing options to the coordinator
-        coordinator.showOptionsScreen();
-    }
-
     public void onTesterClicked() {
         System.out.println("MainMenuPresenter: Handling 'Tester' action.");
-        App app = new App();
-        app.run();
+        // run app in a different thread
+        Thread testerThread = new Thread(() -> {
+            App app = new App();
+            app.run(); // Assuming run() is non-static
+        });
+        testerThread.start();
     }
 
     public void onExitClicked() {

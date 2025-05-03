@@ -1,8 +1,15 @@
 package graphics.presenters;
 
 import app.GameCoordinator;
-import app.PlayerInfo;
+import entities.FungusBody;
+import entities.Insect;
+import map.Tile;
+import player.FungusPlayer;
+import player.InsectPlayer;
+import player.Player;
+
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,8 +31,35 @@ public class InGamePresenter {
         this.coordinator = coordinator;
     }
 
+    /*
+     * This is against the MVP pattern
+     * @deprecated
+     */
+    @Deprecated
     public GameCoordinator getCoordinator() {
         return coordinator;
+    }
+
+    public List<FungusPlayer> getFungusPlayers() {
+        List<Player> players = coordinator.getPlayers();
+        List<FungusPlayer> fungusPlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (player instanceof FungusPlayer) {
+                fungusPlayers.add((FungusPlayer) player);
+            }
+        }
+        return fungusPlayers;
+    }
+
+    public List<InsectPlayer> getInsectPlayers() {
+        List<Player> players = coordinator.getPlayers();
+        List<InsectPlayer> insectPlayers = new ArrayList<>();
+        for (Player player : players) {
+            if (player instanceof InsectPlayer) {
+                insectPlayers.add((InsectPlayer) player);
+            }
+        }
+        return insectPlayers;
     }
 
     public int getMapSize() {
@@ -36,7 +70,7 @@ public class InGamePresenter {
         return coordinator.getHUDWidth(); // Get the HUD width from the coordinator
     }
 
-    public List<PlayerInfo> getPlayers() {
+    public List<Player> getPlayers() {
         return coordinator.getPlayers();
     }
 
@@ -66,5 +100,9 @@ public class InGamePresenter {
 
     public void setPlacementHover(Point p) {
         this.placementHover = p;
+    }
+
+    public Tile getTile(int x, int y) {
+        return coordinator.getGameMap().getTile(x, y);
     }
 }

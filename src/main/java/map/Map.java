@@ -37,6 +37,8 @@ public class Map {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 tiles[i][j] = new Tile();
+                tiles[i][j].setX(i);
+                tiles[i][j].setY(j);
             }
         }
         this.width = width;

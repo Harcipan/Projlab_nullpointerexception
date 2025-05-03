@@ -19,7 +19,7 @@ public class CustomButton extends Interactable {
     private Color hoverColor = Color.GRAY;
     private Color pressedColor = Color.DARK_GRAY;
     private Color textColor = Color.BLACK;
-    private Color disabledTextColor = Color.GRAY;
+    private Color disabledTextColor = Color.DARK_GRAY;
     private Font textFont = new Font("Arial", Font.BOLD, 14);
 
     private BufferedImage image = null;

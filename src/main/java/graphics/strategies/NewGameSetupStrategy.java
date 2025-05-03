@@ -1,8 +1,10 @@
 package graphics.strategies;
 
 import graphics.presenters.NewGameSetupPresenter;
+import player.Player;
+import player.FungusPlayer;
+import player.InsectPlayer;
 import graphics.customUIElements.CustomButton;
-import app.PlayerInfo;
 
 import graphics.customUIElements.CustomPlayerList;
 import graphics.customUIElements.CustomTextField;
@@ -43,6 +45,7 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
         addPlayerButton = new CustomButton("Add player...", PLAYER_LIST_X, PLAYER_LIST_Y + PLAYER_LIST_HEIGHT + 10, PLAYER_LIST_WIDTH, 30);
         mapSize32Button = new CustomButton("32", RIGHT_PANEL_X + 50, 180, 60, 30);
         mapSize64Button = new CustomButton("64", RIGHT_PANEL_X + 120, 180, 60, 30);
+        mapSize64Button.setEnabled(false); // Make 64 map unavailable by default
         confirmButton = new CustomButton("Confirm Setup", 200, 350, 200, 40);
         backButton = new CustomButton("< Back", 10, 360, 100, 30);
 
@@ -53,19 +56,20 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
         buttons.add(backButton);
 
         saveNameField = new CustomTextField(RIGHT_PANEL_X, PLAYER_LIST_Y, 200, 30, presenter.getCoordinator());
+        saveNameField.setText("Save1");
         textFields.add(saveNameField);
 
         syncPlayerTextFields();
     }
 
     private void syncPlayerTextFields() {
-        List<PlayerInfo> players = presenter.getPlayers();
+        List<Player> players = presenter.getPlayers();
         // Sync text fields
         while (playerTextFields.size() < players.size()) {
             int index = playerTextFields.size();
-            PlayerInfo player = players.get(index);
+            Player player = players.get(index);
             CustomTextField newPlayerField = new CustomTextField(0, 0, 0, 0, presenter.getCoordinator());
-            newPlayerField.setText(player.name());
+            newPlayerField.setText(player.getName());
             newPlayerField.setOnEnterCallback(() -> updatePlayerNameFromField(index));
             playerTextFields.add(newPlayerField);
             textFields.add(newPlayerField);
@@ -81,7 +85,7 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
             int iconX = playerListBounds.x + 5; // PADDING
             int iconY = itemY + (25 - 15) / 2; // ITEM_HEIGHT - ICON_SIZE
             CustomButton iconBtn = new CustomButton("", iconX, iconY, 15, 15);
-            iconBtn.setImage(graphics.customUIElements.CustomPlayerList.getIconForType(players.get(i).type()));
+            iconBtn.setImage(graphics.customUIElements.CustomPlayerList.getIconForType(players.get(i)));
             playerIconButtons.add(iconBtn);
         }
     }
@@ -116,12 +120,12 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
         g2d.setColor(Color.WHITE);
         g2d.drawString("Players", PLAYER_LIST_X, PLAYER_LIST_Y - 10);
 
-        List<PlayerInfo> players = presenter.getPlayers();
+        List<Player> players = presenter.getPlayers();
         // Draw icon buttons and text fields for each player
         for (int i = 0; i < players.size(); i++) {
             CustomButton iconBtn = playerIconButtons.get(i);
             // Update icon image in case type changed
-            iconBtn.setImage(graphics.customUIElements.CustomPlayerList.getIconForType(players.get(i).type()));
+            iconBtn.setImage(graphics.customUIElements.CustomPlayerList.getIconForType(players.get(i)));
             iconBtn.draw(g2d);
         }
         CustomPlayerList.draw(g2d, players, playerTextFields, playerListBounds);
@@ -146,6 +150,16 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
         mapSize64Button.draw(g2d);
         mapSize32Button.setPressed(false);
         mapSize64Button.setPressed(false);
+
+        // Enable confirm button only when at least one FungusPlayer and one InsectPlayer exist AND save name is set
+        List<Player> pList = presenter.getPlayers();
+        boolean hasFungus = false, hasInsect = false;
+        for (Player p : pList) {
+            if (p instanceof FungusPlayer) hasFungus = true;
+            if (p instanceof InsectPlayer) hasInsect = true;
+        }
+        boolean hasName = saveNameField.getText() != null && !saveNameField.getText().trim().isEmpty();
+        confirmButton.setEnabled(hasFungus && hasInsect && hasName);
 
         confirmButton.draw(g2d);
         backButton.draw(g2d);

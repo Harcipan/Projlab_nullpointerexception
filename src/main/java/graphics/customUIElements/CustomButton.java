@@ -19,9 +19,11 @@ public class CustomButton extends Interactable {
     private Color hoverColor = Color.GRAY;
     private Color pressedColor = Color.DARK_GRAY;
     private Color textColor = Color.BLACK;
+    private Color disabledTextColor = Color.GRAY;
     private Font textFont = new Font("Arial", Font.BOLD, 14);
 
     private BufferedImage image = null;
+    private boolean enabled = true;
 
     public CustomButton(String text, int x, int y, int width, int height) {
         super(x, y, width, height); // Call the constructor of Interactable
@@ -50,6 +52,22 @@ public class CustomButton extends Interactable {
     }
 
     /**
+     * Sets whether the button is enabled or disabled.
+     * @param enabled true to enable the button, false to disable it.
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    /**
+     * Checks whether the button is enabled.
+     * @return true if the button is enabled, false otherwise.
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    /**
      * Draws the button onto the provided Graphics context.
      * @param g2d The Graphics2D context to draw on.
      */
@@ -59,7 +77,9 @@ public class CustomButton extends Interactable {
 
         // Determine background color based on state
         Color bgColor;
-        if (isPressed) {
+        if (!enabled) {
+            bgColor = normalColor.darker();
+        } else if (isPressed) {
             bgColor = pressedColor;
         } else if (isHovered) {
             bgColor = hoverColor;
@@ -87,7 +107,7 @@ public class CustomButton extends Interactable {
         }
 
         // Draw text centered (over image if present)
-        g2d.setColor(textColor);
+        g2d.setColor(enabled ? textColor : disabledTextColor);
         g2d.setFont(textFont);
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(text);
@@ -109,9 +129,8 @@ public class CustomButton extends Interactable {
      * @return true if the point is inside the button, false otherwise.
      */
     public boolean contains(int mouseX, int mouseY) {
-        return bounds.contains(mouseX, mouseY);
+        return enabled && bounds.contains(mouseX, mouseY);
     }
-
 
     // --- Getters and Setters ---
     public String getText() {

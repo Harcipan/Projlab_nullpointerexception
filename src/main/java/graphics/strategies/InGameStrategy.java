@@ -22,7 +22,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
     private static final int TILE_SIZE = 32;
     private static final int PLAYER_ICON_SIZE = 40;
     private static final int PLAYER_ICON_GAP = 18;
-    private static final int PLAYER_ICON_START_Y = 70;
+    private static final int PLAYER_ICON_START_Y = 90; // moved down from 70 to 90
     private static BufferedImage FUNGUS_ICON;
     private static BufferedImage INSECT_ICON;
 
@@ -66,12 +66,19 @@ public class InGameStrategy extends AbstractRenderStrategy {
         g2d.setColor(new Color(40, 40, 40)); // Dark gray panel
         g2d.fillRect(0, 0, presenter.getHUDWidth(), dimension.height);
         g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font("Arial", Font.BOLD, 20));
-        g2d.drawString("Info Panel", 30, 40);
+
+        // display current turn and active player
+        g2d.setFont(new Font("Arial", Font.PLAIN, 16));
+        g2d.drawString("Turn: " + presenter.getCurrentTurn(), 30, 40);
+        java.util.List<PlayerInfo> _playersInfo = presenter.getPlayers();
+        if (!_playersInfo.isEmpty()) {
+            PlayerInfo _current = _playersInfo.get(presenter.getCurrentTurn() % _playersInfo.size());
+            g2d.drawString("Current: " + _current.name(), 30, 60);
+        }
 
         // Draw player icons in rows, wrapping if needed
         java.util.List<PlayerInfo> players = presenter.getPlayers();
-        int currentTurn = presenter.getCurrentTurn();
+        int currentTurnTruncated = presenter.getCurrentTurn() % (players.isEmpty() ? 1 : players.size());
         int hudWidth = presenter.getHUDWidth();
         int iconX = 30;
         int iconY = PLAYER_ICON_START_Y;
@@ -86,7 +93,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
             int drawX = iconX + col * iconSpacingX;
             int drawY = iconY + row * iconSpacingY;
             // Highlight current player
-            if (i == currentTurn) {
+            if (i == currentTurnTruncated) {
                 g2d.setColor(Color.RED);
                 g2d.setStroke(new BasicStroke(3));
                 g2d.drawRect(drawX - 4, drawY - 4, PLAYER_ICON_SIZE + 8, PLAYER_ICON_SIZE + 8);
@@ -101,15 +108,17 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 row++;
             }
         }
-        // Calculate Y position for Next Turn button
+        // Calculate Y position for Next Turn button so it snaps under the player list
         int btnMargin = 30;
         int btnWidth = nextTurnButton.getBounds().width;
         int btnHeight = nextTurnButton.getBounds().height;
         int btnX = btnMargin;
-        int btnY = iconY + (row + (col > 0 ? 1 : 0)) * iconSpacingY + btnMargin;
-        // If no players, keep button at bottom
+        int btnY;
         if (players.isEmpty()) {
             btnY = dimension.height - btnHeight - btnMargin;
+        } else {
+            int totalRows = row + (col > 0 ? 1 : 0);
+            btnY = iconY + totalRows * iconSpacingY + btnMargin;
         }
         // Prevent button from overflowing panel
         if (btnY + btnHeight + btnMargin > dimension.height) {
@@ -144,9 +153,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
     protected void onButtonClicked(CustomButton btn) {
         if (btn == nextTurnButton) {
             // Advance turn
-            int playerCount = presenter.getPlayers().size();
-            int nextTurn = (presenter.getCurrentTurn() + 1) % playerCount;
-            presenter.getCoordinator().setCurrentTurn(nextTurn);
+            presenter.getCoordinator().setCurrentTurn(presenter.getCoordinator().getCurrentTurn() + 1);
             presenter.getCoordinator().initiateRepaint();
         }
     }

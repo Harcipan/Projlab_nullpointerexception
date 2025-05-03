@@ -10,9 +10,14 @@ import javax.swing.JFrame;
 import java.awt.Dimension;
 import java.util.List;
 
-public class GameCoordinator {
+public class GameCoordinator 
+{
+    // Singleton instances
     private JFrame mainFrame;
     private PanelRenderer panelRenderer;
+
+
+    // Game state variables
     private Map gameMap;
     private List<PlayerInfo> players;
     private int currentTurn;

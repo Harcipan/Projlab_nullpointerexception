@@ -10,23 +10,12 @@ import java.util.List;
  */
 public class InGamePresenter {
     private GameCoordinator coordinator;
-    private int score = 0; // Example field, replace with actual game state as needed
 
     public InGamePresenter(GameCoordinator coordinator) {
         if (coordinator == null) {
             throw new IllegalArgumentException("GameCoordinator cannot be null");
         }
         this.coordinator = coordinator;
-    }
-
-    // Called by the view to get the current score
-    public int getScore() {
-        return score;
-    }
-
-    // Example: update score (could be called by the model or coordinator)
-    public void setScore(int score) {
-        this.score = score;
     }
 
     public GameCoordinator getCoordinator() {

@@ -29,11 +29,14 @@ public class InGameStrategy extends AbstractRenderStrategy {
     private static final int PLAYER_ICON_START_Y = 90;
     private static BufferedImage FUNGUS_ICON;
     private static BufferedImage INSECT_ICON;
+    private static BufferedImage MYCELIUM_ICON;
 
     static {
         try {
             FUNGUS_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon.png").toFile());
             INSECT_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon.png").toFile());
+            MYCELIUM_ICON = ImageIO.read(Paths.get("res/elements/myc_uodownleftright.png").toFile());
+
         } catch (IOException e) {
             System.err.println("Could not load player icons");
         }
@@ -172,7 +175,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
             g2d.fillRect(presenter.getHUDWidth(), 0, presenter.getMapSize() * TILE_SIZE, presenter.getMapSize() * TILE_SIZE);
         }
 
-        // Draw FungusBodies and Insects
+        // Draw FungusBodies
         for (FungusPlayer fp : presenter.getFungusPlayers()) {
             for (FungusBody fb : fp.getFungusBodies()) {
                 Tile t = fb.getCurrentTile();
@@ -181,13 +184,22 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 g2d.drawImage(FUNGUS_ICON, x, y, TILE_SIZE, TILE_SIZE, null);
             }
         }
-
+        // Draw Insects
         for (InsectPlayer ip : presenter.getInsectPlayers()) {
             for (Insect i : ip.getControlledInsects()) {
                 Tile t = i.getCurrentTile();
                 int x = t.getX() * TILE_SIZE + presenter.getHUDWidth();
                 int y = t.getY() * TILE_SIZE;
                 g2d.drawImage(INSECT_ICON, x, y, TILE_SIZE, TILE_SIZE, null);
+            }
+        }
+        // Draw Mycelium
+        for (FungusPlayer fp : presenter.getFungusPlayers()) {
+            for (Mycelium m : fp.getMycelia()) {
+                Tile t = m.getCurrentTile();
+                int x = t.getX() * TILE_SIZE + presenter.getHUDWidth();
+                int y = t.getY() * TILE_SIZE;
+                g2d.drawImage(MYCELIUM_ICON, x, y, TILE_SIZE, TILE_SIZE, null);
             }
         }
     }
@@ -211,9 +223,9 @@ public class InGameStrategy extends AbstractRenderStrategy {
 
     @Override
     public void handlePress(int mouseX, int mouseY) {
+        int gridX = (mouseX - presenter.getHUDWidth()) / TILE_SIZE;
+        int gridY = mouseY / TILE_SIZE;
         if (presenter.isPlacementPhase()) {
-            int gridX = (mouseX - presenter.getHUDWidth()) / TILE_SIZE;
-            int gridY = mouseY / TILE_SIZE;
             int mapSize = presenter.getMapSize();
             if (gridX >= 0 && gridY >= 0 && gridX < mapSize && gridY < mapSize) {
                 Player player = presenter.getPlayers().get(presenter.getPlacingPlayerIndex());
@@ -252,8 +264,29 @@ public class InGameStrategy extends AbstractRenderStrategy {
                     presenter.setPlacingPlayerIndex(next);
                 }
             }
-        } else {
-            super.handlePress(mouseX, mouseY);
+        }  
+        
+        else {
+            // Not in placement phase, handle game actions
+            Player currentPlayer = presenter.getCurrentPlayer();
+            // if the current player is an insect, move the insect to the tile
+            if (currentPlayer instanceof InsectPlayer insectPlayer) {
+                // Current player is an InsectPlayer
+                System.out.println("Clicked while InsectPlayer '" + insectPlayer.getName() + "' is active. Tile: (" + gridX + ", " + gridY + ")");
+                
+                // WIP: Move the first controlled insect to the clicked tile
+                if (!insectPlayer.getControlledInsects().isEmpty()) {
+                     Insect insectToMove = insectPlayer.getControlledInsects().get(0); // Or implement selection logic
+                     Tile targetTile = presenter.getTile(gridX, gridY);
+                     if (targetTile != null) {
+                         insectToMove.step(targetTile);
+                         System.out.println("Insect moved to tile (" + gridX + ", " + gridY + ")");
+                     } else {
+                         System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
+                     }
+                }
+
+            }
         }
     }
 }

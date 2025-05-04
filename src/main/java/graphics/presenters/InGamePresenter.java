@@ -74,6 +74,12 @@ public class InGamePresenter {
         return coordinator.getPlayers();
     }
 
+    public Player getCurrentPlayer(){
+        List<Player> players = getPlayers();
+        int currentTurn = getCurrentTurn();
+        return players.get(currentTurn % players.size());
+    }
+
     public int getCurrentTurn() {
         return coordinator.getCurrentTurn();
     }

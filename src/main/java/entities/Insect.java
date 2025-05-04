@@ -96,8 +96,7 @@ public class Insect extends GameEntity {
      * @param target the tile to move to
      */
     public void step(Tile target) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".step(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
-        // Will implement later
+        //UseCase.printWrapper(UseCase.logger.get(this)+".step(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         currentTile.removeEntity(this);
         target.addEntity(this);
     }
@@ -108,15 +107,14 @@ public class Insect extends GameEntity {
      * @param target the tile to cut
      */
     public void cut(Tile target) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
+        //UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(target)+")", ArrowDirection.RIGHT, Indent.INDENT);
         if (!canCut) {
             return;
         }
-        // Will implement later
         target.getEntities();
-        /*for (GameEntity ge : target.getEntities()) {
+        for (GameEntity ge : target.getEntities()) {
             ge.getCut();
-        }*/
+        }
         for(int i=0; i<target.getEntities().size();i++) {
             target.getEntities().get(i).getCut();
         }

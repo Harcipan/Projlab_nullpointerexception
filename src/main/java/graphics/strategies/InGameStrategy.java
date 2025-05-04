@@ -35,7 +35,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
         try {
             FUNGUS_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon.png").toFile());
             INSECT_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon.png").toFile());
-            MYCELIUM_ICON = ImageIO.read(Paths.get("res/elements/myc_uodownleftright.png").toFile());
+            MYCELIUM_ICON = ImageIO.read(Paths.get("res/elements/myc_updownleftright.png").toFile());
 
         } catch (IOException e) {
             System.err.println("Could not load player icons");
@@ -286,6 +286,24 @@ public class InGameStrategy extends AbstractRenderStrategy {
                      }
                 }
 
+            }
+            else if (currentPlayer instanceof FungusPlayer fungusPlayer) {
+                // Current player is a FungusPlayer
+                System.out.println("Clicked while FungusPlayer '" + fungusPlayer.getName() + "' is active. Tile: (" + gridX + ", " + gridY + ")");
+                
+                // WIP: grow mycelium in the tile
+                Tile targetTile = presenter.getTile(gridX, gridY);
+                if (targetTile != null) {
+                    Mycelium myc = ((FungusPlayer) currentPlayer).growMycelium(targetTile);
+                    if (myc != null){
+                        System.out.println("Mycelium grown at tile (" + myc.getCurrentTile().hashCode() + ")");
+                    }
+                    else {
+                        System.out.println("Mycelium space is full or some other problem: (" + gridX + ", " + gridY + ")");
+                    }
+                } else {
+                    System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
+                }
             }
         }
     }

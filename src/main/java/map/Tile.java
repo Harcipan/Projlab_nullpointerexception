@@ -36,10 +36,7 @@ public class Tile {
     }
 
     public Tile() {
-        UseCase.replace(this);
-        printWrapper("Initializing Tile as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
-
-        entities = new ArrayList<>();
+        this(1, 5, null, 0, 0);
     }
 
     public void setTileSpace(int s) {
@@ -134,6 +131,7 @@ public class Tile {
      * @param player the player that owns this mycelium
      */
     public Mycelium growMycelium(FungusPlayer player) {
+        UseCase.replace(this);
         UseCase.printWrapper(UseCase.logger.get(this)+".growMycelium("+UseCase.logger.get(player)+")", ArrowDirection.RIGHT, Indent.KEEP);
         Mycelium m = null;
         if (myceliumSpace > 0) {
@@ -142,6 +140,12 @@ public class Tile {
             printWrapper(UseCase.logger.get(this)+".growMycelium()", ArrowDirection.LEFT, Indent.KEEP);
         } else {
             printWrapper(UseCase.logger.get(this)+".growMycelium()", ArrowDirection.LEFT, Indent.KEEP);
+        }
+        // dump mycelium hash
+        if (m != null) {
+            System.out.println("Mycelium: "+m.hashCode());
+        } else {
+            System.out.println("No mycelium created");
         }
         return m;
     }

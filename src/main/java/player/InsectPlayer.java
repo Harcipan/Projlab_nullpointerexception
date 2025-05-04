@@ -131,12 +131,13 @@ public class InsectPlayer extends Player{
         }
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
 
-        //check if insect is ours to control
-        if(!controlledInsects.contains(controlledInsect)){
-            printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
-            return;
+        if(tile.isNeighbor(controlledInsect.getCurrentTile())){
+            controlledInsect.cut(tile);
+
         }
-        controlledInsect.cut(tile);
+        else{
+            printWrapper("The tile is not a neighbor of the insect", ArrowDirection.RIGHT, Indent.UNINDENT);
+        }
     }
 
     /*

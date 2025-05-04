@@ -222,7 +222,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
     }
 
     @Override
-    public void handlePress(int mouseX, int mouseY) {
+    public void handlePress(int mouseX, int mouseY, int button) {
         int gridX = (mouseX - presenter.getHUDWidth()) / TILE_SIZE;
         int gridY = mouseY / TILE_SIZE;
         if (presenter.isPlacementPhase()) {

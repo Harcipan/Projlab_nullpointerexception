@@ -38,8 +38,9 @@ public interface IRenderStrategy {
      *
      * @param mouseX The X coordinate of the mouse.
      * @param mouseY The Y coordinate of the mouse.
+     * @param button The mouse button that was pressed.
      */
-    void handlePress(int mouseX, int mouseY);
+    void handlePress(int mouseX, int mouseY, int button);
 
     /**
      * Handles mouse release events.

@@ -65,12 +65,14 @@ public class InsectPlayer extends Player{
     public void moveTo(Tile tile, Insect controlledInsect) {
         //check if tile is valid
         // neighbors
-        if(!tile.isNeighbor(controlledInsect.getCurrentTile())){
+        if(tile.isNeighbor(controlledInsect.getCurrentTile())){
+            controlledInsect.step(tile);
+
+        }
+        else{
             printWrapper("The tile is not a neighbor of the insect", ArrowDirection.RIGHT, Indent.UNINDENT);
-            return;
         }
 
-        controlledInsect.step(tile);
 
         //removed for now, needs fix from creator (Zsiga)
         // UseCase.printWrapper(UseCase.logger.get(this)+".moveTo(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);

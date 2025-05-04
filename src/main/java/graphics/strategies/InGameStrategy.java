@@ -276,10 +276,9 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 
                 // WIP: Move the first controlled insect to the clicked tile
                 if (!insectPlayer.getControlledInsects().isEmpty()) {
-                     Insect insectToMove = insectPlayer.getControlledInsects().get(0); // Or implement selection logic
                      Tile targetTile = presenter.getTile(gridX, gridY);
                      if (targetTile != null) {
-                         insectToMove.step(targetTile);
+                         insectPlayer.moveTo(targetTile);
                          System.out.println("Insect moved to tile (" + gridX + ", " + gridY + ")");
                      } else {
                          System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");

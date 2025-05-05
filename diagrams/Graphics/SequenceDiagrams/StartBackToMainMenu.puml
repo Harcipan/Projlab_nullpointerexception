@@ -1,0 +1,42 @@
+@startuml BackFrometup
+
+title Back From Game Setup
+
+actor "Player" as P
+participant "newGameSetupStrategy: NewGameSetupStrategy" as nmms
+participant "newGameSetupPresenter: NewGameSetupPresenter" as nmmp
+
+participant "coordinator: GameCoordinator" as Coordinator
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+
+activate P
+activate nmms
+activate nmmp
+activate Coordinator
+activate Panelrenderer
+
+P->nmms:onButtonClicked(CustomButton btn)
+nmms->nmms:unfocusAllTextFields()
+nmms->nmmp:onBackToMainMenuClicked()
+nmmp->Coordinator:showMainMenu()
+Coordinator -> Coordinator : showMainMenu()
+
+participant "mainMenuPresenter: MainMenuPresenter" as mmp
+participant "mainMenuStrategy: MainMenuStrategy" as mms
+
+Coordinator->mmp:<<create>>
+activate mmp
+mmp-->Coordinator
+
+Coordinator->mms: <<create>>
+activate mms
+mms-->Coordinator
+
+Coordinator->Panelrenderer : setRenderStrategy(mainMenuStrategy)
+Panelrenderer-->Coordinator
+
+Coordinator-->nmmp
+nmmp-->nmms
+nmms-->P
+
+@enduml

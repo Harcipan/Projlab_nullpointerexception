@@ -5,11 +5,14 @@ import map.*;
 public abstract class Player {
     int score;
     int actionPoints;
+    private String name;
     public static final int ACTIONS_PER_TICK = 5; // Number of actions a player gets per tick
+    public static int playerCounter = 0; // Counter to keep track of player instances
 
     protected Player() {
         this.score = 0;
         this.actionPoints = 0;
+        this.name = "Player " + (++playerCounter); // Default name
     }
 
     public void tick() {
@@ -36,4 +39,11 @@ public abstract class Player {
         // Implement in subclasses
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

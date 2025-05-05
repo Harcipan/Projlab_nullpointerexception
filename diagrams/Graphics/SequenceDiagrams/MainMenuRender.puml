@@ -1,0 +1,23 @@
+@startuml MainMenuRenderer
+
+title Render Main Menu
+
+actor "Main" As M
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+participant "mainMenuStrategy: MainMenuStrategy" as mmp
+
+activate M
+activate Panelrenderer
+activate mmp
+
+M->Panelrenderer: paintComponent(Graphics g)
+Panelrenderer->mmp: render(Graphics2D g2d, Dimension dimension)
+mmp->mmp: drawBackground(g2d, dimension);
+mmp->mmp: drawTitle(g2d, dimension);
+mmp->mmp: drawButtons(g2d); // Pass the graphics context
+mmp->mmp: drawFooterCredits(g2d, dimension); // Pass the graphics context
+mmp->mmp: drawAnimation(g2d, dimension);
+mmp-->Panelrenderer
+Panelrenderer-->M
+
+@enduml

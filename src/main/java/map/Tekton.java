@@ -24,14 +24,12 @@ public class Tekton {
     public Tekton(Map map)
     {
         UseCase.replace(this);
-        UseCase.printWrapper("Initializing Tekton as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         this.breakChance = 0;
         this.map = map;
-        map.addTekton(this);
         tiles = new ArrayList<>();
         fungusBody = null;
         playerSpores = new HashMap<>();
-        UseCase.printWrapper("Tekton: "+UseCase.logger.get(this), ArrowDirection.LEFT);
+        map.addTekton(this);
     }
 
     public Tekton(Map map, int breakChance, int sporeCount) {

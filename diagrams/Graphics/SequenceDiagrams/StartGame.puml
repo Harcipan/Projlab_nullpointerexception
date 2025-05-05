@@ -1,0 +1,38 @@
+@startuml StartGame
+
+title Main Menu Start Game
+
+actor "Player" as P
+participant "mainMenuStrategy: MainMenuStrategy" as mms
+participant "mainMenuPresenter: MainMenuPresenter" as mmp
+
+participant "coordinator: GameCoordinator" as Coordinator
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+
+activate P
+activate mms
+activate mmp
+activate Coordinator
+activate Panelrenderer
+
+P->mms :onButtonClicked(CustomButton btn)
+mms->mmp : onStartGameClicked()
+mmp->Coordinator : showNewGameSetupScreen()
+
+participant "newGameSetupPresenter: NewGameSetupPresenter" as ngsp
+participant "newGameSetupStrategy: NewGameSetupStrategy" as ngss
+
+Coordinator->ngsp:<<create>>
+activate ngsp
+ngsp-->Coordinator
+Coordinator->ngss:<<create>>
+activate ngss
+ngss-->Coordinator
+
+Coordinator->Panelrenderer:setRenderStrategy(newGameSetupStrategy)
+Panelrenderer-->Coordinator
+Coordinator-->mmp
+mmp-->mms
+mms-->P
+
+@enduml

@@ -1,0 +1,302 @@
+@startuml Main
+
+skinparam groupInheritance 3
+skinparam linetype ortho
+
+/'
+Bizonyos részleteket mint pl. Interactable-nél az állapotváltozókat kihagytam
+mivel az "túlságosan a részletekbe menne", elvesztené a class diagram jellegét,
+ami az osztályok közötti viszonyokat mutatja meg, nem igazán azt, hogy mit hogyan
+csinál egy adott osztály, mint például az állapot elmentést.
+A getter-setter párosokhoz mindig tartozik egy mező vagy asszociáció. Ez azért is 
+van, hogy ne is legyen az kérdés, hogy MIÉRT van ott az a getter v. getter-setter 
+páros.
+Bizonyos mezők mégis megmaradnak, mint x, y az Interactable-nál. Ez azért is van,
+mivel segít az Interactable lényegének megértéséhez, ami egy UI widget 
+("customUIElements") ősosztálya.
+
+TL;DR hogy mi és mi nem kerül be az művészi kérdés. Igazándiból a fő 
+kérdés az, hogy mennyire segít megérteni az osztályt az adott metódus,
+mező.
+'/
+package "App" as app{
+    struct PlayerInfo
+    class GameCoordinator
+}
+
+package "Graphics" as graphics #f5ffff{
+    package "Custom UI elements" as customUIElements #e9ffff {
+        class Interactable{
+            # x : int
+            # y : int 
+            # width : int
+            # height : int 
+            # isPressed : boolean
+            # isHovered : boolean
+            # bounds : Rectangle
+
+            + beforeDraw(g2d : Graphics2D)
+            + afterDraw(g2d : Graphics2D)
+
+            + setPressed(pressed : boolean)
+            + isPressed() : boolean
+            + setHovered(hovered : boolean)
+            + isHovered() : boolean
+        }
+        
+        class CustomButton{
+            - text : String
+            - image : BufferedImage
+            - enabled : boolean
+            - bounds : Rectangle
+
+            + draw(g2d : Graphics2D)
+
+            + contains(x : int, y : int) : boolean
+
+            + setImage(img : BufferedImage)
+            + setImage(imagePath : String)
+            + setEnabled(enabled : boolean)
+            + isEnabled() : boolean
+            + getText() : String
+            + getBounds() : Rectangle
+            + setBounds(x : int, y : int, width : int, height : int)
+        }
+
+        Interactable <|-- CustomButton
+
+        interface CursorBlinkListener {
+            + onCursorBlink(showCursor : boolean)
+        }
+
+        class CustomTextField{
+            - text : String
+            - focused : boolean
+            - onEnterCallback : Runnable
+            
+            + draw(g2d : Graphics2D)
+
+            + handleKeyPress(e : KeyEvent)
+            + contains(x : int, y : int) : boolean
+
+            + getText() : String
+            + setText(text : String)
+            + isFocused() : boolean
+            + setFocused(focused : boolean)
+            + getBounds() : Rectangle
+            + setBounds(bounds : Rectangle)
+            + setBounds(x : int, y : int, width : int, height : int)
+            + setOnEnterCallback(callback : Runnable)
+            + setCursorBlinkListener(listener: CursorBlinkListener)
+        }
+
+        Interactable <|-- CustomTextField
+        CursorBlinkListener "0..1" -- CustomTextField : < cursorBlinkListener
+        GameCoordinator "1" -- CustomTextField : < coordinator
+
+        class CustomPlayerList {
+            {static} + draw(g2d : Graphics2D, players : List<Player>, playerTextFields : List<CustomTextField>, bounds : Rectangle)
+            
+            {static} + getIconForType(type : PlayerType) : BufferedImage
+            {static} + getPlayerIndexAt(mouseY : int, bounds : Rectangle, playerCount : int) : int
+        }
+    }
+
+    package "Presenters" as presenters{
+        class InGamePresenter
+        class MainMenuPresenter
+        class NewGameSetupPresenter
+    }
+
+    package "Strategies" as strategies #e9ffff {
+        interface IRenderStrategy{
+            + render(g2d : Graphics2D, dimension : Dimension)
+
+            + updateHover(mouseX : int, mouseY : int)
+            + handlePress(mouseX : int, mouseY : int)
+            + handleRelease(mouseX : int, mouseY : int) : Interactable
+
+            + getTextFields() : List<CustomTextField>
+        }
+
+        abstract class AbstractRenderStrategy {
+            {abstract} + render(g2d : Graphics2D, dimension : Dimension)
+            {abstract} # onButtonClicked(btn : CustomButton)
+
+            + updateHover(mouseX : int, mouseY : int)
+            + handlePress(mouseX : int, mouseY : int)
+            + handleRelease(mouseX : int, mouseY : int) : Interactable
+
+            + getTextFields() : List<CustomTextField>
+        }
+
+        IRenderStrategy <|.. AbstractRenderStrategy : realizes
+
+        CustomButton "0..*" -- AbstractRenderStrategy : < buttons
+        CustomTextField "0..*" -- AbstractRenderStrategy : < textFields
+
+        class InGameStrategy {
+            + render (g2d : Graphics2D, dimension : Dimension)
+            - drawLeftPanel(g2d : Graphics2D, dimension : Dimension)
+            - drawHUD(g2d : Graphics2D, dimension : Dimension)
+            - drawGameMap(g2d : Graphics2D, dimension : Dimension)
+
+            + updateHover(mouseX : int, mouseY : int)
+            + handlePress(mouseX : int, mouseY : int)
+
+            # onButtonClicked (btn : CustomButton)
+        }
+
+        AbstractRenderStrategy <|-- InGameStrategy
+        InGamePresenter "1" -- InGameStrategy : < presenter
+
+        class MainMenuStrategy {
+            + render (g2d : Graphics2D, dimension : Dimension)
+            - drawBackground(g2d : Graphics2D, dimension : Dimension)
+            - drawAnimation(g2d : Graphics2D, dimension : Dimension)
+            - drawTitle(g2d : Graphics2D, dimension : Dimension)
+            - drawFooterCredits(g2d : Graphics2D, dimension : Dimension)
+            - drawButtons(g2d : Graphics2D, dimension : Dimension)
+            
+            # onButtonClicked (btn : CustomButton)
+        }
+
+        AbstractRenderStrategy <|-- MainMenuStrategy
+        MainMenuPresenter "1" -- MainMenuStrategy : < presenter
+
+
+        class NewGameSetupStrategy {
+            + render (g2d : Graphics2D, dimension : Dimension)
+            
+            # onButtonClicked (btn : CustomButton)
+            + updateHover(mouseX : int, mouseY : int)
+            + handlePress(mouseX : int, mouseY : int)
+            + handleRelease(mouseX : int, mouseY : int) : Interactable
+            + handleKeyPressEvent(e : KeyEvent)
+        }
+
+        AbstractRenderStrategy <|-- NewGameSetupStrategy
+        NewGameSetupPresenter "1" -- NewGameSetupStrategy : < presenter
+        CustomButton "*" -- NewGameSetupStrategy : < owns and draws
+        CustomTextField "*" -- NewGameSetupStrategy : < owns and draws
+    }
+
+
+    package "Presenters" as presenters #e9ffff{
+        class InGamePresenter {
+            - placementPhase : boolean
+            - placingPlayerInder : int
+            - placementHover : Point
+
+            + getCoordinator() : GameCoordinator
+            + getMapSize() : int
+            + getHUDWidth() : int 
+            + getPlayers() : List<PlayerInfo>
+            + getCurrentTurn() : int
+            + isPlacementPhase() : boolean 
+            + setPlacementPhase(phase : boolean)
+            + getPlacingPlayerIndex() : int 
+            + setPlacingPlayerIndex(idx : int)
+            + getPlacementHover() : Point
+            + setPlacementHover(p : Point)
+        }
+        GameCoordinator "1" -- InGamePresenter : < coordinator
+
+        class MainMenuPresenter {
+            + onStartGameClicked()
+            + onOptionsClicked()
+            + onTesterClicked()
+            + onExitClicked()
+        }
+        GameCoordinator "1" -- MainMenuPresenter : < coordinator
+
+        class NewGameSetupPresenter {
+            - saveName : String 
+            - mapSize : int
+
+            + addPlayerRequested()
+            + updatePlayerName(playerIndex : int, newName : String)
+            + togglePlayerType(playerIndex : int)
+
+            + onSettingChanged(settingName : String, value : Object)
+            + onConfirmSetupClicked()
+            + onBackToMainMenuClicked()
+
+            + getPlayers() : List<PlayerInfo>
+            + getSaveName() : String 
+            + setSaveName(name : String)
+            + getMapSize() : int 
+            + setMapSize(size : int)
+            + getCoordinator() : GameCoordinator
+        }
+        GameCoordinator "1" -- NewGameSetupPresenter : < coordinator
+        PlayerInfo "0..*" -- NewGameSetupPresenter : < players
+    }
+
+    class PanelRenderer {
+        - preferredSize : Dimension
+        - refreshTimer : Timer
+
+        # paintComponent(g : Graphics)
+        
+        + mouseClicked(e : MouseEvent)
+        + mousePressed(e : MouseEvent)
+        + mouseReleased(e : MouseEvent)
+        + mouseEntered(e : MouseEvent)
+        + mouseExited(e : MouseEvent)
+        + mouseDragged(e : MouseEvent)
+        + mouseMoved(e : MouseEvent)
+
+        + setRenderStrategy(strategy : IRenderStrategy)
+        + setPreferredSize(d : Dimension)
+        + getPreferredSize() : Dimension
+        + removeNotify()
+    }
+
+    IRenderStrategy "0..1" -- PanelRenderer : < currentRendererStrategy
+}
+
+package "App" as app #e9ffff {
+    enum PlayerType{
+        FUNGUS
+        INSECT
+    }
+
+    struct PlayerInfo {
+        - name : String
+        + name() : String
+        + type() : String
+    }
+
+    PlayerType "1" -- PlayerInfo : type
+
+    class GameCoordinator {
+        - mainFrame : JFrame
+
+        - gameMap : Map
+        - currentTurn : int
+
+        + startApplication()
+        + startGame(mapSize : int, players : List<PlayerInfo>, saveName : String)
+        + showOptionsScreen()
+        + exitApplication()
+        + showMainMenu()
+        + showNewGameSetupScreen()
+
+        + repaint()
+
+        + getMapSize() : int
+        + getWindowWidth() : int
+        + getWindowHeight() : int 
+        + getHUDWidth() : int
+        + getPlayers() : List<PlayerInfo>
+        + getCurrentTurn() : int
+        + setCurrentTurn(turn : int)
+    }
+
+    graphics.PanelRenderer "1" -- "1" GameCoordinator : < panelRenderer
+
+    PlayerInfo "0..*" -- GameCoordinator : < players
+}
+
+@enduml

@@ -204,7 +204,7 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
     }
 
     @Override
-    public void handlePress(int mouseX, int mouseY) {
+    public void handlePress(int mouseX, int mouseY, int button) {
         for (CustomButton btn : buttons) {
             if (btn.contains(mouseX, mouseY)) {
                 btn.setPressed(true);

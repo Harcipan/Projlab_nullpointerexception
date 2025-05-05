@@ -141,7 +141,7 @@ public class PanelRenderer extends JPanel implements MouseListener, MouseMotionL
     @Override
     public void mousePressed(MouseEvent e) {
         if (currentRenderStrategy != null) {
-            currentRenderStrategy.handlePress(e.getX(), e.getY());
+            currentRenderStrategy.handlePress(e.getX(), e.getY(), e.getButton());
             repaint(); // Repaint after press to show pressed state
         }
     }

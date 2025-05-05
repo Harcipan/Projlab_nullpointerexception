@@ -23,15 +23,15 @@ public class Map {
     int height; // Height of the map
 
     // WHY THE F*** DOES THIS EXIST?!?!?!?
+    // compatibility with legacy code i guess
     public Map() {
-        this(100, 100); // Default size
-        width = 100;
-        height = 100;
+        this(32, 32); // Default size
+        width = 32;
+        height = 32;
     }
 
     public Map(int width, int height) {
         replace(this);
-        UseCase.printWrapper("Initializing Map as " + UseCase.logger.get(this), UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
         tektons = new ArrayList<>();
         tiles = new Tile[width][height];
         for (int i = 0; i < width; i++) {
@@ -43,13 +43,12 @@ public class Map {
         }
         this.width = width;
         this.height = height;
-        UseCase.printWrapper("Map: "+UseCase.logger.get(this), ArrowDirection.LEFT);
     }
 
     public int addTekton(Tekton tekton) {
-        UseCase.printWrapper(UseCase.logger.get(this)+".addTekton(" + UseCase.logger.get(tekton)+")", ArrowDirection.RIGHT, Indent.INDENT);
+        //UseCase.printWrapper(UseCase.logger.get(this)+".addTekton(" + UseCase.logger.get(tekton)+")", ArrowDirection.RIGHT, Indent.INDENT);
         tektons.add(tekton);
-        UseCase.printWrapper(UseCase.logger.get(this)+".addTekton()", ArrowDirection.LEFT, Indent.UNINDENT);
+        //UseCase.printWrapper(UseCase.logger.get(this)+".addTekton()", ArrowDirection.LEFT, Indent.UNINDENT);
         return tektons.size() - 1;
     }
 
@@ -87,21 +86,6 @@ public class Map {
      * @return The tile at the specified coordinates, or null if out of bounds.
      */
     public Tile getTile(int x, int y) {
-        
-        /*if (x < 0 || x >= width || y < 0 || y >= height) {
-            return null; // Out of bounds
-        }
-        return tiles[x][y];
-        for (Tekton tek : tektons) {
-            // for every tile
-            for (Tile t : tek.tiles) {
-                if(t.x==x && t.y==y) return t;
-            }
-        }
-        return null; 
-        WHAT THE F*** IS THIS DOING HERE?!?!?!?
-        */
-
         // Check if the coordinates are within bounds
         if (x >= 0 && x < tiles.length && y >= 0 && y < tiles[0].length) {
             return tiles[x][y];

@@ -54,6 +54,11 @@ public class GameCoordinator
         // Create the game map based on the selected size
         if (mapSize == 32) {
             gameMap = new Map(32, 32); // Create a 32x32 map
+            if (gameMap == null) {
+                System.err.println("GameCoordinator Error: Game map is null. Cannot start game.");
+                return;
+            }
+            System.out.println("GameCoordinator: Created a 32x32 map.");
             // generate a tekton and assign tiles
         } else if (mapSize == 64) {
             gameMap = new Map(64, 64); // Create a 64x64 map
@@ -61,8 +66,11 @@ public class GameCoordinator
             System.err.println("GameCoordinator Error: Invalid map size. Cannot start game.");
             return;
         }
-
+        // dump the map hash to the console for debugging
+        System.out.println("GameCoordinator: Map hash: " + gameMap.hashCode());
         Tekton tek = new Tekton(gameMap);
+        // dump the tekton hash to the console for debugging
+        System.out.println("GameCoordinator: Tekton hash: " + tek.hashCode());
         // for every tile in the map, assign the tile to the tekton and its reverse
         for (int i = 0; i < gameMap.getWidth(); i++) {
             for (int j = 0; j < gameMap.getHeight(); j++) {

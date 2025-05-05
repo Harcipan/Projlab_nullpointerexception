@@ -35,7 +35,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
         try {
             FUNGUS_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon.png").toFile());
             INSECT_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon.png").toFile());
-            MYCELIUM_ICON = ImageIO.read(Paths.get("res/elements/myc_uodownleftright.png").toFile());
+            MYCELIUM_ICON = ImageIO.read(Paths.get("res/elements/myc_updownleftright.png").toFile());
 
         } catch (IOException e) {
             System.err.println("Could not load player icons");
@@ -222,7 +222,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
     }
 
     @Override
-    public void handlePress(int mouseX, int mouseY) {
+    public void handlePress(int mouseX, int mouseY, int button) {
         int gridX = (mouseX - presenter.getHUDWidth()) / TILE_SIZE;
         int gridY = mouseY / TILE_SIZE;
         if (presenter.isPlacementPhase()) {
@@ -273,19 +273,53 @@ public class InGameStrategy extends AbstractRenderStrategy {
             if (currentPlayer instanceof InsectPlayer insectPlayer) {
                 // Current player is an InsectPlayer
                 System.out.println("Clicked while InsectPlayer '" + insectPlayer.getName() + "' is active. Tile: (" + gridX + ", " + gridY + ")");
-                
-                // WIP: Move the first controlled insect to the clicked tile
-                if (!insectPlayer.getControlledInsects().isEmpty()) {
-                     Insect insectToMove = insectPlayer.getControlledInsects().get(0); // Or implement selection logic
-                     Tile targetTile = presenter.getTile(gridX, gridY);
-                     if (targetTile != null) {
-                         insectToMove.step(targetTile);
-                         System.out.println("Insect moved to tile (" + gridX + ", " + gridY + ")");
-                     } else {
-                         System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
-                     }
+                // left click to move insect
+                if (button == 1) {
+                    System.out.println("Left click detected. Moving insect.");
+                    // WIP: Move the first controlled insect to the clicked tile
+                    if (!insectPlayer.getControlledInsects().isEmpty()) {
+                         Tile targetTile = presenter.getTile(gridX, gridY);
+                         if (targetTile != null) {
+                             insectPlayer.moveTo(targetTile);
+                             System.out.println("Insect moved to tile (" + gridX + ", " + gridY + ")");
+                         } else {
+                             System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
+                         }
+                    }
+                }
+                // right click to cut
+                else if (button == 3) {
+                    System.out.println("Right click detected. Cutting.");
+                    // WIP: Cut the first controlled insect to the clicked tile
+                    if (!insectPlayer.getControlledInsects().isEmpty()) {
+                        Tile targetTile = presenter.getTile(gridX, gridY);
+                        if (targetTile != null) {
+                            insectPlayer.cut(targetTile);
+                            System.out.println("Cut at tile (" + gridX + ", " + gridY + ")");
+                        } else {
+                            System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
+                        }
+                    }
                 }
 
+            }
+            else if (currentPlayer instanceof FungusPlayer fungusPlayer) {
+                // Current player is a FungusPlayer
+                System.out.println("Clicked while FungusPlayer '" + fungusPlayer.getName() + "' is active. Tile: (" + gridX + ", " + gridY + ")");
+                
+                // WIP: grow mycelium in the tile
+                Tile targetTile = presenter.getTile(gridX, gridY);
+                if (targetTile != null) {
+                    Mycelium myc = ((FungusPlayer) currentPlayer).growMycelium(targetTile);
+                    if (myc != null){
+                        System.out.println("Mycelium grown at tile (" + myc.getCurrentTile().hashCode() + ")");
+                    }
+                    else {
+                        System.out.println("Mycelium space is full or some other problem: (" + gridX + ", " + gridY + ")");
+                    }
+                } else {
+                    System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
+                }
             }
         }
     }

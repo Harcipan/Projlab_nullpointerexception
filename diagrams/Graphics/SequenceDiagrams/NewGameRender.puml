@@ -1,0 +1,25 @@
+@startuml NewGameRenderer
+
+title Render New Game
+
+actor "Main" As M
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+participant "newGameSetupStrategy: NewGameSetupStrategy" as mms
+participant "newGameSetupPresenter: NewGameSetupPresenter" as mmp
+
+activate M
+activate Panelrenderer
+activate mms
+activate mmp
+
+M->Panelrenderer: paintComponent(Graphics g)
+Panelrenderer->mms: render(Graphics2D g2d, Dimension dimension)
+mms->mmp:getPlayers()
+mmp-->mms
+
+mms->mmp:getMapSize()
+mmp-->mms
+mms-->Panelrenderer
+Panelrenderer-->M
+
+@enduml

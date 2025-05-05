@@ -1,0 +1,27 @@
+@startuml Nextturn
+
+title Next Turn Step
+
+actor "Player" as P
+participant "inGameStrategy: InGameStrategy" as mms
+participant "inGamePresenter: InGamePresenter" as mmp
+participant "coordinator: GameCoordinator" as Coordinator
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+
+activate P
+activate Panelrenderer
+activate mms
+activate mmp
+activate Coordinator
+
+P->mms : onButtonClicked(CustomButton btn)
+mms->mmp: getCoordinator()
+mmp->Coordinator: setCurrentTurn(getCurrentTurn() + 1)
+Coordinator->Coordinator: initiateRepaint()
+Coordinator->Panelrenderer: repaint()
+Panelrenderer-->Coordinator
+Coordinator-->mmp
+mmp-->mms
+mms-->P
+
+@enduml

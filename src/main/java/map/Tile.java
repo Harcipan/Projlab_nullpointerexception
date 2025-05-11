@@ -135,7 +135,7 @@ public class Tile {
         UseCase.printWrapper(UseCase.logger.get(this)+".growMycelium("+UseCase.logger.get(player)+")", ArrowDirection.RIGHT, Indent.KEEP);
         Mycelium m = null;
         if (myceliumSpace > 0) {
-            m = new Mycelium(GameEntity.getNextId(), 100, this, player);
+            m = new Mycelium(GameEntity.getNextId(), 2, this, player);
             myceliumSpace--;
             printWrapper(UseCase.logger.get(this)+".growMycelium()", ArrowDirection.LEFT, Indent.KEEP);
         } else {
@@ -164,9 +164,6 @@ public class Tile {
     }
 
     public void update() {
-        /*for (GameEntity ge : entities) {
-            ge.update();
-        }*/
         for(int i=0;i<entities.size();i++) {
             entities.get(i).update();
         }

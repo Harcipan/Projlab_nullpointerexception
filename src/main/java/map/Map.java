@@ -68,13 +68,11 @@ public class Map {
     }
 
     public void tick() {
-        // for every tekton
-        
-        // TODO no clue how to implement this yet
-        for (Tekton tek : tektons) {
-            // for every tile
-            for (Tile t : tek.tiles) {
-                t.update();
+        // for every tile in the map
+        for (int i = 0; i < tiles.length; i++) {
+            for (int j = 0; j < tiles[0].length; j++) {
+            
+                tiles[i][j].update();
             }
         }
     }

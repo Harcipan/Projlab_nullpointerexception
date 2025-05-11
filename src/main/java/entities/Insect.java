@@ -111,10 +111,6 @@ public class Insect extends GameEntity {
         if (!canCut) {
             return;
         }
-        target.getEntities();
-        for (GameEntity ge : target.getEntities()) {
-            ge.getCut();
-        }
         for(int i=0; i<target.getEntities().size();i++) {
             target.getEntities().get(i).getCut();
         }

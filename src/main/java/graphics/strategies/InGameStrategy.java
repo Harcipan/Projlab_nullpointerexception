@@ -209,6 +209,10 @@ public class InGameStrategy extends AbstractRenderStrategy {
         if (btn == nextTurnButton) {
             // Advance turn
             presenter.getCoordinator().setCurrentTurn(presenter.getCoordinator().getCurrentTurn() + 1);
+            for (FungusPlayer fPlayer : presenter.getFungusPlayers()) {
+                fPlayer.floodFillCheck();
+            }
+            presenter.getCoordinator().getGameMap().tick();
             presenter.getCoordinator().initiateRepaint();
         }
     }

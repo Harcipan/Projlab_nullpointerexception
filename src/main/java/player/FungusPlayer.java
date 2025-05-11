@@ -1,6 +1,7 @@
 package player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import entities.*;
@@ -121,6 +122,7 @@ public class FungusPlayer extends Player {
             if (myc.getCurrentTile().isNeighbor(tile) && tile.canGrowFungus()) {
                 FungusBody body = tile.growBody(this);
                 score++;
+                return body;
             }
         }
 
@@ -172,5 +174,41 @@ public class FungusPlayer extends Player {
     }
     public List<Spore> getSpores() {
         return spores;
+    }
+
+    /**
+     * Check mycelium graphs from all fungus bodies 
+     */
+    public void floodFillCheck(){
+        for (FungusBody fb: fungusBodies){
+            List<Mycelium> connectedMycelia = new ArrayList<>();
+            List<Tile> connectedTiles = new ArrayList<>();
+            // immediate neighbors
+            for (Mycelium mycelium : mycelia) {
+                if (mycelium.getCurrentTile().isNeighbor(fb.getCurrentTile())) {
+                    connectedMycelia.add(mycelium);
+                    connectedTiles.add(mycelium.getCurrentTile());
+                }
+            }
+            // yeah just a guess, horribly inefficent algo, architecture is broken 
+            for (int i = 0; i < mycelia.size(); i++){
+                for (Mycelium mycelium : mycelia) {
+                    // if connected mycelium is growing on a neighbor tile
+                    if (!Collections.disjoint(mycelium.getCurrentTile().getNeighbors(), connectedTiles)){
+                        connectedMycelia.add(mycelium);
+                        connectedTiles.add(mycelium.getCurrentTile());
+                    }
+                    
+                }
+            }
+
+            // set disconnected mycelia to not connected
+            for (Mycelium mycelium : mycelia) {
+                if (!connectedMycelia.contains(mycelium)) {
+                    mycelium.setIsDying(true);
+                }
+            }
+
+        }
     }
 }

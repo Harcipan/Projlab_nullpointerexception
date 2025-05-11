@@ -1,0 +1,32 @@
+@startuml addplayer
+
+title Add Player
+
+actor "Player" as P
+participant "newGameSetupStrategy: NewGameSetupStrategy" as mms
+participant "newGameSetupPresenter: NewGameSetupPresenter" as mmp
+
+participant "coordinator: GameCoordinator" as Coordinator
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+
+activate P
+activate mms
+activate mmp
+activate Coordinator
+activate Panelrenderer
+
+P->mms:onButtonClicked(CustomButton btn)
+mms->mms:unfocusAllTextFields()
+mms->mmp: addPlayerRequested()
+mmp-->mms
+mms->mms: syncPlayerTextFields()
+mms->mmp: getPlayers()
+mms->mmp: getCoordinator()
+mmp->Coordinator: initiateRepaint()
+Coordinator->Panelrenderer : repaint()
+Panelrenderer-->Coordinator
+Coordinator-->mmp
+mmp-->mms
+mms-->P
+
+@enduml

@@ -1,6 +1,7 @@
 package graphics.presenters;
 
 import app.GameCoordinator;
+import graphics.accentManager.PaletteGenerator;
 import player.FungusPlayer;
 import player.InsectPlayer;
 import player.Player;
@@ -86,9 +87,10 @@ public class NewGameSetupPresenter {
 
     public void onConfirmSetupClicked() {
         System.out.println("NewGameSetupPresenter: Confirm Setup clicked.");
-        // TODO: Validate currentSettings if necessary
-        // Tell coordinator to start the game with the chosen settings
-        // coordinator.startGame(currentSettings);
+        
+        // Setting player accent colors based on the number of players
+        PaletteGenerator.setPlayerAccentColors(players);
+
         System.out.println("NewGameSetupPresenter: Requesting game start (actual settings TBD).");
         coordinator.startGame(mapSize, players, saveName); // Pass the map size, players, and save name to the coordinator
     }

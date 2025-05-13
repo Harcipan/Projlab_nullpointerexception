@@ -1,6 +1,7 @@
 package player;
 
 import map.*;
+import java.awt.Color;
 
 public abstract class Player {
     int score;
@@ -8,6 +9,7 @@ public abstract class Player {
     private String name;
     public static final int ACTIONS_PER_TICK = 5; // Number of actions a player gets per tick
     public static int playerCounter = 0; // Counter to keep track of player instances
+    private Color accentColor; // Color of the player
 
     protected Player() {
         this.score = 0;
@@ -45,5 +47,13 @@ public abstract class Player {
 
     public String getName() {
         return name;
+    }
+
+    public Color getAccentColor() {
+        return accentColor;
+    }
+
+    public void setAccentColor(Color themeColor) {
+        this.accentColor = themeColor;
     }
 }

@@ -1,5 +1,6 @@
 package graphics.strategies;
 
+import graphics.accentManager.TintedEntityDrawer;
 import graphics.customUIElements.CustomButton;
 import graphics.presenters.InGamePresenter;
 import entities.*;
@@ -129,7 +130,8 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 g2d.setStroke(new BasicStroke(3));
                 g2d.drawRect(drawX - 4, drawY - 4, PLAYER_ICON_SIZE + 8, PLAYER_ICON_SIZE + 8);
             }
-            g2d.drawImage(icon, drawX, drawY, PLAYER_ICON_SIZE, PLAYER_ICON_SIZE, null);
+            //g2d.drawImage(icon, drawX, drawY, PLAYER_ICON_SIZE, PLAYER_ICON_SIZE, null);
+            TintedEntityDrawer.drawPlayer(g2d, player, drawX, drawY, PLAYER_ICON_SIZE);
             g2d.setColor(Color.WHITE);
             g2d.setFont(new Font("Arial", Font.PLAIN, 13));
             g2d.drawString(player.getName(), drawX, drawY + PLAYER_ICON_SIZE + 16);
@@ -181,16 +183,17 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 Tile t = fb.getCurrentTile();
                 int x = t.getX() * TILE_SIZE + presenter.getHUDWidth();
                 int y = t.getY() * TILE_SIZE;
-                g2d.drawImage(FUNGUS_ICON, x, y, TILE_SIZE, TILE_SIZE, null);
+                TintedEntityDrawer.drawPlayer(g2d, (Player)fp, x, y, TILE_SIZE);
             }
         }
+
         // Draw Insects
         for (InsectPlayer ip : presenter.getInsectPlayers()) {
             for (Insect i : ip.getControlledInsects()) {
                 Tile t = i.getCurrentTile();
                 int x = t.getX() * TILE_SIZE + presenter.getHUDWidth();
                 int y = t.getY() * TILE_SIZE;
-                g2d.drawImage(INSECT_ICON, x, y, TILE_SIZE, TILE_SIZE, null);
+                TintedEntityDrawer.drawPlayer(g2d, (Player)ip, x, y, TILE_SIZE);
             }
         }
         // Draw Mycelium

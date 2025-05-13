@@ -169,4 +169,15 @@ public class Mycelium extends Fungus{
 
         return sb.toString();
     }
+
+    public FungusPlayer getPlayer() {
+        if (player == null) {
+            System.out.println("Mycelium has no player");
+        }
+        return player;
+    }
+
+    public void setPlayer(FungusPlayer player) {
+        this.player = player;
+    }
 }

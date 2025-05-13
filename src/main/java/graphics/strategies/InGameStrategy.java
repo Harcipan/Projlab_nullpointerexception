@@ -28,15 +28,34 @@ public class InGameStrategy extends AbstractRenderStrategy {
     private static final int PLAYER_ICON_SIZE = 40;
     private static final int PLAYER_ICON_GAP = 18;
     private static final int PLAYER_ICON_START_Y = 90;
+
+    // player icons
     private static BufferedImage FUNGUS_ICON;
     private static BufferedImage INSECT_ICON;
-    private static BufferedImage MYCELIUM_ICON;
+
+    // Mycelium spritesheet
+    private static BufferedImage MYC_DISCONNECTED_ICON;
+    private static BufferedImage MYC_UP_ICON;
+    private static BufferedImage MYC_UPDOWN_ICON;
+    private static BufferedImage MYC_UPRIGHT_ICON;
+    private static BufferedImage MYC_LEFTUPDOWN_ICON;
+    private static BufferedImage MYC_UPDOWNLEFTRIGHT_ICON;
+
+
 
     static {
         try {
+            // Player Icons
             FUNGUS_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon.png").toFile());
             INSECT_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon.png").toFile());
-            MYCELIUM_ICON = ImageIO.read(Paths.get("res/elements/myc_updownleftright.png").toFile());
+
+            // Mycelium Spritesheet
+            MYC_UPDOWNLEFTRIGHT_ICON = ImageIO.read(Paths.get("res/elements/myc_updownleftright.png").toFile());
+            MYC_UP_ICON = ImageIO.read(Paths.get("res/elements/myc_up.png").toFile());
+            MYC_UPDOWN_ICON = ImageIO.read(Paths.get("res/elements/myc_updown.png").toFile());
+            MYC_UPRIGHT_ICON = ImageIO.read(Paths.get("res/elements/myc_upright.png").toFile());
+            MYC_LEFTUPDOWN_ICON = ImageIO.read(Paths.get("res/elements/myc_leftupdown.png").toFile());
+            MYC_DISCONNECTED_ICON = ImageIO.read(Paths.get("res/elements/myc_disconnected.png").toFile());
 
         } catch (IOException e) {
             System.err.println("Could not load player icons");
@@ -202,7 +221,132 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 Tile t = m.getCurrentTile();
                 int x = t.getX() * TILE_SIZE + presenter.getHUDWidth();
                 int y = t.getY() * TILE_SIZE;
-                g2d.drawImage(MYCELIUM_ICON, x, y, TILE_SIZE, TILE_SIZE, null);
+
+                // Check connections in four cardinal directions
+                boolean up = false, down = false, left = false, right = false;
+                int tx = t.getX();
+                int ty = t.getY();
+                Map map = t.getParentTekton().getMap(); // Get map reference
+
+                // Up
+                Tile upTile = map.getTile(tx, ty - 1);
+                if (upTile != null) {
+                    for (entities.GameEntity e : upTile.getEntities()) {
+                        if (e instanceof Mycelium myc && myc.getPlayer() == fp) {
+                            up = true;
+                            break;
+                        }
+                    }
+                }
+                // Down
+                Tile downTile = map.getTile(tx, ty + 1);
+                if (downTile != null) {
+                    for (entities.GameEntity e : downTile.getEntities()) {
+                        if (e instanceof Mycelium myc && myc.getPlayer() == fp) {
+                            down = true;
+                            break;
+                        }
+                    }
+                }
+                // Left
+                Tile leftTile = map.getTile(tx - 1, ty);
+                if (leftTile != null) {
+                    for (entities.GameEntity e : leftTile.getEntities()) {
+                        if (e instanceof Mycelium myc && myc.getPlayer() == fp) {
+                            left = true;
+                            break;
+                        }
+                    }
+                }
+                // Right
+                Tile rightTile = map.getTile(tx + 1, ty);
+                if (rightTile != null) {
+                    for (entities.GameEntity e : rightTile.getEntities()) {
+                        if (e instanceof Mycelium myc && myc.getPlayer() == fp) {
+                            right = true;
+                            break;
+                        }
+                    }
+                }
+
+                BufferedImage mycSprite = MYC_DISCONNECTED_ICON; // Default
+                boolean needsRotation = false;
+                double rotationAngle = 0;
+
+                
+                if (up && down && left && right) { 
+                    mycSprite = MYC_UPDOWNLEFTRIGHT_ICON;
+                }
+                
+
+                else if (up && down && left) { 
+                    mycSprite = MYC_LEFTUPDOWN_ICON;
+                } else if (up && down && right) {
+                    mycSprite = MYC_LEFTUPDOWN_ICON;
+                    needsRotation = true;
+                    rotationAngle = Math.PI;
+                } else if (down && left && right) { 
+                    mycSprite = MYC_LEFTUPDOWN_ICON;
+                    needsRotation = true;
+                    rotationAngle = ( 3 * Math.PI / 2);
+                } else if (up && left && right) { 
+                    mycSprite = MYC_LEFTUPDOWN_ICON;
+                    needsRotation = true;
+                    rotationAngle = Math.PI / 2; 
+                }
+               
+                
+                else if (up && down) { // Shape: │
+                    mycSprite = MYC_UPDOWN_ICON;
+                } else if (left && right) { // Shape: ─
+                    mycSprite = MYC_UPDOWN_ICON;
+                    needsRotation = true;
+                    rotationAngle = Math.PI / 2; // 90 degrees clockwise
+                }
+                
+                
+                else if (up && right) { 
+                    mycSprite = MYC_UPRIGHT_ICON;
+                } else if (up && left) {
+                    mycSprite = MYC_UPRIGHT_ICON;
+                    needsRotation = true;
+                    rotationAngle = (3 * Math.PI) / 2; 
+                } else if (down && right) { 
+                    mycSprite = MYC_UPRIGHT_ICON;
+                    needsRotation = true;
+                    rotationAngle = Math.PI / 2; 
+                } else if (down && left) { 
+                    mycSprite = MYC_UPRIGHT_ICON;
+                    needsRotation = true;
+                    rotationAngle = Math.PI;
+                }
+                
+
+                else if (up) {
+                    mycSprite = MYC_UP_ICON;
+                } else if (down) { 
+                    mycSprite = MYC_UP_ICON;
+                    needsRotation = true;
+                    rotationAngle = Math.PI; 
+                } else if (left) { 
+                    mycSprite = MYC_UP_ICON;
+                    needsRotation = true;
+                    rotationAngle = (3 * Math.PI) / 2; 
+                } else if (right) {
+                    mycSprite = MYC_UP_ICON;
+                    needsRotation = true;
+                    rotationAngle = Math.PI / 2; 
+                }
+
+                // Draw the mycelium sprite with tint
+                if (needsRotation) {
+                    Graphics2D g2dRot = (Graphics2D) g2d.create();
+                    g2dRot.rotate(rotationAngle, x + TILE_SIZE / 2.0, y + TILE_SIZE / 2.0);
+                    TintedEntityDrawer.drawMycelium(g2dRot, x, y, TILE_SIZE, fp, mycSprite);
+                    g2dRot.dispose();
+                } else {
+                    TintedEntityDrawer.drawMycelium(g2d, x, y, TILE_SIZE, fp, mycSprite);
+                }
             }
         }
     }

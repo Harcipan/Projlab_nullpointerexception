@@ -1,10 +1,12 @@
 package graphics.accentManager;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
 
+import player.FungusPlayer;
 import player.Player;
 import java.awt.image.BufferedImage;
 import java.awt.AlphaComposite;
@@ -38,11 +40,9 @@ public class TintedEntityDrawer {
 
             FUNGUS_GREYSCALE_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon_greyscale.png").toFile());
             INSECT_GREYSCALE_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon_greyscale.png").toFile());
-            //MYCELIUM_GREYSCALE_ICON = ImageIO.read(Paths.get("res/elements/myc_updownleftright_greyscale.png").toFile()); TODO
 
             FUNGUS_HUE_MASK = ImageIO.read(Paths.get("res/player_icons/mushroom_icon_hue_mask.png").toFile());
             INSECT_HUE_MASK = ImageIO.read(Paths.get("res/player_icons/insect_icon_hue_mask.png").toFile());
-            //MYCELIUM_HUE_MASK = ImageIO.read(Paths.get("res/elements/myc_updownleftright_hue_mask.png").toFile()); TODO
 
         } catch (IOException e) {
             System.err.println("Could not load player icons");
@@ -81,16 +81,26 @@ public class TintedEntityDrawer {
             return;
         }
 
-        colorizedIcon = tint(player.getAccentColor(), greyscaleIcon, hueMask, originalIcon);
+        colorizedIcon = tintPlayerIcon(player.getAccentColor(), greyscaleIcon, hueMask, originalIcon);
 
         g2d.drawImage(colorizedIcon, x, y, playerIconSize, playerIconSize, null);
+    }
+
+    public static void drawMycelium(Graphics2D g2d, int x, int y, int size, FungusPlayer fp, BufferedImage myceliumIcon) {
+        // Draw the mycelium icon with a tint
+        BufferedImage originalIcon = myceliumIcon;
+
+        Color color = fp.getAccentColor();
+        BufferedImage colorizedIcon = tintMyceliumIcon(color, originalIcon);
+
+        g2d.drawImage(colorizedIcon, x, y, size, size, null);
     }
 
     static float mix(float a, float b, float t) {
         return a * (1 - t) + b * t;
     }
 
-    private static BufferedImage tint(Color color, BufferedImage greyscaleSprite, BufferedImage hueMask, BufferedImage originalSprite) {
+    private static BufferedImage tintPlayerIcon(Color color, BufferedImage greyscaleSprite, BufferedImage hueMask, BufferedImage originalSprite) {
         BufferedImage tintedSprite = new BufferedImage(greyscaleSprite.getWidth(), greyscaleSprite.getHeight(), BufferedImage.TRANSLUCENT);
         Graphics2D graphics = tintedSprite.createGraphics();
         graphics.drawImage(greyscaleSprite, 0, 0, null);
@@ -134,6 +144,45 @@ public class TintedEntityDrawer {
                 tintedSprite.setRGB(i, j, (a_out << 24) | (r_out << 16) | (g_out << 8) | (b_out));
             }
         }
+        return tintedSprite;
+    }
+
+    private static BufferedImage tintMyceliumIcon(Color color, BufferedImage originalSprite) {
+        BufferedImage tintedSprite = new BufferedImage(originalSprite.getWidth(), originalSprite.getHeight(), BufferedImage.TRANSLUCENT);
+        Graphics2D graphics = tintedSprite.createGraphics();
+        graphics.drawImage(originalSprite, 0, 0, null);
+        graphics.dispose();
+
+        for (int i = 0; i < tintedSprite.getWidth(); i++) {
+            for (int j = 0; j < tintedSprite.getHeight(); j++) {
+                int origARGB = originalSprite.getRGB(i, j);
+
+                int a_out = (origARGB >> 24) & 0xFF;
+
+                // Tint color normalized
+                float tintR = color.getRed() / 255f;
+                float tintG = color.getGreen() / 255f;
+                float tintB = color.getBlue() / 255f;
+
+                // Original color channels
+                int origR = (origARGB >> 16) & 0xFF;
+                int origG = (origARGB >> 8) & 0xFF;
+                int origB = origARGB & 0xFF;
+
+                // Mix tinted greyscale and original using maskAlpha
+                int r_out = (int)mix(tintR * 100f, origR, .4f);
+                int g_out = (int)mix(tintG * 100f, origG, .4f);
+                int b_out = (int)mix(tintB * 100f, origB, .4f);
+
+                // Clamp to [0,255]
+                r_out = Math.max(0, Math.min(255, r_out));
+                g_out = Math.max(0, Math.min(255, g_out));
+                b_out = Math.max(0, Math.min(255, b_out));
+
+                tintedSprite.setRGB(i, j, (a_out << 24) | (r_out << 16) | (g_out << 8) | (b_out));
+            }
+        }
+
         return tintedSprite;
     }
 }

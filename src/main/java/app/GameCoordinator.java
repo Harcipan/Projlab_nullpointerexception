@@ -275,4 +275,24 @@ public class GameCoordinator
     public Map getGameMap() {
         return gameMap;
     }
+    public void showLoadGameScreen() {
+        System.out.println("GameCoordinator: Setting up Load Game Screen...");
+        if (panelRenderer == null) {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot show load game screen.");
+            return;
+        }
+        LoadGamePresenter loadGamePresenter = new LoadGamePresenter(this);
+        LoadGameStrategy loadGameStrategy = new LoadGameStrategy(loadGamePresenter);
+        panelRenderer.setRenderStrategy(loadGameStrategy);
+        System.out.println("GameCoordinator: Switched to LoadGameStrategy.");
+        if (mainFrame != null) {
+            mainFrame.setPreferredSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMinimumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMaximumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            panelRenderer.revalidate();
+            mainFrame.pack();
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        }
+    }
 }

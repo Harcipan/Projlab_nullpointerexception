@@ -47,8 +47,9 @@ public class MainMenuStrategy extends AbstractRenderStrategy {
         this.presenter = presenter;
 
         buttons.add(new CustomButton("Start Game", 200, 150, 200, 40));
-        buttons.add(new CustomButton("Open Console", 200, 200, 200, 40));
-        buttons.add(new CustomButton("Exit", 200, 250, 200, 40));
+        buttons.add(new CustomButton("Load Game", 200, 200, 200, 40));
+        buttons.add(new CustomButton("Open Console", 200, 250, 200, 40));
+        buttons.add(new CustomButton("Exit", 200, 300, 200, 40));
     }
 
     @Override
@@ -132,6 +133,8 @@ public class MainMenuStrategy extends AbstractRenderStrategy {
             case "Exit":
                 presenter.onExitClicked();
                 break;
+            case "Load Game":
+                presenter.onLoadGameClicked();
             default:
                 System.err.println("MainMenuStrategy: Unknown button clicked: " + btn.getText());
         }

@@ -44,4 +44,10 @@ public class MainMenuPresenter {
         // Delegate exiting to the coordinator
         coordinator.exitApplication();
     }
+
+    public void onLoadGameClicked() {
+        System.out.println("MainMenuPresenter: Handling 'Load Game' action.");
+        // Delegate loading game logic to the coordinator
+        coordinator.showLoadGameScreen();
+    }
 }

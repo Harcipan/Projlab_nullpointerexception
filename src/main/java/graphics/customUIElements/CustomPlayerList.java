@@ -136,4 +136,33 @@ public class CustomPlayerList {
             return -1; // Click below the last item or in padding
         }
     }
+
+    /**
+     * Draws a simple list of save names (no icons, just text, highlight selected).
+     *
+     * @param g2d The Graphics2D context to draw on.
+     * @param saveNames The list of save names to display.
+     * @param selectedIndex The index of the currently selected save (-1 if none).
+     * @param bounds The Rectangle defining the area where the list should be drawn.
+     */
+    public static void drawSaves(Graphics2D g2d, java.util.List<String> saveNames, int selectedIndex, Rectangle bounds) {
+        if (saveNames == null || bounds == null) return;
+        g2d.setColor(Color.LIGHT_GRAY);
+        g2d.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(bounds.x, bounds.y, bounds.width - 1, bounds.height - 1);
+        int itemHeight = 30;
+        for (int i = 0; i < saveNames.size(); i++) {
+            int itemY = bounds.y + i * itemHeight;
+            if (itemY + itemHeight > bounds.y + bounds.height) break;
+            if (i == selectedIndex) {
+                g2d.setColor(new Color(100, 150, 255));
+                g2d.fillRect(bounds.x + 1, itemY + 1, bounds.width - 2, itemHeight - 2);
+                g2d.setColor(Color.BLACK);
+            }
+            g2d.setFont(new Font("Arial", Font.PLAIN, 16));
+            g2d.drawString(saveNames.get(i), bounds.x + 10, itemY + 20);
+            g2d.setColor(Color.BLACK);
+        }
+    }
 }

@@ -109,6 +109,9 @@ public class InGamePresenter {
     }
 
     public Tile getTile(int x, int y) {
+        if (x < 0 || y < 0 || x >= coordinator.getGameMap().getWidth() || y >= coordinator.getGameMap().getHeight()) {
+            return null;
+        }
         return coordinator.getGameMap().getTile(x, y);
     }
 }

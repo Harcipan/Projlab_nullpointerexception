@@ -1,14 +1,17 @@
 package map;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import entities.FungusBody;
 import entities.GameEntity;
+import entities.Mycelium;
 import player.FungusPlayer;
 import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
+import util.Vec2;
 
 import static use_cases.UseCase.printWrapper;
 
@@ -83,76 +86,74 @@ public class Tekton {
         return fungusBody != null;
     }
 
+    // TODO: This will break stuff in tests. Copy older function content here from past commits
+    @Deprecated
+    public List<Tekton> breakTekton() {
+        throw new UnsupportedOperationException("This method is deprecated. Use breakTekton(Dimension center, float randomAngle) instead.");
+    }
 
     /**
      * Breaks the tekton into two pieces along a fault line around the middle
      * @return the two pieces of the tekton as an ArrayList
+     * @param center the center of the tekton
+     * @param randomAngle the angle of the fault line
      */
-    public List<Tekton> breakTekton() {
-
+    public List<Tekton> breakTekton(Dimension center, float randomAngle) {
         printWrapper("Breaking tekton...", UseCase.ArrowDirection.RIGHT, UseCase.Indent.KEEP);
 
-        int faultLine = faultLine();
-        List<Tile> tilesAlongFault = new ArrayList<>();
+        List<Tekton> newTektons = new ArrayList<>();
         Tekton t1 = new Tekton(map, breakChance, sporeCount);
         Tekton t2 = new Tekton(map, breakChance, sporeCount);
+        newTektons.add(t1);
+        newTektons.add(t2);
 
-        if(faultLine > 0) {
-            List<Tile> left = new ArrayList<>();
-            List<Tile> right = new ArrayList<>();
-            for (Tile tile : tiles) {
-                if (tile.getX() < faultLine) {
-                    left.add(tile);
-                } else {
-                    right.add(tile);
-                }
-                if (tile.getX() == faultLine || tile.getX() == faultLine - 1) {
-                    tilesAlongFault.add(tile);
-                }
-            }
-            // add the tiles to the new tektons (changes parent too)
-            for (Tile tile : left) {
+        Vec2 centerVec = new Vec2((float) center.getWidth(), (float) center.getHeight());
+        Vec2 randomVec = new Vec2((float) Math.cos(randomAngle), (float) Math.sin(randomAngle));
+
+        for (Tile tile : tiles) {
+            // Determine which new tekton the tile belongs to
+            Vec2 tileVec = new Vec2(tile.getX(), tile.getY());
+            Vec2 perpendicular = new Vec2(-randomVec.getY(), randomVec.getX());
+            float dotProduct = centerVec.subtract(tileVec).dotProduct(perpendicular);
+            if (dotProduct > 0) {
                 t1.addTile(tile);
-            }
-            for (Tile tile : right) {
+                tile.setParentTekton(t1);
+            } else {
                 t2.addTile(tile);
+                tile.setParentTekton(t2);
             }
-        } else {
-            faultLine *= -1;
-            List<Tile> top = new ArrayList<>();
-            List<Tile> bottom = new ArrayList<>();
-            for (Tile tile : tiles) {
-                if (tile.getY() < faultLine) {
-                    top.add(tile);
-                } else {
-                    bottom.add(tile);
+
+            // Remove all mycelia from the map with a distance of 1 from the fault line
+            // Fault line: passes through centerVec, direction randomVec
+            // Distance from point (tileVec) to line: |(tileVec - centerVec) x randomVec| / |randomVec|
+            // In 2D, cross product is scalar: (x1*y2 - y1*x2)
+            float dx = tileVec.getX() - centerVec.getX();
+            float dy = tileVec.getY() - centerVec.getY();
+            float cross = Math.abs(dx * randomVec.getY() - dy * randomVec.getX());
+            float norm = (float) Math.sqrt(randomVec.getX() * randomVec.getX() + randomVec.getY() * randomVec.getY());
+            float distance = cross / norm;
+
+            // Remove all mycelia from the map with a distance of .5 from the fault line
+            if (distance <= .5f) {
+                // Remove all Mycelium entities from this tile
+                List<GameEntity> toRemove = new ArrayList<>();
+                for (GameEntity entity : new ArrayList<>(tile.getEntities())) {
+                    if (entity instanceof Mycelium) {
+                        ((Mycelium)entity).die();
+                        toRemove.add(entity);
+                    }
                 }
-                if (tile.getY() == faultLine || tile.getY() == faultLine - 1) {
-                    tilesAlongFault.add(tile);
-                }
-            }
-            // add the tiles to the new tektons (changes parent too)
-            for (Tile tile : top) {
-                t1.addTile(tile);
-            }
-            for (Tile tile : bottom) {
-                t2.addTile(tile);
+                tile.getEntities().removeAll(toRemove);
             }
         }
-        // trigger a cut event on all entities along the fault line
-        for (Tile tile : tilesAlongFault) {
-            for (int i = tile.getEntities().size() - 1; i >= 0; --i){
-                GameEntity entity = tile.getEntities().get(i);
-                entity.getCut();
-            }
-        }
-        ArrayList<Tekton> tl = new ArrayList<>();
-        tl.add(t1);
-        tl.add(t2);
-        // remove the tekton from the map
+
+        // Remove the original tekton from the map
         map.removeTekton(this);
+        // Add the new tektons to the map
+        map.addTekton(t1);
+        map.addTekton(t2);
 
-        return tl;
+        return newTektons;
     }
 
     public void increaseChance(int amount) {
@@ -301,6 +302,18 @@ public class Tekton {
 
     public void setCanGrowFungus(boolean growFungusFlag){
         this.growFungusFlag = growFungusFlag;
+    }
+
+    public Dimension getCenterOfMass() {
+        int x = 0;
+        int y = 0;
+        for (Tile tile : tiles) {
+            x += tile.getX();
+            y += tile.getY();
+        }
+        x /= tiles.size();
+        y /= tiles.size();
+        return new Dimension(x, y);
     }
 }
 

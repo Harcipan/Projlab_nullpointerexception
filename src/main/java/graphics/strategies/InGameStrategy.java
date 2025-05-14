@@ -8,8 +8,10 @@ import map.*;
 import player.FungusPlayer;
 import player.InsectPlayer;
 import player.Player;
+import util.Vec2;
 
 import java.awt.*;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import javax.imageio.ImageIO;
@@ -41,7 +43,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
     private static BufferedImage MYC_LEFTUPDOWN_ICON;
     private static BufferedImage MYC_UPDOWNLEFTRIGHT_ICON;
 
-
+    public record TektonCenterAngle(Tekton tekton, Dimension centerOfMass, float randomAngle) {}
 
     static {
         try {
@@ -86,7 +88,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
     @Override
     public void render(Graphics2D g2d, Dimension dimension) {
         drawLeftPanel(g2d, dimension);
-        drawGameMap(g2d, dimension);
+        drawMap(g2d, dimension);
         // Draw placement hover icon if in placement phase
         if (presenter.isPlacementPhase() && presenter.getPlacementHover() != null) {
             Player player = presenter.getPlayers().get(presenter.getPlacingPlayerIndex());
@@ -182,7 +184,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
         nextTurnButton.draw(g2d);
     }
 
-    private void drawGameMap(Graphics2D g2d, Dimension dimension) {
+    private void drawMap(Graphics2D g2d, Dimension dimension) {
         // Draw background image if available
         if (backgroundImage != null) {
             int mapPixelWidth = presenter.getMapSize() * TILE_SIZE;
@@ -196,6 +198,33 @@ public class InGameStrategy extends AbstractRenderStrategy {
             g2d.fillRect(presenter.getHUDWidth(), 0, presenter.getMapSize() * TILE_SIZE, presenter.getMapSize() * TILE_SIZE);
         }
 
+        // Draw Tekton borders
+        int mapSize = presenter.getMapSize();
+        for (int i = 0; i < mapSize; i++) {
+            for (int j = 0; j < mapSize; j++) {
+                Tile t = presenter.getTile(i, j);
+                Vec2 tilePos = new Vec2(i * TILE_SIZE, j * TILE_SIZE);
+                List<Tile> neighbors = t.getNeighbors();
+
+                // discard diagonal neighbors
+                neighbors.removeIf(neighbor -> Math.abs(t.getX() - neighbor.getX()) == 1 && Math.abs(t.getY() - neighbor.getY()) == 1);
+
+                for (Tile neighbor : neighbors) {
+                    if (t.getParentTekton() != neighbor.getParentTekton()) {
+                        Vec2 neighborPos = new Vec2(neighbor.getX() * TILE_SIZE, neighbor.getY() * TILE_SIZE);
+                        Vec2 halfway = tilePos.add(neighborPos).scale(0.5f);
+                        Vec2 direction = neighborPos.subtract(tilePos).normalize();
+                        Vec2 perpendicular = new Vec2(-direction.getY(), direction.getX());
+                        g2d.setColor(Color.BLACK);
+                        g2d.setStroke(new BasicStroke(3));
+                        Vec2 start = halfway.add(perpendicular.scale(TILE_SIZE / 2));
+                        Vec2 end = halfway.subtract(perpendicular.scale(TILE_SIZE / 2));
+                        g2d.drawLine((int) start.getX() + presenter.getHUDWidth(), (int) start.getY(), (int) end.getX() + presenter.getHUDWidth(), (int) end.getY());
+                    }
+                }
+            }
+        }
+        
         // Draw FungusBodies
         for (FungusPlayer fp : presenter.getFungusPlayers()) {
             for (FungusBody fb : fp.getFungusBodies()) {
@@ -349,6 +378,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 }
             }
         }
+        
     }
 
     @Override
@@ -356,6 +386,40 @@ public class InGameStrategy extends AbstractRenderStrategy {
         if (btn == nextTurnButton) {
             // Advance turn
             presenter.getCoordinator().setCurrentTurn(presenter.getCoordinator().getCurrentTurn() + 1);
+
+            // Check if round ended. Trigger tekton break if so
+            if (presenter.getCoordinator().getCurrentTurn() % presenter.getPlayers().size() == 0 && presenter.getCoordinator().getCurrentTurn() > 0) {
+                System.out.println("Round ended. Breaking tektons.");
+                int currentTurn = presenter.getCoordinator().getCurrentTurn()  % presenter.getPlayers().size();
+                List<Tekton> tektons = presenter.getCoordinator().getGameMap().getTektons();
+                
+                // Determine the count of breaks (log2 of the count of tektons. 1 for 1 tekton, 1 for 2 tektons, 2 for 4 tektons, etc.)
+                int breakCount = (int) Math.ceil(Math.log(tektons.size() + 1) / Math.log(2));
+                System.out.println("Break count: " + breakCount + " (log2 of " + tektons.size() + ")");
+
+                // Find the center of mass of all tektons and generate random angles
+                List<TektonCenterAngle> records = new ArrayList<>();
+                for (Tekton t : tektons) {
+                    Dimension center = t.getCenterOfMass();
+                    float randomAngle = (float) (Math.random() * 2 * Math.PI);
+                    records.add(new TektonCenterAngle(t, center, randomAngle));
+                    System.out.println("Tekton " + tektons.indexOf(t) + " center: " + new Vec2((float)center.getWidth(), (float)center.getHeight()) + ", random angle: " + randomAngle*180/Math.PI);
+                }
+
+                for (int i = 0; i < breakCount; i++) {
+                    // Select a random tekton and break it
+                    int randomIndex = (int) (Math.random() * records.size());
+                    TektonCenterAngle selectedTekton = records.get(randomIndex);
+                    Tekton t = selectedTekton.tekton();
+                    Dimension center = selectedTekton.centerOfMass();
+                    float randomAngle = selectedTekton.randomAngle();
+
+                    // Break the tekton
+                    t.breakTekton(center, randomAngle);
+                }
+            }
+            
+
             for (FungusPlayer fPlayer : presenter.getFungusPlayers()) {
                 fPlayer.floodFillCheck();
             }

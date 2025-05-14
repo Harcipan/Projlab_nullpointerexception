@@ -1,0 +1,45 @@
+@startuml InitialSetup
+
+title Initial Seqtup
+
+actor "Main" As M
+participant "coordinator: GameCoordinator" as Coordinator
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+
+activate M
+
+M->Coordinator : <<create>>
+
+activate Coordinator
+Coordinator-->M
+
+M->Panelrenderer: <<create>>
+activate Panelrenderer
+Panelrenderer-->M
+
+M -> Coordinator: setFrame(frame)
+Coordinator --> M
+M -> Coordinator : setPanelRenderer(panelRenderer)
+Coordinator --> M
+M-> Coordinator: startApplication()
+Coordinator -> Coordinator : showMainMenu()
+
+participant "mainMenuPresenter: MainMenuPresenter" as mmp
+participant "mainMenuStrategy: MainMenuStrategy" as mms
+
+Coordinator->mmp:<<create>>
+activate mmp
+mmp-->Coordinator
+
+Coordinator->mms: <<create>>
+activate mms
+mms-->Coordinator
+
+
+Coordinator->Panelrenderer : setRenderStrategy(mainMenuStrategy)
+Panelrenderer-->Coordinator
+Coordinator-->M
+
+
+
+@endpuml

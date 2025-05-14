@@ -67,3 +67,7 @@ Backup of *.doc*
 renderedDiagrams/
 
 .vs/
+out.txt
+sources.txt
+
+documents/*.doc

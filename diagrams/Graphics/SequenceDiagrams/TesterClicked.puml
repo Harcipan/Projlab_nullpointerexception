@@ -1,0 +1,22 @@
+@startuml Tester
+
+title Main Menu Tester
+
+actor "Player" as P
+participant "mainMenuStrategy: MainMenuStrategy" as mms
+participant "mainMenuPresenter: MainMenuPresenter" as mmp
+
+activate P
+activate mms
+activate mmp
+
+P->mms: onButtonClicked(CustomButton btn)
+mms->mmp:onTesterClicked()
+participant  "app: App" as App
+mmp->App:<<create>>
+activate App
+App-->mmp
+mmp-->mms
+mms-->P
+
+@endpuml

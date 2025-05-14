@@ -1,0 +1,37 @@
+@startuml InGameRenderer
+
+title In Game Render
+
+actor "Main" As M
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+participant "inGameStrategy: InGameStrategy" as mms
+participant "inGamePresenter: InGamePresenter" as mmp
+
+activate M
+activate Panelrenderer
+activate mms
+activate mmp
+
+M->Panelrenderer: paintComponent(Graphics g)
+Panelrenderer->mms: render(Graphics2D g2d, Dimension dimension)
+mms->mms:drawLeftPanel(g2d, dimension);
+mms->mmp:getPlayers()
+mmp-->mms
+mms->mmp:getCurrentTurn()
+mmp-->mms
+mms->mmp:getHUDWidth()
+mmp-->mms
+mms->mms:drawGameMap(g2d, dimension);
+mms->mmp:getMapSize()
+mmp-->mms
+mms->mmp:getHUDWidth()
+mmp-->mms
+mms->mmp:getFungusPlayers()
+mmp-->mms
+mms->mmp:getInsectPlayers()
+mmp-->mms
+
+mms-->Panelrenderer
+Panelrenderer-->M
+
+@enduml

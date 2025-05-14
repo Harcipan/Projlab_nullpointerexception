@@ -35,8 +35,12 @@ echo Press any button to compile 'n' run...
 pause >nul
 cls
 
-dir /s /b src\main\java\*.java > sources.txt
-javac -d target\classes -sourcepath src\main\java @sources.txt
-java -cp target\classes Main
+cd ..
+echo Compiling and running the Java program from
+echo %cd%
+if exist compiler\sources.txt del compiler\sources.txt
+dir /s /b src\*.java > compiler\sources.txt
+javac -d compiler\target\classes @compiler\sources.txt
+java -cp compiler\target\classes Main
 
 pause

@@ -1,0 +1,44 @@
+@startuml ConfirmSetup
+
+title Confirm Game Setup
+
+actor "Player" as P
+participant "newGameSetupStrategy: NewGameSetupStrategy" as mms
+participant "newGameSetupPresenter: NewGameSetupPresenter" as mmp
+
+participant "coordinator: GameCoordinator" as Coordinator
+participant "panelRenderer: PanelRenderer" as Panelrenderer
+
+activate P
+activate mms
+activate mmp
+activate Coordinator
+activate Panelrenderer
+
+P->mms:onButtonClicked(CustomButton btn)
+mms->mms:unfocusAllTextFields()
+mms->mmp:onConfirmSetupClicked()
+mmp->Coordinator:startGame(mapSize, players, saveName)
+
+participant "inGamePresenter: InGamePresenter" as ingsp
+participant "inGameStrategy: InGameStrategy" as ingss
+
+Coordinator->ingsp:<<create>>
+activate ingsp
+ingsp-->Coordinator
+
+Coordinator->ingss:<<create>>
+activate ingss
+ingss-->Coordinator
+
+Coordinator->Panelrenderer:setRenderStrategy(inGameStrategy)
+Panelrenderer-->Coordinator
+
+Coordinator->Panelrenderer:setPreferredSize(new Dimension(1024, 1024))
+Panelrenderer-->Coordinator
+
+Coordinator-->mmp
+mmp-->mms
+mms->P
+
+@enduml

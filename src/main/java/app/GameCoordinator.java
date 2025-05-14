@@ -18,11 +18,17 @@ public class GameCoordinator
     private JFrame mainFrame;
     private PanelRenderer panelRenderer;
 
-
     // Game state variables
     private Map gameMap;
     private List<Player> players;
     private int currentTurn;
+
+    private InGamePresenter inGamePresenter;
+    private InGameStrategy inGameStrategy;
+    private NewGameSetupPresenter newGameSetupPresenter;
+    private NewGameSetupStrategy newGameSetupStrategy;
+    private MainMenuPresenter mainMenuPresenter;
+    private MainMenuStrategy mainMenuStrategy;
 
     public void setFrame(JFrame frame) { this.mainFrame = frame; }
     public void setPanelRenderer(PanelRenderer renderer) { this.panelRenderer = renderer; }
@@ -30,6 +36,9 @@ public class GameCoordinator
     final int HUD_WIDTH = 350;
     final int GAME_WINDOW_WIDTH = 1024 + HUD_WIDTH;
     final int GAME_WINDOW_HEIGHT = 1024;
+
+    final int MAIN_MENU_WIDTH = 620;
+    final int MAIN_MENU_HEIGHT = 450;
 
     /**
      * Starts the application by showing the main menu.
@@ -87,10 +96,14 @@ public class GameCoordinator
             return;
         }
         // 1. Create the Presenter for the in-game view
-        InGamePresenter inGamePresenter = new InGamePresenter(this);
+        if (inGamePresenter == null) {
+            inGamePresenter = new InGamePresenter(this);
+        }
 
         // 2. Create the Strategy (View implementation) for the in-game view
-        InGameStrategy inGameStrategy = new InGameStrategy(inGamePresenter);
+        if (inGameStrategy == null) {
+            inGameStrategy = new InGameStrategy(inGamePresenter);
+        }
 
         // 3. Tell PanelRenderer to use the in-game strategy
         panelRenderer.setRenderStrategy(inGameStrategy);
@@ -137,21 +150,39 @@ public class GameCoordinator
             return;
         }
         // 1. Create the Presenter for the main menu
-        MainMenuPresenter mainMenuPresenter = new MainMenuPresenter(this);
+        if (mainMenuPresenter == null)  {
+            mainMenuPresenter = new MainMenuPresenter(this);
+        }
 
         // 2. Create the Strategy (View implementation) for the main menu
-        MainMenuStrategy mainMenuStrategy = new MainMenuStrategy(mainMenuPresenter);
+        if (mainMenuStrategy == null) {
+            mainMenuStrategy = new MainMenuStrategy(mainMenuPresenter);
+        }
 
         // 3. Tell PanelRenderer to use the main menu strategy
         panelRenderer.setRenderStrategy(mainMenuStrategy);
         System.out.println("GameCoordinator: Switched to MainMenuRenderStrategy.");
 
-        // Optional: Ensure frame is packed and visible if not already done
-        if (mainFrame != null && !mainFrame.isVisible()) {
-             mainFrame.pack();
-             mainFrame.setLocationRelativeTo(null);
-             mainFrame.setVisible(true);
+        // Set the size of the main menu to 400x400 and force resize
+        if (mainFrame != null) {
+            mainFrame.setPreferredSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMinimumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMaximumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            panelRenderer.revalidate();
+            mainFrame.pack();
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
         }
+    }
+
+    public void saveGame() {
+        String saveName = newGameSetupPresenter.getSaveName();
+        System.out.println("[GameCoordinator] Saving game with name: \" + saveName + \"...");
+        // TODO: Implement save game logic here
+    }
+
+    public void loadGame(String saveName) {
+        throw new UnsupportedOperationException("Not implemented yet");
     }
      
     private void repaint() {
@@ -170,14 +201,25 @@ public class GameCoordinator
             return;
         }
         // 1. Create the Presenter for the new game setup
-        NewGameSetupPresenter newGameSetupPresenter = new NewGameSetupPresenter(this);
+        newGameSetupPresenter = new NewGameSetupPresenter(this);
 
         // 2. Create the Strategy (View implementation) for the new game setup
-        NewGameSetupStrategy newGameSetupStrategy = new NewGameSetupStrategy(newGameSetupPresenter);
+        newGameSetupStrategy = new NewGameSetupStrategy(newGameSetupPresenter);
 
         // 3. Tell PanelRenderer to use the new game setup strategy
         panelRenderer.setRenderStrategy(newGameSetupStrategy);
         System.out.println("GameCoordinator: Switched to NewGameSetupStrategy.");
+
+        // Set the size of the new game setup to 400x400
+        if (mainFrame != null) {
+            mainFrame.setPreferredSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMinimumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMaximumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            panelRenderer.revalidate();
+            mainFrame.pack();
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        }
     }
 
     public int getMapSize() {

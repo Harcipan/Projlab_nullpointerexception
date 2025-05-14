@@ -25,6 +25,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
     private InGamePresenter presenter;
     private BufferedImage backgroundImage;
     private CustomButton nextTurnButton;
+    private CustomButton saveGameButton;
 
     private static final int TILE_SIZE = 32;
     private static final int PLAYER_ICON_SIZE = 40;
@@ -83,6 +84,10 @@ public class InGameStrategy extends AbstractRenderStrategy {
         int btnY = 600; // Will be adjusted dynamically in drawLeftPanel
         nextTurnButton = new CustomButton("Next Turn", btnX, btnY, btnWidth, btnHeight);
         buttons.add(nextTurnButton);
+
+        // save game button at the bottom
+        saveGameButton = new CustomButton("Save Game and Exit", btnX, 700, btnWidth, btnHeight);
+        buttons.add(saveGameButton);
     }
 
     @Override
@@ -182,6 +187,14 @@ public class InGameStrategy extends AbstractRenderStrategy {
         // Disable next turn button during placement phase
         nextTurnButton.setEnabled(!presenter.isPlacementPhase());
         nextTurnButton.draw(g2d);
+
+        // Draw save game button
+        saveGameButton.setBounds(btnX, dimension.height - btnHeight - btnMargin, btnWidth, btnHeight);
+        
+        // Disable save game button during placement phase
+        saveGameButton.setEnabled(!presenter.isPlacementPhase());
+        saveGameButton.draw(g2d);
+
     }
 
     private void drawMap(Graphics2D g2d, Dimension dimension) {
@@ -425,6 +438,9 @@ public class InGameStrategy extends AbstractRenderStrategy {
             }
             presenter.getCoordinator().getGameMap().tick();
             presenter.getCoordinator().initiateRepaint();
+        } else if (btn == saveGameButton) {
+            System.out.println("[InGameStrategy] Save game and exit button clicked.");
+            presenter.saveGameAndExit();
         }
     }
 

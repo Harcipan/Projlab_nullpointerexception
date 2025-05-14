@@ -114,4 +114,9 @@ public class InGamePresenter {
         }
         return coordinator.getGameMap().getTile(x, y);
     }
+
+    public void saveGameAndExit() {
+        coordinator.saveGame();
+        coordinator.showNewGameSetupScreen();
+    }
 }

@@ -2,8 +2,9 @@ package player;
 
 import map.*;
 import java.awt.Color;
+import java.io.Serializable;
 
-public abstract class Player {
+public abstract class Player implements Serializable {
     int score;
     int actionPoints;
     private String name;

@@ -184,6 +184,7 @@ public class NewGameSetupStrategy extends AbstractRenderStrategy {
                 presenter.getCoordinator().initiateRepaint();
             }
         } else if (btn == confirmButton) {
+            presenter.setSaveName(saveNameField.getText());
             presenter.onConfirmSetupClicked();
         } else if (btn == backButton) {
             presenter.onBackToMainMenuClicked();

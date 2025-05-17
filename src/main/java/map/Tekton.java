@@ -1,6 +1,7 @@
 package map;
 
 import java.awt.Dimension;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import util.Vec2;
 
 import static use_cases.UseCase.printWrapper;
 
-public class Tekton {
+public class Tekton implements Serializable {
     int breakChance;
     List<Tile> tiles;
     FungusBody fungusBody;

@@ -1,4 +1,6 @@
 package entities;
+import java.io.Serializable;
+
 import map.Tile;
 import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
@@ -10,7 +12,7 @@ import use_cases.UseCase.Indent;
  * This includes the unique identifier for the entity and the tile it is currently on.
  * The class also provides methods to set the tile, update the entity, and manage health.
  */
-public class GameEntity {
+public class GameEntity implements Serializable {
     int id;             // Unique identifier for the entity
     Tile currentTile;   // The tile the entity is currently on
     static int idCounter = 0; // Counter for generating unique ids

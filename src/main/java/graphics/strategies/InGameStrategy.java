@@ -18,10 +18,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Paths;
 
 public class InGameStrategy extends AbstractRenderStrategy {
-
     private InGamePresenter presenter;
     private BufferedImage backgroundImage;
     private CustomButton nextTurnButton;

@@ -4,6 +4,7 @@ import graphics.presenters.LoadGamePresenter;
 import graphics.customUIElements.CustomButton;
 import graphics.customUIElements.CustomPlayerList;
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +21,13 @@ public class LoadGameStrategy extends AbstractRenderStrategy {
         backButton = new CustomButton("< Back", 10, 360, 100, 30);
         buttons.add(loadButton);
         buttons.add(backButton);
-        // Placeholder save names TODO
-        saveNames = new ArrayList<>();
-        saveNames.add("PlaceholderSave1");
-        saveNames.add("PlaceholderSave2");
-        saveNames.add("PlaceholderSave3");
+
+        try {
+            saveNames = presenter.getAllSaveNames();
+        } catch (IOException e) {
+            e.printStackTrace();
+            saveNames = new ArrayList<>();
+        }
     }
 
     @Override

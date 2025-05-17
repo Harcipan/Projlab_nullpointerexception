@@ -9,6 +9,9 @@ import player.InsectPlayer;
 import player.Player;
 
 import java.awt.Point;
+import java.beans.Transient;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,19 +19,30 @@ import java.util.List;
  * InGamePresenter acts as the Presenter in the MVP pattern for the in-game view.
  * It mediates between the game logic (model) and the InGameStrategy (view).
  */
-public class InGamePresenter {
-    private GameCoordinator coordinator;
+public class InGamePresenter implements Serializable {
+    private transient GameCoordinator coordinator;
 
     // Placement phase state
     private boolean placementPhase = true;
     private int placingPlayerIndex = 0;
-    private Point placementHover = null;
+    private transient Point placementHover = null;
 
     public InGamePresenter(GameCoordinator coordinator) {
         if (coordinator == null) {
             throw new IllegalArgumentException("GameCoordinator cannot be null");
         }
         this.coordinator = coordinator;
+    }
+
+    /**
+     * Sets up the InGamePresenter.
+     * 
+     * After we have loaded the InGamePresenter during deserialization, we need to set up the transient variables too so that everything is consistent. 
+     * @param coordinator
+     */
+    public void init(GameCoordinator coordinator) {
+        this.coordinator = coordinator;
+        this.placementHover = null;
     }
 
     /*

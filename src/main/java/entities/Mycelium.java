@@ -1,5 +1,6 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import use_cases.UseCase.Indent;
 
 import static use_cases.UseCase.*;
 
-public class Mycelium extends Fungus{
+public class Mycelium extends Fungus implements Serializable{
     int maxHealth = 5; 
     FungusPlayer player = null; // The player that owns this mycelium
     List<FungusBody> connectedBodies = new ArrayList<FungusBody>();

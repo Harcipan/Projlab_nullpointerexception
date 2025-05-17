@@ -1,5 +1,6 @@
 package map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import use_cases.UseCase.Indent;
 import static use_cases.UseCase.*;
 
 
-public class Tile {
+public class Tile implements Serializable {
     int x;
     int y; // Coordinates of the tile in the map
     int growthRate;

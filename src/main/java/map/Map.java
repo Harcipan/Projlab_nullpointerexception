@@ -4,6 +4,7 @@ import use_cases.UseCase;
 import use_cases.UseCase.ArrowDirection;
 import use_cases.UseCase.Indent;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import static use_cases.UseCase.replace;
  * Map class represents the game map, which contains a list of tektons and a 2D array of tiles for quick access.
  * It provides methods to add and remove tektons, update game entities, and tick the map for game logic.
  */
-public class Map {
+public class Map implements Serializable {
     List<Tekton> tektons;
     Tile[][] tiles; // 2D array of tiles
     int width; // Width of the map

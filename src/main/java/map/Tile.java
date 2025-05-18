@@ -85,7 +85,7 @@ public class Tile implements Serializable {
 
     /**
      * Check if the tile is a neighbor of this tile
-     * A tile is a neighbor if it is adjacent (horizontally, vertically, or diagonally)
+     * A tile is a neighbor if it is adjacent (horizontally, vertically)
      * @param tile the tile to check
      * @return true if the tile is a neighbor of this tile, false otherwise
      */
@@ -99,7 +99,8 @@ public class Tile implements Serializable {
             return false;
         }
         // else compute the distance between the two tiles
-        return Math.abs(this.x - tile.x) <= 1 && Math.abs(this.y - tile.y) <= 1;
+        //return Math.abs(this.x - tile.x) <= 1 && Math.abs(this.y - tile.y) <= 1;
+        return (Math.abs(this.x - tile.x) == 1 && Math.abs(this.y - tile.y) ==0) || (Math.abs(this.x - tile.x) == 0 && Math.abs(this.y - tile.y) == 1);
     }
 
     /**

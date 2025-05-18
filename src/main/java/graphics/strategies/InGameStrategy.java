@@ -539,17 +539,30 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 System.out.println("Clicked while FungusPlayer '" + fungusPlayer.getName() + "' is active. Tile: (" + gridX + ", " + gridY + ")");
                 
                 // WIP: grow mycelium in the tile
-                Tile targetTile = presenter.getTile(gridX, gridY);
-                if (targetTile != null) {
-                    Mycelium myc = ((FungusPlayer) currentPlayer).growMycelium(targetTile);
-                    if (myc != null){
-                        System.out.println("Mycelium grown at tile (" + myc.getCurrentTile().hashCode() + ")");
+                if(button==1) {//grow mycelium on left click
+                    Tile targetTile = presenter.getTile(gridX, gridY);
+                    if (targetTile != null) {
+                        Mycelium myc = ((FungusPlayer) currentPlayer).growMycelium(targetTile);
+                        if (myc != null){
+                            System.out.println("Mycelium grown at tile (" + myc.getCurrentTile().hashCode() + ")");
+                        }
+                        else {
+                            System.out.println("Mycelium space is full or some other problem: (" + gridX + ", " + gridY + ")");
+                        }
+                    } else {
+                        System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
                     }
-                    else {
-                        System.out.println("Mycelium space is full or some other problem: (" + gridX + ", " + gridY + ")");
+                }
+                else if(button==3) {//spread spore on right click
+                    Tile targetTile = presenter.getTile(gridX, gridY);
+                    if (targetTile != null) {
+                        List<FungusBody> playerFungusBodies=((FungusPlayer)currentPlayer).getFungusBodies();
+                        for (FungusBody fb : playerFungusBodies) {
+                            if(fb.getCurrentTile()==targetTile) {
+                                fb.sporeCloud(3);
+                            }
+                        }
                     }
-                } else {
-                    System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
                 }
             }
         }

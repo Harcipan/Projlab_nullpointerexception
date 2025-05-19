@@ -391,6 +391,17 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 }
             }
         }
+
+        //Draw Spore
+         for (FungusPlayer fp : presenter.getFungusPlayers()) {
+            for (Spore m : fp.getSpores()) {
+                Tile t = m.getCurrentTile();
+                int x = t.getX() * TILE_SIZE + presenter.getHUDWidth();
+                int y = t.getY() * TILE_SIZE;
+                
+                TintedEntityDrawer.drawSpore(g2d, x, y, TILE_SIZE);
+            }
+        }
         
     }
 
@@ -586,7 +597,7 @@ public class InGameStrategy extends AbstractRenderStrategy {
                         List<FungusBody> playerFungusBodies=((FungusPlayer)currentPlayer).getFungusBodies();
                         for (FungusBody fb : playerFungusBodies) {
                             if(fb.getCurrentTile()==targetTile) {
-                                fb.sporeCloud(3);
+                                fb.sporeCloud(1);
                             }
                         }
                     }

@@ -11,6 +11,7 @@ import player.Player;
 import java.awt.image.BufferedImage;
 import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Color;
 
 public class TintedEntityDrawer {
@@ -23,6 +24,7 @@ public class TintedEntityDrawer {
     private static BufferedImage FUNGUS_ICON;
     private static BufferedImage INSECT_ICON;
     private static BufferedImage MYCELIUM_ICON;
+    private static BufferedImage SPORE_ICON;
 
     private static BufferedImage FUNGUS_GREYSCALE_ICON;
     private static BufferedImage INSECT_GREYSCALE_ICON;
@@ -37,6 +39,7 @@ public class TintedEntityDrawer {
             FUNGUS_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon.png").toFile());
             INSECT_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon.png").toFile());
             MYCELIUM_ICON = ImageIO.read(Paths.get("res/elements/myc_updownleftright.png").toFile());
+            SPORE_ICON=ImageIO.read(Paths.get("res/elements/spore.png").toFile());
 
             FUNGUS_GREYSCALE_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon_greyscale.png").toFile());
             INSECT_GREYSCALE_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon_greyscale.png").toFile());
@@ -94,6 +97,11 @@ public class TintedEntityDrawer {
         BufferedImage colorizedIcon = tintMyceliumIcon(color, originalIcon);
 
         g2d.drawImage(colorizedIcon, x, y, size, size, null);
+    }
+
+    public static void drawSpore(Graphics2D g2d, int x, int y, int size) {
+        // Draw the spore icon
+        g2d.drawImage(SPORE_ICON, x, y, size, size, null);
     }
 
     static float mix(float a, float b, float t) {

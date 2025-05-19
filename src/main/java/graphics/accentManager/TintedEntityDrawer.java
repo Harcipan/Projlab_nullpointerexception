@@ -39,7 +39,7 @@ public class TintedEntityDrawer {
             FUNGUS_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon.png").toFile());
             INSECT_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon.png").toFile());
             MYCELIUM_ICON = ImageIO.read(Paths.get("res/elements/myc_updownleftright.png").toFile());
-            SPORE_ICON=ImageIO.read(Paths.get("res/elements/spore.png").toFile());
+            SPORE_ICON=ImageIO.read(Paths.get("res/elements/spore-removebg-preview.png").toFile());
 
             FUNGUS_GREYSCALE_ICON = ImageIO.read(Paths.get("res/player_icons/mushroom_icon_greyscale.png").toFile());
             INSECT_GREYSCALE_ICON = ImageIO.read(Paths.get("res/player_icons/insect_icon_greyscale.png").toFile());

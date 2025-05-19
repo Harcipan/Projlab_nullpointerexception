@@ -563,6 +563,13 @@ public class InGameStrategy extends AbstractRenderStrategy {
                     Tile targetTile = presenter.getTile(gridX, gridY);
                     if (targetTile != null) {
                         Mycelium myc = ((FungusPlayer) currentPlayer).growMycelium(targetTile);
+                        
+                        for (InsectPlayer p : presenter.getInsectPlayers()) {
+                            for (Insect i : p.getControlledInsects()) {
+                                if(i.getCurrentTile().isNeighbor(targetTile)) ((FungusPlayer) currentPlayer).consumeInsect(i);
+                            }
+                        }
+
                         if (myc != null){
                             System.out.println("Mycelium grown at tile (" + myc.getCurrentTile().hashCode() + ")");
                         }

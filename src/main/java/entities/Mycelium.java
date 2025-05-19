@@ -127,7 +127,9 @@ public class Mycelium extends Fungus implements Serializable{
     public void die() {
         detach();
         player.removeMycelium(this);
+        currentTile.setTileSpace(currentTile.getMaxMycelium()+1);
         currentTile.removeEntity(this);
+
     }
 
     @Override

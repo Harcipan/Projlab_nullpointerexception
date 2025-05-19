@@ -108,6 +108,10 @@ public class Tekton implements Serializable {
         newTektons.add(t1);
         newTektons.add(t2);
 
+        
+
+        int random=(int)(Math.random()*4);
+
         Vec2 centerVec = new Vec2((float) center.getWidth(), (float) center.getHeight());
         Vec2 randomVec = new Vec2((float) Math.cos(randomAngle), (float) Math.sin(randomAngle));
 
@@ -116,9 +120,24 @@ public class Tekton implements Serializable {
             Vec2 tileVec = new Vec2(tile.getX(), tile.getY());
             Vec2 perpendicular = new Vec2(-randomVec.getY(), randomVec.getX());
             float dotProduct = centerVec.subtract(tileVec).dotProduct(perpendicular);
+            Tile add;
             if (dotProduct > 0) {
-                t1.addTile(tile);
-                tile.setParentTekton(t1);
+                switch (random) {
+                    case 1://tekton is monotekton
+                        add=new MonoTile(tile.getGrowthRate(), tile.getParentTekton(), tile.getX(), tile.getY());
+                        break;
+                    case 2://tekton is acidtekton
+                        add=new AcidTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(), 5, tile.getX(), tile.getY());
+                        break;
+                    case 3://tekton is healtekton
+                        add=new HealTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(), tile.getX(), tile.getY());
+                        break;
+                    default://tekton is normal
+                        add=new Tile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(), tile.getX(), tile.getY());
+                        break;
+                }
+                t1.addTile(add);
+                add.setParentTekton(t1);
             } else {
                 t2.addTile(tile);
                 tile.setParentTekton(t2);

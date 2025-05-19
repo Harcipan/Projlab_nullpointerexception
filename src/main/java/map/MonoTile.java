@@ -2,8 +2,8 @@ package map;
 
 public class MonoTile extends Tile{
 
-    public MonoTile(int growthRate, Tekton parentTekton){
-        super(growthRate, 1, parentTekton);
+    public MonoTile(int growthRate, Tekton parentTekton, int x, int y){
+        super(growthRate, 1, parentTekton, x, y);
     }
 
     public boolean isTaken() {

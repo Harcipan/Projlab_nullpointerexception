@@ -67,7 +67,6 @@ public class InsectPlayer extends Player{
         // neighbors
         if(tile.isNeighbor(controlledInsect.getCurrentTile())){
             controlledInsect.step(tile);
-
         }
         else{
             printWrapper("The tile is not a neighbor of the insect", ArrowDirection.RIGHT, Indent.UNINDENT);

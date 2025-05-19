@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import entities.*;
+import map.MonoTile;
 import map.Tile;
 import prototype.App;
 import use_cases.UseCase;
@@ -82,7 +83,11 @@ public class FungusPlayer extends Player {
         for (Mycelium myc: mycelia){
             if (myc.getCurrentTile().isNeighbor(tile)) {
                 printWrapper(myc.getCurrentTile() + " myc neighbor: " + tile);
-                return tile.growMycelium(this);
+                Mycelium m=tile.growMycelium(this);
+                if(m!=null && tile instanceof MonoTile) {
+                    tile.setTileSpace(0);
+                }
+                return m;
             }
         }
 

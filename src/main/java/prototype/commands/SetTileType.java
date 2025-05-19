@@ -27,16 +27,16 @@ public class SetTileType extends Command {
         switch (args[3].toLowerCase()) {
             case "mono":
                 tek.getTiles().add(tileId,
-                        new MonoTile(tile.getGrowthRate(), tile.getParentTekton()));
+                        new MonoTile(tile.getGrowthRate(), tile.getParentTekton(),tile.getX(),tile.getY()));
 
                 break;
             case "heal":
                 tek.getTiles().add(tileId,
-                        new HealTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton()));
+                        new HealTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(),tile.getX(),tile.getY()));
                 break;
             case "acid":
                 tek.getTiles().add(tileId,
-                        new AcidTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(), 5)); // TODO:
+                        new AcidTile(tile.getGrowthRate(), tile.getMaxMycelium(), tile.getParentTekton(), 5,tile.getX(),tile.getY())); // TODO:
                                                                                                                // Ask
                                                                                                                // for
                                                                                                                // damage

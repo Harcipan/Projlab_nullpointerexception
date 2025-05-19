@@ -5,8 +5,8 @@ import entities.GameEntity;
 public class AcidTile extends Tile{
     int damageRate; // The rate at which the acid damages entities (damage per tick)
 
-    public AcidTile(int growthRate, int maxMycelium, Tekton parentTekton, int damageRate) {
-        super(growthRate, maxMycelium, parentTekton);
+    public AcidTile(int growthRate, int maxMycelium, Tekton parentTekton, int damageRate, int x, int y) {
+        super(growthRate, maxMycelium, parentTekton,x,y);
         this.damageRate = damageRate;
     }
 

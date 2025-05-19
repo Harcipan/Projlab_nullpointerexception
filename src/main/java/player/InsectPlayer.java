@@ -37,7 +37,16 @@ public class InsectPlayer extends Player{
         return controlledInsects;
     }
 
-    public void moveTo(Tile tile){
+    /**
+     * Move the first controlled insect to the tile
+     * Overloaded method for convenience
+     * @param tile
+     */
+    public void moveTo(Tile tile) {
+        if (controlledInsects.isEmpty()) {
+            printWrapper("No controlled insects available to move", ArrowDirection.RIGHT, Indent.UNINDENT);
+            return;
+        }
         moveTo(tile, controlledInsects.get(0));
     }
 
@@ -50,14 +59,19 @@ public class InsectPlayer extends Player{
      * If all checks pass, move the insect to the tile
      * 
      * currently bridges are not implemented
-     * 
      * @param tile the tile to move to
      * @param controlledInsect the insect to move
      */
     public void moveTo(Tile tile, Insect controlledInsect) {
+        //check if tile is valid
+        // neighbors
+        if(tile.isNeighbor(controlledInsect.getCurrentTile())){
+            controlledInsect.step(tile);
+        }
+        else{
+            printWrapper("The tile is not a neighbor of the insect", ArrowDirection.RIGHT, Indent.UNINDENT);
+        }
 
-        controlledInsect.getCurrentTile().removeEntity(controlledInsect);
-        tile.addEntity(controlledInsect);
 
         //removed for now, needs fix from creator (Zsiga)
         // UseCase.printWrapper(UseCase.logger.get(this)+".moveTo(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
@@ -72,12 +86,7 @@ public class InsectPlayer extends Player{
         //     printWrapper("The insect cannot move", ArrowDirection.RIGHT, Indent.UNINDENT);
         //     return;
         // }
-        // //check if tile is valid
-        // // neighbors
-        // if(!tile.isNeighbor(controlledInsect.getCurrentTile())){
-        //     printWrapper("The tile is not a neighbor of the insect", ArrowDirection.RIGHT, Indent.UNINDENT);
-        //     return;
-        // }
+        
         // // and same parent tekton
         // if(tile.getParentTekton() == controlledInsect.getCurrentTile().getParentTekton()){
         //     controlledInsect.step(tile);            
@@ -121,12 +130,13 @@ public class InsectPlayer extends Player{
         }
         UseCase.printWrapper(UseCase.logger.get(this)+".cut(" + UseCase.logger.get(tile)+")", ArrowDirection.RIGHT, Indent.INDENT);
 
-        //check if insect is ours to control
-        if(!controlledInsects.contains(controlledInsect)){
-            printWrapper("The insect is not controlled by this player, end of use-case", ArrowDirection.RIGHT, Indent.UNINDENT);
-            return;
+        if(tile.isNeighbor(controlledInsect.getCurrentTile())){
+            controlledInsect.cut(tile);
+
         }
-        controlledInsect.cut(tile);
+        else{
+            printWrapper("The tile is not a neighbor of the insect", ArrowDirection.RIGHT, Indent.UNINDENT);
+        }
     }
 
     /*

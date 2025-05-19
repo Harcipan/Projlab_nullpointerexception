@@ -1,0 +1,391 @@
+package app;
+
+import graphics.PanelRenderer;
+import graphics.presenters.*;
+import graphics.strategies.*;
+import map.Map;
+import map.Tekton;
+import prototype.App;
+import player.*;
+
+import javax.swing.JFrame;
+import java.awt.Dimension;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
+
+public class GameCoordinator {
+    // Singleton instances
+    private JFrame mainFrame;
+    private PanelRenderer panelRenderer;
+
+    // Game state variables
+    // Keeping everything in a single record simplifies the savegame logic.
+    private record GameState(Map gameMap, List<Player> players, int currentTurn) implements Serializable {
+    }
+
+    private GameState gameState;
+
+    
+    private InGamePresenter inGamePresenter; // This is also a state variable.
+    private InGameStrategy inGameStrategy;
+    private NewGameSetupPresenter newGameSetupPresenter;
+    private NewGameSetupStrategy newGameSetupStrategy;
+    private MainMenuPresenter mainMenuPresenter;
+    private MainMenuStrategy mainMenuStrategy;
+
+    public void setFrame(JFrame frame) {
+        this.mainFrame = frame;
+    }
+
+    public void setPanelRenderer(PanelRenderer renderer) {
+        this.panelRenderer = renderer;
+    }
+
+    final int HUD_WIDTH = 350;
+    final int GAME_WINDOW_WIDTH = 1024 + HUD_WIDTH;
+    final int GAME_WINDOW_HEIGHT = 1024;
+
+    final int MAIN_MENU_WIDTH = 620;
+    final int MAIN_MENU_HEIGHT = 450;
+
+    /**
+     * Starts the application by showing the main menu.
+     */
+    public void initiateRepaint() {
+        if (panelRenderer != null) {
+            panelRenderer.repaint(); // Repaint the panel to reflect changes
+            System.out.println("GameCoordinator: Repaint called on PanelRenderer.");
+        } else {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot repaint.");
+        }
+    }
+
+    public void startApplication() {
+        showMainMenu(); // Delegate to showMainMenu for clarity
+    }
+
+    private void changeToGameStrategy() {
+        // 2. Create the Strategy (View implementation) for the in-game view
+        if (inGameStrategy == null) {
+            inGameStrategy = new InGameStrategy(inGamePresenter);
+        }
+
+        // 3. Tell PanelRenderer to use the in-game strategy
+        panelRenderer.setRenderStrategy(inGameStrategy);
+
+        // Set the size of the game to 1024x1024
+        panelRenderer.setPreferredSize(new Dimension(1024, 1024));
+
+        // Always pack and center the frame to force resize
+        if (mainFrame != null) {
+            mainFrame.setPreferredSize(new Dimension(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT));
+            mainFrame.setMinimumSize(new Dimension(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT));
+            mainFrame.setMaximumSize(new Dimension(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT));
+            mainFrame.setSize(GAME_WINDOW_WIDTH, GAME_WINDOW_HEIGHT);
+            panelRenderer.revalidate();
+            mainFrame.pack();
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        }
+
+        System.out.println("GameCoordinator: Switched to InGameRenderStrategy with size 1024x1024.");
+    }
+
+    public void startGame(int mapSize, List<Player> players, String saveName) {
+        // invoke the InGamePresenter and set the render strategy to InGameStrategy
+        System.out.println("GameCoordinator: Starting game...");
+
+        Map gameMap;
+
+        // Create the game map based on the selected size
+        if (mapSize == 32) {
+            gameMap = new Map(32, 32); // Create a 32x32 map
+            if (gameMap == null) {
+                System.err.println("GameCoordinator Error: Game map is null. Cannot start game.");
+                return;
+            }
+            System.out.println("GameCoordinator: Created a 32x32 map.");
+            // generate a tekton and assign tiles
+        } else if (mapSize == 64) {
+            gameMap = new Map(64, 64); // Create a 64x64 map
+        } else {
+            System.err.println("GameCoordinator Error: Invalid map size. Cannot start game.");
+            return;
+        }
+        // dump the map hash to the console for debugging
+        System.out.println("GameCoordinator: Map hash: " + gameMap.hashCode());
+        Tekton tek = new Tekton(gameMap);
+        // dump the tekton hash to the console for debugging
+        System.out.println("GameCoordinator: Tekton hash: " + tek.hashCode());
+        // for every tile in the map, assign the tile to the tekton and its reverse
+        for (int i = 0; i < gameMap.getWidth(); i++) {
+            for (int j = 0; j < gameMap.getHeight(); j++) {
+                gameMap.getTile(i, j).setParentTekton(tek);
+                tek.addTile(gameMap.getTile(i, j));
+            }
+        }
+
+        // Start with the first player
+        int currentTurn = 0;
+        this.gameState = new GameState(gameMap, players, currentTurn);
+
+        if (panelRenderer == null) {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot start game.");
+            return;
+        }
+        // 1. Create the Presenter for the in-game view
+        if (inGamePresenter == null) {
+            inGamePresenter = new InGamePresenter(this);
+        }
+
+
+        changeToGameStrategy();
+    }
+
+    public void showOptionsScreen() {
+        // TODO: Implement options screen logic
+    }
+
+    public void exitApplication() {
+        System.out.println("GameCoordinator: Exiting application...");
+        if (mainFrame != null) {
+            mainFrame.dispose(); // Close the main frame
+            System.out.println("GameCoordinator: Main frame disposed.");
+        } else {
+            System.err.println("mainFrame is null. No idea how this happened.");
+        }
+        App.stop(); // Stop and exit the application
+        App.printExitMessage();
+    }
+
+    public void showMainMenu() {
+
+        System.out.println("GameCoordinator: Setting up Main Menu...");
+        if (panelRenderer == null) {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot show main menu.");
+            return;
+        }
+        // 1. Create the Presenter for the main menu
+        if (mainMenuPresenter == null) {
+            mainMenuPresenter = new MainMenuPresenter(this);
+        }
+
+        // 2. Create the Strategy (View implementation) for the main menu
+        if (mainMenuStrategy == null) {
+            mainMenuStrategy = new MainMenuStrategy(mainMenuPresenter);
+        }
+
+        // 3. Tell PanelRenderer to use the main menu strategy
+        panelRenderer.setRenderStrategy(mainMenuStrategy);
+        System.out.println("GameCoordinator: Switched to MainMenuRenderStrategy.");
+
+        // Set the size of the main menu to 400x400 and force resize
+        if (mainFrame != null) {
+            mainFrame.setPreferredSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMinimumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMaximumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            panelRenderer.revalidate();
+            mainFrame.pack();
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        }
+    }
+
+    public List<String> getAllSaveNames() throws IOException {
+        List<String> result;
+
+        // https://mkyong.com/java/how-to-find-files-with-certain-extension-only/
+        try (Stream<Path> walk = Files.walk(Paths.get("."))) {
+            result = walk
+                    .filter(p -> !Files.isDirectory(p)) // not a directory
+                    .map(p -> p.toString()) // convert path to string
+                    .filter(p -> p.endsWith("fungorium_save"))// check end with
+                    .map(f -> f.substring(0, f.lastIndexOf('.')))
+                    .collect(Collectors.toList()); // collect all matched to a List
+        }
+
+        return result;
+    }
+
+    public void saveGame() {
+        String saveName = newGameSetupPresenter.getSaveName();
+        System.out.println("[GameCoordinator] Saving game with name: \"" + saveName + "\"...");
+
+        try {
+            FileOutputStream fos = new FileOutputStream(saveName + ".fungorium_save");
+            // Java serialization produces a lot of redundant data. Because of that, we
+            // should compress our output.
+            GZIPOutputStream gz = new GZIPOutputStream(fos);
+            ObjectOutputStream oos = new ObjectOutputStream(gz);
+
+            oos.writeObject(gameState);
+            oos.writeObject(inGamePresenter);
+            oos.close();
+
+            System.out.println("[GameCoordinator] Successfully saved game");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadGame(String saveName) {
+        System.out.println("[GameCoordinator] Loading game with name: \"" + saveName + "\"...");
+
+        try {
+            FileInputStream fis = new FileInputStream(saveName + ".fungorium_save");
+
+            GZIPInputStream gz = new GZIPInputStream(fis);
+            ObjectInputStream ois = new ObjectInputStream(gz);
+
+            // Reasonably assume there are no bad actors trying to exploit our homework
+            // game...
+            // Also assume we don't have to deal with multiple different savegame versions
+            // (not really a problem with a fixed specification)
+            this.gameState = (GameState) ois.readObject();
+
+
+            System.out.println("[GameCoordinator] Successfully loaded game");
+
+            if (panelRenderer == null) {
+                System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot start game.");
+                ois.close();
+                return;
+            }
+
+            this.inGamePresenter = (InGamePresenter) ois.readObject();
+            this.inGamePresenter.init(this);
+            ois.close();
+
+            changeToGameStrategy();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void repaint() {
+        if (panelRenderer != null) {
+            panelRenderer.repaint(); // Repaint the panel to reflect changes
+            System.out.println("GameCoordinator: Repaint called on PanelRenderer.");
+        } else {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot repaint.");
+        }
+    }
+
+    public void showNewGameSetupScreen() {
+        System.out.println("GameCoordinator: Setting up New Game Setup Screen...");
+        if (panelRenderer == null) {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot show new game setup screen.");
+            return;
+        }
+        // 1. Create the Presenter for the new game setup
+        newGameSetupPresenter = new NewGameSetupPresenter(this);
+
+        // 2. Create the Strategy (View implementation) for the new game setup
+        newGameSetupStrategy = new NewGameSetupStrategy(newGameSetupPresenter);
+
+        // 3. Tell PanelRenderer to use the new game setup strategy
+        panelRenderer.setRenderStrategy(newGameSetupStrategy);
+        System.out.println("GameCoordinator: Switched to NewGameSetupStrategy.");
+
+        // Set the size of the new game setup to 400x400
+        if (mainFrame != null) {
+            mainFrame.setPreferredSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMinimumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMaximumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            panelRenderer.revalidate();
+            mainFrame.pack();
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        }
+    }
+
+    public int getMapSize() {
+
+        int ret = -1;
+
+        Map gameMap = getGameMap();
+
+        if (gameMap == null) {
+            System.err.println("GameCoordinator Error: Game map is null. Cannot get map size.");
+            return -1; // or some default value
+        }
+
+        if (gameMap.getWidth() != gameMap.getHeight()) {
+            System.err.println("GameCoordinator Error: Map is not square. Cannot get map size.");
+            return -1; // or some default value
+        }
+
+        if (!(gameMap.getWidth() != 64 || gameMap.getWidth() != 32)) {
+            System.err.println("GameCoordinator Error: Map size is not 32 or 64. Cannot get map size.");
+            return -1; // or some default value
+        }
+
+        if (gameMap != null) {
+            ret = gameMap.getWidth(); // Assuming width and height are the same for square maps
+        }
+
+        return ret;
+    }
+
+    public int getWindowWidth() {
+        return mainFrame != null ? mainFrame.getWidth() : 0;
+    }
+
+    public int getWindowHeight() {
+        return mainFrame != null ? mainFrame.getHeight() : 0;
+    }
+
+    public int getHUDWidth() {
+        return HUD_WIDTH;
+    }
+
+    public List<Player> getPlayers() {
+        return gameState.players();
+    }
+
+    public int getCurrentTurn() {
+        return gameState.currentTurn();
+    }
+
+    public void setCurrentTurn(int turn) {
+        gameState = new GameState(getGameMap(), getPlayers(), turn);
+    }
+
+    public Map getGameMap() {
+        return gameState.gameMap();
+    }
+
+    public void showLoadGameScreen() {
+        System.out.println("GameCoordinator: Setting up Load Game Screen...");
+        if (panelRenderer == null) {
+            System.err.println("GameCoordinator Error: PanelRenderer is null. Cannot show load game screen.");
+            return;
+        }
+        LoadGamePresenter loadGamePresenter = new LoadGamePresenter(this);
+        LoadGameStrategy loadGameStrategy = new LoadGameStrategy(loadGamePresenter);
+        panelRenderer.setRenderStrategy(loadGameStrategy);
+        System.out.println("GameCoordinator: Switched to LoadGameStrategy.");
+        if (mainFrame != null) {
+            mainFrame.setPreferredSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMinimumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            mainFrame.setMaximumSize(new Dimension(MAIN_MENU_WIDTH, MAIN_MENU_HEIGHT));
+            panelRenderer.revalidate();
+            mainFrame.pack();
+            mainFrame.setLocationRelativeTo(null);
+            mainFrame.setVisible(true);
+        }
+    }
+}

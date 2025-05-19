@@ -3,8 +3,8 @@ package map;
 import entities.*;
 
 public class HealTile extends Tile{
-    public HealTile(int growthRate, int maxMycelium, Tekton parentTekton){
-        super(growthRate, maxMycelium, parentTekton);
+    public HealTile(int growthRate, int maxMycelium, Tekton parentTekton, int x, int y){
+        super(growthRate, maxMycelium, parentTekton,x, y);
     }
 
     private void healEntities() {

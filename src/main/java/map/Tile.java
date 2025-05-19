@@ -1,5 +1,6 @@
 package map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import use_cases.UseCase.Indent;
 import static use_cases.UseCase.*;
 
 
-public class Tile {
+public class Tile implements Serializable {
     int x;
     int y; // Coordinates of the tile in the map
     int growthRate;
@@ -36,10 +37,7 @@ public class Tile {
     }
 
     public Tile() {
-        UseCase.replace(this);
-        printWrapper("Initializing Tile as " + UseCase.logger.get(this), ArrowDirection.RIGHT, Indent.KEEP);
-
-        entities = new ArrayList<>();
+        this(1, 5, null, 0, 0);
     }
 
     public void setTileSpace(int s) {
@@ -87,7 +85,7 @@ public class Tile {
 
     /**
      * Check if the tile is a neighbor of this tile
-     * A tile is a neighbor if it is adjacent (horizontally, vertically, or diagonally)
+     * A tile is a neighbor if it is adjacent (horizontally, vertically)
      * @param tile the tile to check
      * @return true if the tile is a neighbor of this tile, false otherwise
      */
@@ -101,7 +99,8 @@ public class Tile {
             return false;
         }
         // else compute the distance between the two tiles
-        return Math.abs(this.x - tile.x) <= 1 && Math.abs(this.y - tile.y) <= 1;
+        //return Math.abs(this.x - tile.x) <= 1 && Math.abs(this.y - tile.y) <= 1;
+        return (Math.abs(this.x - tile.x) == 1 && Math.abs(this.y - tile.y) ==0) || (Math.abs(this.x - tile.x) == 0 && Math.abs(this.y - tile.y) == 1);
     }
 
     /**
@@ -134,14 +133,21 @@ public class Tile {
      * @param player the player that owns this mycelium
      */
     public Mycelium growMycelium(FungusPlayer player) {
+        UseCase.replace(this);
         UseCase.printWrapper(UseCase.logger.get(this)+".growMycelium("+UseCase.logger.get(player)+")", ArrowDirection.RIGHT, Indent.KEEP);
         Mycelium m = null;
         if (myceliumSpace > 0) {
-            m = new Mycelium(GameEntity.getNextId(), 100, this, player);
+            m = new Mycelium(GameEntity.getNextId(), 2, this, player);
             myceliumSpace--;
             printWrapper(UseCase.logger.get(this)+".growMycelium()", ArrowDirection.LEFT, Indent.KEEP);
         } else {
             printWrapper(UseCase.logger.get(this)+".growMycelium()", ArrowDirection.LEFT, Indent.KEEP);
+        }
+        // dump mycelium hash
+        if (m != null) {
+            System.out.println("Mycelium: "+m.hashCode());
+        } else {
+            System.out.println("No mycelium created");
         }
         return m;
     }
@@ -160,9 +166,6 @@ public class Tile {
     }
 
     public void update() {
-        /*for (GameEntity ge : entities) {
-            ge.update();
-        }*/
         for(int i=0;i<entities.size();i++) {
             entities.get(i).update();
         }
@@ -174,6 +177,14 @@ public class Tile {
 
     public int getY() {
         return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 
     /**

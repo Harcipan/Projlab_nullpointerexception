@@ -22,7 +22,7 @@ public class HealTileKeepsAlive extends UseCase {
         m.addTekton(tek);
 
         // Initializing Tile
-        HealTile t = new HealTile(1, 1, tek);
+        HealTile t = new HealTile(1, 1, tek,0,0);
 
         // Adding Tile to Tekton and setting parent
         tek.addTile(t);

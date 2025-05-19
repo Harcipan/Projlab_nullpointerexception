@@ -1,9 +1,13 @@
 package entities;
 import map.Tile;
+import use_cases.UseCase.ArrowDirection;
+import use_cases.UseCase.Indent;
 
 import static use_cases.UseCase.*;
 
-public abstract class Fungus extends GameEntity {
+import java.io.Serializable;
+
+public abstract class Fungus extends GameEntity implements Serializable {
     int health;
 
     protected Fungus(int id, int health, Tile currentTile) {

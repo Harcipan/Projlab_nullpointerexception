@@ -384,7 +384,7 @@ public class Create extends Command {
                     break;
 
                 Tile tile = new AcidTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
-                        tileData.getParentTekton(), damageRate);
+                        tileData.getParentTekton(), damageRate,0,0);
                 int id = tileData.getParentTekton().addTile(tile);
                 System.out.println("Created an AcidTile with ID " + id);
 
@@ -399,7 +399,7 @@ public class Create extends Command {
                     break;
 
                 Tile tile = new HealTile(tileData.getGrowthRate(), tileData.getMaxMycelium(),
-                        tileData.getParentTekton());
+                        tileData.getParentTekton(),0,0);
                 int id = tileData.getParentTekton().addTile(tile);
                 System.out.println("Created a HealTile with ID " + id);
 
@@ -414,7 +414,7 @@ public class Create extends Command {
                     break;
 
                 Tile tile = new MonoTile(tileData.getGrowthRate(),
-                        tileData.getParentTekton());
+                        tileData.getParentTekton(),0,0);
                 int id = tileData.getParentTekton().addTile(tile);
                 System.out.println("Created a MonoTile with ID " + id);
 

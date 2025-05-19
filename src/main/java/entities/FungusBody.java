@@ -2,6 +2,7 @@ package entities;
 
 import static use_cases.UseCase.replace;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +17,7 @@ import use_cases.UseCase.Indent;
  * FungusBody is a subclass of Fungus that represents the body of a fungus.
  * It is responsible for growing mycelium and managing the spore charge.
  */
-public class FungusBody extends Fungus{
+public class FungusBody extends Fungus implements Serializable {
     public static final int BODY_COST = 5;                  // Spore cost to grow a fungus body on a new tekton
     private static final int MAX_SPORE_CHARGE = 100;        // Maximum spore charge
     private static final int CHARGE_PER_TICK = 1;           // Spore charge increase per tick

@@ -1,5 +1,6 @@
 package prototype.commands;
 
+import prototype.App;
 import prototype.Command;
 import prototype.CommandParser;
 
@@ -27,8 +28,7 @@ public class ExecuteTest extends Command {
         else {
             executeTest(Integer.parseInt(args[1])); // Execute the test file with the given number
         }
-        
-        return true; //exit the program
+        return false; //exit the program
          // Keep the program running after executing the test
     }
 

@@ -1,5 +1,6 @@
 package entities;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import use_cases.UseCase.Indent;
 
 import static use_cases.UseCase.*;
 
-public class Mycelium extends Fungus{
+public class Mycelium extends Fungus implements Serializable{
     int maxHealth = 5; 
     FungusPlayer player = null; // The player that owns this mycelium
     List<FungusBody> connectedBodies = new ArrayList<FungusBody>();
@@ -37,19 +38,9 @@ public class Mycelium extends Fungus{
 
     @Override
     public void update() {
-
-        searchConnection();
-        if (connectedBodies.isEmpty()){
-            isDying = true;
-        }
-        else{
-            isDying = false;
-        }
-
         if(isDying){
             damage();
         }
-
     }
 
     // Reconnect with the mycelium network, recover health
@@ -134,11 +125,11 @@ public class Mycelium extends Fungus{
 
     @Override
     public void die() {
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".die()", ArrowDirection.RIGHT, Indent.INDENT);
         detach();
         player.removeMycelium(this);
+        currentTile.setTileSpace(currentTile.getMaxMycelium()+1);
         currentTile.removeEntity(this);
-        printWrapper("Mycelium: "+UseCase.logger.get(this)+".die()", ArrowDirection.LEFT, Indent.UNINDENT);
+
     }
 
     @Override
@@ -152,23 +143,27 @@ public class Mycelium extends Fungus{
     public void damage() {
         health--;
         if(health <= 0) {
+            System.out.printf("Mycelium at %d, %d health at zero %n", currentTile.getX(), currentTile.getY());
             die();
         }
     }
 
     @Override
     public void heal() {
-        ///printWrapper("Mycelium: "+UseCase.logger.get(this)+".heal()", ArrowDirection.LEFT, Indent.UNINDENT);
         if (health < maxHealth) {
             health++;
         }
+    }
+
+    public void setIsDying(boolean state){
+        isDying = state;
+        //System.out.printf("Mycelium at %d, %d set to dying %n", currentTile.getX(), currentTile.getY());
     }
 
     public String serialize() {
 
         StringBuilder sb = new StringBuilder();
         sb.append("\"mycelium_").append(id).append("\": {\n");
-        //int lineValue = currentTile.getParentTekton().getMap().getWidth();
         int tileValue = currentTile.getParentTekton().getTileId(currentTile);
         sb.append("\t\"currentTile\": t").append(tileValue).append(",\n");
         sb.append("\t\"health\": ").append(health).append(",\n");
@@ -176,5 +171,16 @@ public class Mycelium extends Fungus{
         sb.append("}");
 
         return sb.toString();
+    }
+
+    public FungusPlayer getPlayer() {
+        if (player == null) {
+            System.out.println("Mycelium has no player");
+        }
+        return player;
+    }
+
+    public void setPlayer(FungusPlayer player) {
+        this.player = player;
     }
 }

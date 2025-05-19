@@ -1,0 +1,22 @@
+@startuml exit
+
+title Exit Clicked
+
+actor "Player" as P
+participant "mainMenuStrategy: MainMenuStrategy" as mms
+participant "mainMenuPresenter: MainMenuPresenter" as mmp
+participant "coordinator: GameCoordinator" as Coordinator
+
+activate P
+activate mms
+activate mmp
+activate Coordinator
+
+P->mms: onButtonClicked(CustomButton btn)
+mms->mmp:onExitClicked()
+mmp-> Coordinator:exitApplication()
+Coordinator-->mmp
+mmp-->mms
+mms-->P
+
+@enduml

@@ -521,11 +521,31 @@ public class InGameStrategy extends AbstractRenderStrategy {
                 // right click to cut
                 else if (button == 3) {
                     System.out.println("Right click detected. Cutting.");
-                    // WIP: Cut the first controlled insect to the clicked tile
+                    // WIP: Cut the first controlled insect to the clicked tile or eat the spore on the tile
                     if (!insectPlayer.getControlledInsects().isEmpty()) {
                         Tile targetTile = presenter.getTile(gridX, gridY);
+                        List<Insect> insectpossible=insectPlayer.getControlledInsects();
+                        Insect controlledInsect=null;
+                        for (Insect insect : insectpossible) {
+                            if(insect.getCurrentTile().isNeighbor(targetTile))
+                            controlledInsect=insect;
+                        }
+                        
                         if (targetTile != null) {
                             insectPlayer.cut(targetTile);
+
+                            for (FungusPlayer fPlayer : presenter.getFungusPlayers()) {
+                                List<Spore> eaten = fPlayer.getSpores();
+                                for (Spore spore : fPlayer.getSpores()) {
+                                    if(spore.getCurrentTile()!=targetTile){
+                                        eaten.remove(spore);
+                                    }
+                                }
+                                for (Spore spore2 : eaten) {
+                                    if(controlledInsect!=null)insectPlayer.eat(spore2,controlledInsect);
+                                }
+                            }
+
                             System.out.println("Cut at tile (" + gridX + ", " + gridY + ")");
                         } else {
                             System.err.println("Target tile is null or invalid: (" + gridX + ", " + gridY + ")");
